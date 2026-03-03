@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos Online | Escola Paz e Bem - Formação Bíblica de Excelência</title>
+
+    <!-- Google Fonts: Instrument Serif + Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Custom CSS -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gesso: #EAE6DF;
+            --museu: #F4F1EB;
+            --carvao: #1C1B1A;
+            --taupe: #827C75;
+            --terracota: #A84B2B;
+            --edge: rgba(28, 27, 26, 0.12);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gesso);
+            color: var(--carvao);
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* === GLOBAL EFFECTS === */
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 40;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.12;
+            mix-blend-mode: multiply;
+            background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* === CUSTOM CURSOR === */
+
+        .custom-cursor {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            background-color: var(--terracota);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--terracota);
+            border-radius: 50%;
+            z-index: 9998;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            transition: all 0.3s ease;
+        }
+
+        .cursor-ring.expanded {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--terracota);
+            backdrop-filter: blur(4px);
+            background-color: rgba(168, 75, 43, 0.05);
+        }
+
+        /* === IMAGENS === */
+
+        .image-with-filter {
+            filter: grayscale(80%) sepia(15%) hue-rotate(345deg) contrast(1.1) brightness(0.9);
+            transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .image-with-filter:hover {
+            filter: grayscale(40%) sepia(25%) hue-rotate(345deg) contrast(1.2) brightness(0.95);
+        }
+
+        /* === HEADER === */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: transparent;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--edge);
+            backdrop-filter: blur(0px);
+            transition: all 0.6s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(234, 230, 223, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--edge);
+        }
+
+        nav {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--carvao);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            color: var(--carvao);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--terracota);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--terracota);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-nav {
+            padding: 0.65rem 1.5rem;
+            border: 1px solid var(--terracota);
+            border-radius: 50px;
+            color: var(--terracota);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cta-nav:hover {
+            background-color: var(--terracota);
+            color: var(--museu);
+        }
+
+        /* === HERO === */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 2rem 2rem;
+            position: relative;
+            background: linear-gradient(135deg, var(--gesso) 0%, var(--museu) 100%);
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--taupe);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background-color: var(--terracota);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--carvao);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--taupe);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat {
+            border-top: 1px solid var(--edge);
+            padding-top: 1rem;
+        }
+
+        .stat-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--terracota);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--taupe);
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background-color: var(--terracota);
+            color: var(--museu);
+            box-shadow: 0 8px 24px rgba(168, 75, 43, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #8a3a1f;
+            box-shadow: 0 12px 32px rgba(168, 75, 43, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--terracota);
+            color: var(--terracota);
+            background-color: transparent;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--terracota);
+            color: var(--museu);
+        }
+
+        .hero-image {
+            position: relative;
+            height: 500px;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        /* === CURSOS GRID === */
+
+        .courses-section {
+            padding: 6rem 2rem;
+            background-color: var(--museu);
+            border-top: 1px solid var(--edge);
+            border-bottom: 1px solid var(--edge);
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 6vw, 3rem);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--carvao);
+        }
+
+        .section-title em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--taupe);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background-color: var(--gesso);
+            border: 1px solid var(--edge);
+            border-radius: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px);
+            border-color: var(--terracota);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background-color: var(--taupe);
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 2rem;
+        }
+
+        .course-badge {
+            display: inline-block;
+            background-color: rgba(168, 75, 43, 0.1);
+            color: var(--terracota);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .course-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--carvao);
+            line-height: 1.3;
+        }
+
+        .course-description {
+            font-size: 0.95rem;
+            color: var(--taupe);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--edge);
+            margin-bottom: 1.5rem;
+        }
+
+        .course-duration {
+            font-size: 0.85rem;
+            color: var(--taupe);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .course-level {
+            font-size: 0.85rem;
+            color: var(--terracota);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .course-cta {
+            display: inline-block;
+            color: var(--terracota);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .course-cta:hover {
+            color: var(--carvao);
+            transform: translateX(4px);
+        }
+
+        /* === DIFERENCIAL === */
+
+        .differentials-section {
+            padding: 6rem 2rem;
+            background-color: var(--carvao);
+            color: var(--museu);
+        }
+
+        .differentials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .differentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .differential-item {
+            text-align: center;
+        }
+
+        .differential-icon {
+            font-size: 3rem;
+            color: var(--terracota);
+            margin-bottom: 1rem;
+        }
+
+        .differential-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .differential-description {
+            font-size: 0.95rem;
+            color: rgba(244, 241, 235, 0.8);
+            line-height: 1.6;
+        }
+
+        /* === CTA SECTION === */
+
+        .cta-final {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--museu) 0%, var(--gesso) 100%);
+            border-top: 1px solid var(--edge);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--carvao);
+            line-height: 1.3;
+        }
+
+        .cta-title em {
+            color: var(--terracota);
+            font-style: italic;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            color: var(--taupe);
+            margin-bottom: 2rem;
+        }
+
+        /* === FOOTER === */
+
+        footer {
+            background-color: var(--carvao);
+            color: var(--museu);
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(168, 75, 43, 0.2);
+        }
+
+        footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        footer-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        footer-title {
+            font-weight: 600;
+            color: var(--museu);
+            margin-bottom: 1rem;
+            font-family: 'Instrument Serif', serif;
+        }
+
+        footer-link {
+            font-size: 0.9rem;
+            color: rgba(244, 241, 235, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer-link:hover {
+            color: var(--terracota);
+        }
+
+        /* === RESPONSIVO === */
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-image {
+                height: 300px;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .differentials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* === ANIMAÇÕES === */
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Overlays -->
+    <div class="bg-texture"></div>
+
+    <!-- Ruído -->
+    <svg class="noise-overlay" xmlns="http://www.w3.org/2000/svg">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+    </svg>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- HEADER -->
+    <header id="header">
+        <nav>
+            <div class="logo" onclick="window.location.href='/'">PAZ E BEM</div>
+            <div class="nav-links">
+                <a href="paz-bem.html">Home</a>
+                <a href="#cursos">Cursos</a>
+                <a href="#diferencial">Diferencial</a>
+                <a href="#contato">Contato</a>
+                <a href="#inscricao" class="cta-nav">Inscreva-se</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-eyebrow fade-up">Formação Bíblica Online</div>
+                <h1 class="hero-title fade-up">
+                    Prepare <em>obreiros</em> com excelência
+                </h1>
+                <p class="hero-description fade-up">
+                    Cursos online estruturados da Escola Paz e Bem para capacitar líderes, discípulos e obreiros com ensino fundamentado na instrução bíblica.
+                </p>
+
+                <div class="hero-stats fade-up">
+                    <div class="stat">
+                        <div class="stat-number">7+</div>
+                        <div class="stat-label">Cursos Disponíveis</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Alunos Formados</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Certificados</div>
+                    </div>
+                </div>
+
+                <div class="hero-cta fade-up">
+                    <button class="btn btn-primary">Explorar Cursos</button>
+                    <button class="btn btn-secondary">Saiba Mais</button>
+                </div>
+            </div>
+
+            <div class="hero-image fade-up">
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop" alt="Sala de aula online" class="image-with-filter">
+            </div>
+        </div>
+    </section>
+
+    <!-- CURSOS -->
+    <section class="courses-section" id="cursos">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Cursos <em>Disponíveis</em></h2>
+                <p class="section-subtitle">
+                    Explore nossos programas de formação bíblica, cada um desenvolvido com excelência pedagógica e profundidade espiritual.
+                </p>
+            </div>
+
+            <div class="courses-grid">
+
+                <!-- Curso 1 -->
+                <div class="course-card fade-up scale-in">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1507842217343-583f20270319?q=80&w=1470&auto=format&fit=crop" alt="Teologia Bíblica" class="image-with-filter">
+                    </div>
+                    <div class="course-content">
+                        <span class="course-badge">Fundamentals</span>
+                        <h3 class="course-title">Teologia Bíblica</h3>
+                        <p class="course-description">
+                            Compreenda os fundamentos da teologia bíblica e desenvolva uma base sólida para ministério e crescimento espiritual.
+                        </p>
+                        <div class="course-meta">
+                            <span class="course-duration">
+                                <i class="ph-light ph-clock"></i> 8 semanas
+                            </span>
+                            <span class="course-level">Iniciante</span>
+                        </div>
+                        <a href="#" class="course-cta">
+                            Ver Detalhes →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Curso 2 -->
+                <div class="course-card fade-up scale-in">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1470&auto=format&fit=crop" alt="Liderança Cristã" class="image-with-filter">
+                    </div>
+                    <div class="course-content">
+                        <span class="course-badge">Intermediário</span>
+                        <h3 class="course-title">Liderança Cristã</h3>
+                        <p class="course-description">
+                            Desenvolva habilidades de liderança baseadas em princípios bíblicos para guiar e inspirar comunidades.
+                        </p>
+                        <div class="course-meta">
+                            <span class="course-duration">
+                                <i class="ph-light ph-clock"></i> 10 semanas
+                            </span>
+                            <span class="course-level">Intermediário</span>
+                        </div>
+                        <a href="#" class="course-cta">
+                            Ver Detalhes →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Curso 3 -->
+                <div class="course-card fade-up scale-in">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1470&auto=format&fit=crop" alt="Estudos do Novo Testamento" class="image-with-filter">
+                    </div>
+                    <div class="course-content">
+                        <span class="course-badge">Especializado</span>
+                        <h3 class="course-title">Novo Testamento</h3>
+                        <p class="course-description">
+                            Análise profunda dos evangelhos, epístolas e apocalipse para entendimento teológico avançado.
+                        </p>
+                        <div class="course-meta">
+                            <span class="course-duration">
+                                <i class="ph-light ph-clock"></i> 12 semanas
+                            </span>
+                            <span class="course-level">Avançado</span>
+                        </div>
+                        <a href="#" class="course-cta">
+                            Ver Detalhes →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Curso 4 -->
+                <div class="course-card fade-up scale-in">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1470&auto=format&fit=crop" alt="Hermenêutica Bíblica" class="image-with-filter">
+                    </div>
+                    <div class="course-content">
+                        <span class="course-badge">Fundamentals</span>
+                        <h3 class="course-title">Hermenêutica Bíblica</h3>
+                        <p class="course-description">
+                            Aprenda técnicas de interpretação bíblica para compreender melhor as escrituras sagradas.
+                        </p>
+                        <div class="course-meta">
+                            <span class="course-duration">
+                                <i class="ph-light ph-clock"></i> 8 semanas
+                            </span>
+                            <span class="course-level">Iniciante</span>
+                        </div>
+                        <a href="#" class="course-cta">
+                            Ver Detalhes →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Curso 5 -->
+                <div class="course-card fade-up scale-in">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1470&auto=format&fit=crop" alt="Discipulado" class="image-with-filter">
+                    </div>
+                    <div class="course-content">
+                        <span class="course-badge">Intermediário</span>
+                        <h3 class="course-title">Discipulado</h3>
+                        <p class="course-description">
+                            Metodologia comprovada para fazer discípulos e transformar vidas através da palavra de Deus.
+                        </p>
+                        <div class="course-meta">
+                            <span class="course-duration">
+                                <i class="ph-light ph-clock"></i> 9 semanas
+                            </span>
+                            <span class="course-level">Intermediário</span>
+                        </div>
+                        <a href="#" class="course-cta">
+                            Ver Detalhes →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Curso 6 -->
+                <div class="course-card fade-up scale-in">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470&auto=format&fit=crop" alt="Ministério Pastoral" class="image-with-filter">
+                    </div>
+                    <div class="course-content">
+                        <span class="course-badge">Especializado</span>
+                        <h3 class="course-title">Ministério Pastoral</h3>
+                        <p class="course-description">
+                            Preparação integral para o pastorado com énfase em cuidado espiritual, pregação e liderança.
+                        </p>
+                        <div class="course-meta">
+                            <span class="course-duration">
+                                <i class="ph-light ph-clock"></i> 14 semanas
+                            </span>
+                            <span class="course-level">Avançado</span>
+                        </div>
+                        <a href="#" class="course-cta">
+                            Ver Detalhes →
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DIFERENCIAL -->
+    <section class="differentials-section" id="diferencial">
+        <div class="differentials-container">
+            <div class="section-header">
+                <h2 class="section-title" style="color: var(--museu); margin-bottom: 3rem;">Por Que Escolher <em style="color: var(--terracota);">Paz e Bem</em>?</h2>
+            </div>
+
+            <div class="differentials-grid">
+
+                <div class="differential-item fade-up">
+                    <div class="differential-icon">
+                        <i class="ph-light ph-book"></i>
+                    </div>
+                    <h3 class="differential-title">Ensino Fundamentado</h3>
+                    <p class="differential-description">
+                        Baseado em instrução bíblica sólida e metodologia comprovada desde 2017.
+                    </p>
+                </div>
+
+                <div class="differential-item fade-up">
+                    <div class="differential-icon">
+                        <i class="ph-light ph-user-circle"></i>
+                    </div>
+                    <h3 class="differential-title">Professores Experientes</h3>
+                    <p class="differential-description">
+                        Liderados pelo Prof° Antonio Sergio Queiroz Alves, especialistas em formação teológica.
+                    </p>
+                </div>
+
+                <div class="differential-item fade-up">
+                    <div class="differential-icon">
+                        <i class="ph-light ph-certificate"></i>
+                    </div>
+                    <h3 class="differential-title">Certificação Profissional</h3>
+                    <p class="differential-description">
+                        Certificados reconhecidos que comprovam seu aprendizado e capacitação.
+                    </p>
+                </div>
+
+                <div class="differential-item fade-up">
+                    <div class="differential-icon">
+                        <i class="ph-light ph-globe"></i>
+                    </div>
+                    <h3 class="differential-title">Acesso Global</h3>
+                    <p class="differential-description">
+                        Estude de qualquer lugar, a qualquer hora, com conteúdo sempre disponível.
+                    </p>
+                </div>
+
+                <div class="differential-item fade-up">
+                    <div class="differential-icon">
+                        <i class="ph-light ph-users"></i>
+                    </div>
+                    <h3 class="differential-title">Comunidade Ativa</h3>
+                    <p class="differential-description">
+                        Conecte-se com outros alunos e mentores em uma comunidade de fé e aprendizado.
+                    </p>
+                </div>
+
+                <div class="differential-item fade-up">
+                    <div class="differential-icon">
+                        <i class="ph-light ph-infinity"></i>
+                    </div>
+                    <h3 class="differential-title">Acesso Vitalício</h3>
+                    <p class="differential-description">
+                        Uma vez matriculado, acesso permanente com atualizações contínuas incluídas.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-final" id="inscricao">
+        <div class="cta-content">
+            <h2 class="cta-title">Comece Sua <em>Jornada de Formação</em></h2>
+            <p class="cta-description">
+                Junte-se a centenas de alunos que já transformaram suas vidas através do ensino de excelência da Escola Paz e Bem.
+            </p>
+            <button class="btn btn-primary" style="font-size: 1rem; padding: 1.2rem 2.5rem;">
+                Inscrever-se Agora
+            </button>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contato">
+        <footer-content>
+            <footer-section>
+                <footer-title>Paz e Bem</footer-title>
+                <p style="font-size: 0.9rem; color: rgba(244, 241, 235, 0.7); margin: 0;">
+                    Escola de Formação Bíblica desde 2017
+                </p>
+            </footer-section>
+            <footer-section>
+                <footer-title>Navegação</footer-title>
+                <a href="paz-bem.html" class="footer-link">Home</a>
+                <a href="#cursos" class="footer-link">Cursos</a>
+                <a href="#diferencial" class="footer-link">Diferencial</a>
+            </footer-section>
+            <footer-section>
+                <footer-title>Recursos</footer-title>
+                <a href="#" class="footer-link">Blog</a>
+                <a href="#" class="footer-link">Comunidade</a>
+                <a href="#" class="footer-link">Suporte</a>
+            </footer-section>
+            <footer-section>
+                <footer-title>Legal</footer-title>
+                <a href="#" class="footer-link">Privacidade</a>
+                <a href="#" class="footer-link">Termos</a>
+                <a href="#" class="footer-link">Contato</a>
+            </footer-section>
+        </footer-content>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // === CUSTOM CURSOR ===
+        const cursor = document.getElementById('customCursor');
+        const ring = document.getElementById('cursorRing');
+        let mouseX = 0;
+        let mouseY = 0;
+
+        gsap.set([cursor, ring], { xPercent: -50, yPercent: -50 });
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            gsap.to(cursor, {
+                x: mouseX,
+                y: mouseY,
+                duration: 0,
+            });
+
+            gsap.to(ring, {
+                x: mouseX,
+                y: mouseY,
+                duration: 0.5,
+                ease: 'power3.out'
+            });
+        });
+
+        // Hover interativo
+        document.querySelectorAll('.btn, .nav-links a, .cta-nav, .course-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                ring.classList.add('expanded');
+            });
+            el.addEventListener('mouseleave', () => {
+                ring.classList.remove('expanded');
+            });
+        });
+
+        // === HEADER SCROLL ===
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // === ANIMAÇÕES GSAP ===
+        window.addEventListener('load', () => {
+            // Fade-up animations
+            gsap.utils.toArray('.fade-up').forEach((el, index) => {
+                gsap.fromTo(el,
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        delay: index * 0.1,
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+
+            // Scale-in animations
+            gsap.utils.toArray('.scale-in').forEach((el, index) => {
+                gsap.fromTo(el,
+                    { scale: 0.95, opacity: 0 },
+                    {
+                        scale: 1,
+                        opacity: 1,
+                        duration: 0.8,
+                        delay: index * 0.1,
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+        });
+    </script>
+
+</body>
+
+</html>
