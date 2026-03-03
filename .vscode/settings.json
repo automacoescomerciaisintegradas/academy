@@ -1,0 +1,336 @@
+{
+    "mcp": {
+
+        "inputs": [],
+        "servers": {
+            "mcp-server-time": {
+                "command": "python",
+                "args": [
+                    "-m",
+                    "mcp_server_time",
+                    "--local-timezone=America/Los_Angeles"
+                ],
+                "env": {}
+            }
+        }
+    },
+    "mcpServers": {
+        "playwright-extension": {
+
+            "command": "npx",
+
+            "args": [
+
+                "@playwright/mcp@latest",
+
+                "--extension"
+
+            ]
+
+        },
+        "n8n-mcp": {
+
+            "command": "powershell",
+
+            "args": [
+
+                "-ExecutionPolicy",
+
+                "Bypass",
+
+                "-File",
+
+                ".kiro/settings/docker-ssh.ps1",
+
+                "run",
+
+                "-i",
+
+                "--rm",
+
+                "--init",
+
+                "-e",
+
+                "MCP_MODE=stdio",
+
+                "-e",
+
+                "LOG_LEVEL=error",
+
+                "-e",
+
+                "DISABLE_CONSOLE_OUTPUT=true",
+
+                "-e",
+
+                "N8N_API_URL=https://n8n.iau2.com.br",
+
+                "-e",
+
+                "N8N_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNzAyYzVmNS03YWE5LTRjNmUtYTljZi00MzliYjA2YWUxZGYiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzUzMzc0NjcxfQ.RSkKjbveglfDpkcgiDnJ24BMtqlfhB_poHHHQb-XOdU",
+
+                "ghcr.io/czlonkowski/n8n-mcp:latest"
+
+            ],
+
+            "disabled": false,
+
+            "autoApprove": []
+
+        },
+        "web-reader": {
+
+            "type": "http",
+
+            "url": "https://open.bigmodel.cn/api/mcp/web_reader/mcp",
+
+            "headers": {
+
+                "Authorization": "4920bbfac8844e74a3bd212f5c51d315.G5JdcUDYGhMvhVzX"
+
+            }
+
+        },
+        "redis": {
+
+            "command": "npx",
+
+            "args": [
+
+                "-y",
+
+                "@modelcontextprotocol/server-redis",
+
+                "redis://default:dwtSJqIPVNCKDwvLWz4J@app.iau2.com.br:6379/0"
+
+            ]
+
+        },
+        "supabase": {
+
+            "url": "http://127.0.0.1:54321/mcp"
+
+        }
+
+    },
+    "redis": {
+
+        "name": "database-MEELLH3D",
+
+        "host_local": "localhost",
+
+        "host_remote": "redis-14487.crce181.sa-east-1-2.ec2.redns.redis-cloud.com",
+
+        "port": 14487,
+
+        "full_address": "redis-14487.crce181.sa-east-1-2.ec2.redns.redis-cloud.com:14487",
+
+        "password": "T3FibbOpzclJKaGc9teGvonLSNjeTreX",
+
+        "options": {
+
+            "tls": true,
+
+            "connectTimeout": 10000,
+
+            "maxRetriesPerRequest": 5
+
+        }
+
+    }
+
+},
+{
+
+    "mcpServers": {
+
+        "playwright-extension": {
+
+            "command": "npx",
+
+            "args": [
+
+                "@playwright/mcp@latest",
+
+                "--extension"
+
+            ]
+
+        }
+
+    }
+
+},
+
+{
+
+    "mcpServers": {
+
+        "n8n-mcp": {
+
+            "command": "powershell",
+
+            "args": [
+
+                "-ExecutionPolicy",
+
+                "Bypass",
+
+                "-File",
+
+                ".kiro/settings/docker-ssh.ps1",
+
+                "run",
+
+                "-i",
+
+                "--rm",
+
+                "--init",
+
+                "-e",
+
+                "MCP_MODE=stdio",
+
+                "-e",
+
+                "LOG_LEVEL=error",
+
+                "-e",
+
+                "DISABLE_CONSOLE_OUTPUT=true",
+
+                "-e",
+
+                "N8N_API_URL=https://n8n.iau2.com.br",
+
+                "-e",
+
+                "N8N_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwNzAyYzVmNS03YWE5LTRjNmUtYTljZi00MzliYjA2YWUxZGYiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzUzMzc0NjcxfQ.RSkKjbveglfDpkcgiDnJ24BMtqlfhB_poHHHQb-XOdU",
+
+                "ghcr.io/czlonkowski/n8n-mcp:latest"
+
+            ],
+
+            "disabled": false,
+
+            "autoApprove": []
+
+        }
+
+    }
+
+},
+
+{
+
+    "mcpServers": {
+
+        "web-reader": {
+
+            "type": "http",
+
+            "url": "https://open.bigmodel.cn/api/mcp/web_reader/mcp",
+
+            "headers": {
+
+                "Authorization": "4920bbfac8844e74a3bd212f5c51d315.G5JdcUDYGhMvhVzX"
+
+            }
+
+        }
+
+    }
+
+},
+
+{
+
+    "redis": {
+
+        "name": "database-MEELLH3D",
+
+        "host_local": "localhost",
+
+        "host_remote": "redis-14487.crce181.sa-east-1-2.ec2.redns.redis-cloud.com",
+
+        "port": 14487,
+
+        "full_address": "redis-14487.crce181.sa-east-1-2.ec2.redns.redis-cloud.com:14487",
+
+        "password": "T3FibbOpzclJKaGc9teGvonLSNjeTreX",
+
+        "options": {
+
+            "tls": true,
+
+            "connectTimeout": 10000,
+
+            "maxRetriesPerRequest": 5
+
+        }
+
+    }
+
+},
+
+{
+
+    "mcpServers": {
+
+        "redis": {
+
+            "command": "npx",
+
+            "args": [
+
+                "-y",
+
+                "@modelcontextprotocol/server-redis",
+
+                "redis://default:dwtSJqIPVNCKDwvLWz4J@app.iau2.com.br:6379/0"
+
+            ]
+
+        }
+
+    }
+
+},
+
+{
+
+    "mcpServers": {
+
+        "web-reader": {
+
+            "type": "http",
+
+            "url": "https://open.bigmodel.cn/api/mcp/web_reader/mcp",
+
+            "headers": {
+
+                "Authorization": "4920bbfac8844e74a3bd212f5c51d315.G5JdcUDYGhMvhVzX"
+
+            }
+
+        }
+
+    }
+
+},
+
+{
+
+    "mcpServers": {
+
+        "supabase": {
+
+            "url": "http://127.0.0.1:54321/mcp"
+
+        }
+
+    }
+
+}

@@ -1,0 +1,33 @@
+.env
+.tmp/
+__pycache__/
+*.pyc
+*.pem
+credentials.json
+token.json
+.DS_Store
+
+# Environment & Secrets (AIOS)
+.env.local
+.env.*.local
+*.key
+
+# Dependencies (AIOS)
+node_modules/
+node_modules
+
+# Build & Logs (AIOS)
+dist/
+build/
+*.log
+logs/
+
+# IDE & OS (AIOS)
+Thumbs.db
+.idea/
+*.swp
+
+# AIOS Local (AIOS)
+.aios-core/local/
+.claude/settings.local.json
+.aios/install-log.txt

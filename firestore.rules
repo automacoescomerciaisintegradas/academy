@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Function to check if user is the designated admin (Updated for Automacoes Comerciais)
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'automacoescomerciais@gmail.com';
+    }
+
+    // AIDEV-NOTE: COURSES are Publicly readable, Admin writeable
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isAdmin();
+
+      // Sub-collections (lessons/modules) inherit or need specific rules
+      match /{allSubcollections=**} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
+    // AIDEV-NOTE: USERS can only be read/written by their owner or Admin
+    match /users/{userId} {
+      allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+
+      match /{allSubcollections=**} {
+        allow read, write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      }
+    }
+
+    // AIDEV-NOTE: ORDERS & ENROLLMENTS - Admin can read all, User can create their own
+    match /orders/{orderId} {
+      allow read: if isAdmin();
+      allow create: if request.auth != null;
+    }
+
+    match /enrollments_global/{id} {
+      allow read: if isAdmin();
+      allow write: if request.auth != null;
+    }
+
+    // AIDEV-NOTE: BLOG POSTS are Publicly readable, Admin writeable
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
