@@ -1,22 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import PremiumButton from '@/components/ui/PremiumButton';
 import PremiumCard from '@/components/ui/PremiumCard';
-
-interface Course {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  price: number;
-  lessons: number;
-  students: number;
-  rating: number;
-  level: 'Iniciante' | 'Intermediário' | 'Avançado';
-  instructor: string;
-}
+import { useCourses } from '@/hooks/useCourses';
 
 interface Teacher {
   id: string;
@@ -31,176 +19,100 @@ interface Teacher {
 const AcademyPage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'courses' | 'teachers' | 'offers'>('courses');
+  const [isMounted, setIsMounted] = useState(false);
+  const { courses, loading } = useCourses();
 
-  const courses: Course[] = [
-    {
-      id: '1',
-      title: 'Fundamentos Bíblicos Avançados',
-      description: 'Aprofunde seus conhecimentos nas escrituras sagradas com análise teológica completa.',
-      image: '📖',
-      price: 197.00,
-      lessons: 24,
-      students: 1234,
-      rating: 4.9,
-      level: 'Avançado',
-      instructor: 'Dr. João Silva',
-    },
-    {
-      id: '2',
-      title: 'Ministério Pastoral Prático',
-      description: 'Capacitação completa para liderança espiritual eficaz em diferentes contextos.',
-      image: '⛪',
-      price: 247.00,
-      lessons: 32,
-      students: 856,
-      rating: 4.8,
-      level: 'Avançado',
-      instructor: 'Pastora Maria Santos',
-    },
-    {
-      id: '3',
-      title: 'Teologia Sistemática',
-      description: 'Estude a teologia de forma organizada e aprofundada para fortalecer sua fé.',
-      image: '✝️',
-      price: 297.00,
-      lessons: 40,
-      students: 612,
-      rating: 4.9,
-      level: 'Intermediário',
-      instructor: 'Prof. Pedro Costa',
-    },
-    {
-      id: '4',
-      title: 'Homilética e Pregação',
-      description: 'Desenvolva habilidades excelentes em pregação bíblica com técnicas modernas.',
-      image: '🎤',
-      price: 177.00,
-      lessons: 16,
-      students: 945,
-      rating: 4.7,
-      level: 'Intermediário',
-      instructor: 'Ev. Carlos Oliveira',
-    },
-  ];
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const teachers: Teacher[] = [
     {
       id: '1',
-      name: 'Dr. João Silva',
-      title: 'Doutor em Teologia Sistemática',
-      bio: 'Com mais de 20 anos de experiência em educação teológica, Dr. Silva é especialista em hermenêutica bíblica e teologia reformada.',
+      name: 'Prof. Antonio Sergio Queiroz Alves',
+      title: 'Doutor em Teologia',
+      bio: 'Com mais de 20 anos de experiência em educação teológica, especialista em hermenêutica bíblica e teologia sistemática.',
       image: '👨‍🏫',
       specialization: 'Teologia Sistemática e Hermenêutica',
       experience: '20+ anos',
-    },
-    {
-      id: '2',
-      name: 'Pastora Maria Santos',
-      title: 'Mestra em Liderança Ministerial',
-      bio: 'Pastora com experiência em múltiplos contextos de ministério, especializada em desenvolvimento de lideranças dinâmicas.',
-      image: '👩‍🏫',
-      specialization: 'Liderança Pastoral e Ministério Comunitário',
-      experience: '18+ anos',
-    },
-    {
-      id: '3',
-      name: 'Prof. Pedro Costa',
-      title: 'Doutor em Teologia Prática',
-      bio: 'Professor dedicado ao ensino prático da teologia com foco em aplicação contemporânea das escrituras.',
-      image: '👨‍🎓',
-      specialization: 'Teologia Prática e Aplicação Ministerial',
-      experience: '15+ anos',
     },
   ];
 
   const offers = [
     {
-      title: 'Oferta Especial - Pacote Completo',
-      description: 'Acesso a todos os 4 cursos principais com desconto de 40%',
-      originalPrice: 918.00,
-      discountedPrice: 549.00,
-      savings: 369.00,
-      validUntil: '28 de Fevereiro, 2026',
-      benefits: [
-        '✓ 4 cursos completos com certificados',
-        '✓ Acesso vitalício ao conteúdo',
-        '✓ Comunidade exclusiva de alunos',
-        '✓ Suporte direto com instrutores',
-        '✓ Materiais em PDF e vídeos',
-      ],
+      title: 'Combo Iniciante',
+      description: 'Todos os 3 cursos para iniciantes em um único pacote',
+      originalPrice: 891,
+      discountedPrice: 534.60,
+      savings: 356.40,
+      benefits: ['✓ Teologia Bíblica', '✓ Hermenêutica Bíblica', '✓ 3 aulas de mentoria'],
+      validUntil: '31/03/2026',
     },
     {
-      title: 'Oferta Flash - Trial de 7 Dias',
-      description: 'Teste qualquer curso por apenas R$ 9,90',
-      originalPrice: 0,
-      discountedPrice: 9.9,
-      savings: 0,
-      validUntil: 'Válido esta semana',
-      benefits: [
-        '✓ Acesso completo por 7 dias',
-        '✓ Sem compromisso - cancele quando quiser',
-        '✓ Material completo incluído',
-        '✓ Chat com instructor',
-      ],
+      title: 'Caminho Completo',
+      description: 'Cursos progressivos do iniciante ao avançado',
+      originalPrice: 2000,
+      discountedPrice: 1400,
+      savings: 600,
+      benefits: ['✓ Todos os 6 cursos', '✓ Certificados inclusos', '✓ Suporte ilimitado'],
+      validUntil: '15/03/2026',
     },
   ];
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
-    <div className="min-h-screen text-white">
-      {/* ===== HEADER ===== */}
-      <section className="relative overflow-hidden py-12 border-b border-white/5">
-        <div className="absolute inset-0 bg-[radial-gradient(1200px_circle_at_10%_10%,#1a0f1f_0%,#05070c_40%,#02030a_100%)]"></div>
-
-        <div className="relative container mx-auto px-4">
-          <div className="max-w-3xl">
-            <div className="inline-block px-4 py-2 bg-indigo-600/20 border border-indigo-500/30 rounded-full mb-4">
-              <span className="text-sm font-semibold text-indigo-300">Academia PAZ e BEM</span>
-            </div>
-            <h1 className="text-5xl font-bold mb-3">Programas de Educação Teológica</h1>
-            <p className="text-xl text-gray-300">
-              Escolha entre nossos programas de desenvolvimento espiritual e ministerial
-            </p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden pt-20 pb-12">
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/20 to-purple-900/20"></div>
+        <div className="relative container mx-auto px-4 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+            Academia Teológica
+          </h1>
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            Formação de excelência em teologia bíblica e liderança cristã
+          </p>
         </div>
-      </section>
+      </div>
 
-      {/* ===== TAB NAVIGATION ===== */}
-      <section className="sticky top-0 z-40 bg-black/80 backdrop-blur border-b border-white/5">
-        <div className="container mx-auto px-4">
-          <div className="flex gap-8">
-            <button
-              onClick={() => setActiveTab('courses')}
-              className={`py-4 px-1 font-semibold border-b-2 transition-all ${
-                activeTab === 'courses'
-                  ? 'border-indigo-500 text-white'
-                  : 'border-transparent text-gray-400 hover:text-white'
-              }`}
-            >
-              📚 Cursos
-            </button>
-            <button
-              onClick={() => setActiveTab('teachers')}
-              className={`py-4 px-1 font-semibold border-b-2 transition-all ${
-                activeTab === 'teachers'
-                  ? 'border-indigo-500 text-white'
-                  : 'border-transparent text-gray-400 hover:text-white'
-              }`}
-            >
-              👨‍🏫 Professores
-            </button>
-            <button
-              onClick={() => setActiveTab('offers')}
-              className={`py-4 px-1 font-semibold border-b-2 transition-all ${
-                activeTab === 'offers'
-                  ? 'border-indigo-500 text-white'
-                  : 'border-transparent text-gray-400 hover:text-white'
-              }`}
-            >
-              🎉 Ofertas Especiais
-            </button>
-          </div>
+      {/* Tabs Navigation */}
+      <div className="container mx-auto px-4 mb-12">
+        <div className="flex gap-4 justify-center flex-wrap">
+          <button
+            onClick={() => setActiveTab('courses')}
+            className={`px-8 py-3 rounded-lg font-semibold transition-all ${
+              activeTab === 'courses'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                : 'bg-slate-800 text-gray-300 hover:bg-slate-700'
+            }`}
+          >
+            Cursos
+          </button>
+          <button
+            onClick={() => setActiveTab('teachers')}
+            className={`px-8 py-3 rounded-lg font-semibold transition-all ${
+              activeTab === 'teachers'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                : 'bg-slate-800 text-gray-300 hover:bg-slate-700'
+            }`}
+          >
+            Professores
+          </button>
+          <button
+            onClick={() => setActiveTab('offers')}
+            className={`px-8 py-3 rounded-lg font-semibold transition-all ${
+              activeTab === 'offers'
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                : 'bg-slate-800 text-gray-300 hover:bg-slate-700'
+            }`}
+          >
+            Ofertas Especiais
+          </button>
         </div>
-      </section>
+      </div>
 
       {/* ===== COURSES TAB ===== */}
       {activeTab === 'courses' && (
@@ -209,60 +121,82 @@ const AcademyPage = () => {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold mb-4">Nossos Cursos</h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-                Programas de alta qualidade ministrados por professores doutores e mestres em teologia
+                Programas de alta qualidade desenvolvidos por especialistas em teologia
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {courses.map((course) => (
-                <PremiumCard key={course.id}>
-                  <PremiumCard.Body>
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="text-6xl">{course.image}</div>
-                      <span className="px-3 py-1 bg-indigo-600/20 text-indigo-300 text-sm font-semibold rounded-full">
-                        {course.level}
-                      </span>
-                    </div>
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto mb-4"></div>
+                <p className="text-gray-400">Carregando cursos...</p>
+              </div>
+            ) : courses.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {courses.map((course) => (
+                  <PremiumCard
+                    key={course.id}
+                    onClick={() => router.push(`/academy/${course.id}`)}
+                  >
+                    <PremiumCard.Body>
+                      <div className="mb-4">
+                        <span className="px-3 py-1 bg-indigo-600/20 text-indigo-300 text-xs font-semibold rounded-full">
+                          {course.level}
+                        </span>
+                      </div>
 
-                    <h3 className="text-2xl font-bold mb-2">{course.title}</h3>
-                    <p className="text-gray-300 mb-4 text-sm leading-relaxed">{course.description}</p>
+                      <h3 className="text-2xl font-bold mb-3 text-white hover:text-indigo-300 transition-colors">
+                        {course.title}
+                      </h3>
+                      <p className="text-gray-300 mb-4 line-clamp-3">
+                        {course.description}
+                      </p>
 
-                    <div className="border-t border-white/10 py-4">
-                      <div className="grid grid-cols-3 gap-4 mb-4 text-sm">
-                        <div>
-                          <div className="text-gray-400">Lições</div>
-                          <div className="text-xl font-bold text-indigo-400">{course.lessons}</div>
-                        </div>
-                        <div>
-                          <div className="text-gray-400">Alunos</div>
-                          <div className="text-xl font-bold text-purple-400">{course.students}</div>
-                        </div>
-                        <div>
-                          <div className="text-gray-400">Avaliação</div>
-                          <div className="text-xl font-bold text-yellow-400">⭐ {course.rating}</div>
+                      <div className="bg-slate-700/50 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-gray-400 mb-2">Informações</p>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div>
+                            <p className="text-gray-400">Aulas</p>
+                            <p className="font-bold text-white">{course.lessons}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-400">Alunos</p>
+                            <p className="font-bold text-white">{course.students}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <p className="text-sm text-gray-400 mb-4">
-                      Instrutor: <span className="text-white font-semibold">{course.instructor}</span>
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <div className="text-3xl font-bold">
-                        R$ <span className="text-indigo-400">{course.price.toFixed(2)}</span>
+                      <div className="bg-slate-700/50 rounded-lg p-4 mb-4">
+                        <p className="text-sm text-gray-400">Professor</p>
+                        <p className="font-semibold text-white">{course.instructor}</p>
                       </div>
-                      <PremiumButton 
+
+                      <div className="mb-4">
+                        {course.classes && course.classes.length > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-400 mb-2">A partir de</p>
+                            <p className="text-2xl font-bold text-indigo-400">
+                              R$ {course.classes[0].price}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <PremiumButton
                         variant="primary"
+                        className="w-full"
                         onClick={() => router.push(`/academy/${course.id}`)}
                       >
-                        Enroll Agora
+                        Ver Detalhes do Curso
                       </PremiumButton>
-                    </div>
-                  </PremiumCard.Body>
-                </PremiumCard>
-              ))}
-            </div>
+                    </PremiumCard.Body>
+                  </PremiumCard>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-400">Nenhum curso disponível no momento.</p>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -278,7 +212,7 @@ const AcademyPage = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {teachers.map((teacher) => (
                 <PremiumCard key={teacher.id}>
                   <PremiumCard.Body>
@@ -290,20 +224,20 @@ const AcademyPage = () => {
 
                     <p className="text-gray-300 mb-6 text-sm leading-relaxed">{teacher.bio}</p>
 
-                    <div className="bg-white/5 rounded-lg p-4 mb-4">
+                    <div className="bg-slate-700/50 rounded-lg p-4 mb-4">
                       <p className="text-xs text-gray-400 mb-1">Especialização</p>
                       <p className="text-white font-semibold text-sm">{teacher.specialization}</p>
                     </div>
 
-                    <div className="bg-white/5 rounded-lg p-4">
+                    <div className="bg-slate-700/50 rounded-lg p-4 mb-4">
                       <p className="text-xs text-gray-400 mb-1">Experiência</p>
                       <p className="text-white font-semibold text-sm">{teacher.experience}</p>
                     </div>
 
-                    <PremiumButton 
-                      variant="secondary" 
-                      className="w-full mt-6"
-                      onClick={() => router.push(`/academy?instructor=${teacher.name}`)}
+                    <PremiumButton
+                      variant="primary"
+                      className="w-full"
+                      onClick={() => setActiveTab('courses')}
                     >
                       Ver Cursos
                     </PremiumButton>
@@ -362,7 +296,7 @@ const AcademyPage = () => {
                   <ul className="space-y-3 mb-8">
                     {offer.benefits.map((benefit, bidx) => (
                       <li key={bidx} className="text-gray-300 flex items-start">
-                        <span className="mr-3">{benefit.split(' ')[0]}</span>
+                        <span className="mr-3 text-indigo-400">{benefit.split(' ')[0]}</span>
                         <span>{benefit.substring(2)}</span>
                       </li>
                     ))}
@@ -372,8 +306,8 @@ const AcademyPage = () => {
                     <p className="text-xs text-gray-400 mb-4">
                       Válido até: <span className="text-white font-semibold">{offer.validUntil}</span>
                     </p>
-                    <PremiumButton 
-                      variant="primary" 
+                    <PremiumButton
+                      variant="primary"
                       className="w-full"
                       onClick={() => router.push('/auth/register')}
                     >
