@@ -1,0 +1,21 @@
+{
+  "name": "academy",
+  "region": "brazil",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3001",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://uvznpcxkhawirrgaqamp.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_6t1nHljPIaqZVEwPr_CiWg_O2pvOpwK",
+    "NEXT_PUBLIC_APP_URL": "https://academy.automacoescomerciais.com.br",
+    "NEXT_PUBLIC_ADMIN_EMAIL": "automacoescomerciais@gmail.com",
+    "ADMIN_EMAIL": "automacoescomerciais@gmail.com"
+  },
+  "build": {
+    "command": "npm run build",
+    "directory": "frontend"
+  },
+  "start": {
+    "command": "npm start",
+    "port": 3001
+  }
+}
