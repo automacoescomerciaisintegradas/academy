@@ -1,0 +1,2 @@
+This file exists to make the .tmp directory visible to the user.
+You can delete this file at any time.

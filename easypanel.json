@@ -1,0 +1,100 @@
+{
+  "name": "escola-paz-e-vida",
+  "version": "1.0.0",
+  "description": "Escola Teológica Paz e Vida - Plataforma de Cursos Online",
+  "repository": "https://github.com/your-org/paz-e-vida",
+  "logo": "https://pazeevida.com/logo.png",
+  "keywords": [
+    "teologia",
+    "cursos",
+    "educação",
+    "nextjs",
+    "react"
+  ],
+  "env": {
+    "NODE_ENV": {
+      "description": "Ambiente da aplicação",
+      "value": "production"
+    },
+    "PORT": {
+      "description": "Porta da aplicação (será auto-detectada)",
+      "value": "3001"
+    },
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "description": "URL do projeto Supabase",
+      "value": ""
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "description": "Chave anônima do Supabase",
+      "value": ""
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "description": "Chave service role do Supabase",
+      "value": ""
+    },
+    "RESEND_API_KEY": {
+      "description": "API Key do Resend (envio de emails)",
+      "value": "",
+      "required": false
+    },
+    "SENDGRID_API_KEY": {
+      "description": "API Key do SendGrid (alternativa ao Resend)",
+      "value": "",
+      "required": false
+    },
+    "NEXT_PUBLIC_APP_URL": {
+      "description": "URL pública da aplicação",
+      "value": "https://academy.automacoescomerciais.com.br"
+    },
+    "NEXT_PUBLIC_ADMIN_EMAIL": {
+      "description": "Email do administrador (público)",
+      "value": "automacoescomerciais@gmail.com"
+    },
+    "ADMIN_EMAIL": {
+      "description": "Email do administrador",
+      "value": "automacoescomerciais@gmail.com"
+    }
+  },
+  "build": {
+    "type": "docker",
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "deploy": {
+    "type": "docker-compose",
+    "file": "docker-compose.yml",
+    "service": "app"
+  },
+  "healthcheck": {
+    "endpoint": "/health",
+    "interval": 30,
+    "timeout": 10,
+    "retries": 3
+  },
+  "resources": {
+    "cpu": "1",
+    "memory": "1024M",
+    "storage": "10G"
+  },
+  "domains": {
+    "enabled": true,
+    "ssl": true
+  },
+  "persistent_storage": {
+    "enabled": true,
+    "mounts": [
+      {
+        "path": "/app/logs",
+        "size": "1G"
+      }
+    ]
+  },
+  "environment": {
+    "NODE_ENV": "production",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "scripts": {
+    "predeploy": "./install-easypanel.sh config",
+    "postdeploy": "echo 'Deploy concluído! Acesse http://144.91.118.78:PORT'"
+  }
+}

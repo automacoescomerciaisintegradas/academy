@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "docker:build": "docker build -t paz-e-vida-app .",
+    "docker:run": "docker run -p 3000:3000 paz-e-vida-app",
+    "docker:dev": "docker-compose up -d",
+    "docker:logs": "docker-compose logs -f",
+    "docker:stop": "docker-compose down"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
@@ -25,6 +30,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^10.0.1",
     "eslint-config-next": "^16.1.6",
+    "playwright": "^1.58.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
