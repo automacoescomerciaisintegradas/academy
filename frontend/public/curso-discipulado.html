@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discipulado | Escola Paz e Bem - Formação Fundamentada</title>
+
+    <!-- Google Fonts: Instrument Serif + Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gesso: #EAE6DF;
+            --museu: #F4F1EB;
+            --carvao: #1C1B1A;
+            --taupe: #827C75;
+            --terracota: #A84B2B;
+            --edge: rgba(28, 27, 26, 0.12);
+            --success: #4A7C59;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gesso);
+            color: var(--carvao);
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* === HEADER === */
+        header {
+            background-color: var(--museu);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--edge);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(244, 241, 235, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--carvao);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--taupe);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--terracota);
+        }
+
+        .btn-header {
+            background-color: var(--terracota);
+            color: var(--museu);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-header:hover {
+            background-color: #8B3A1F;
+            transform: translateY(-2px);
+        }
+
+        /* === BREADCRUMB === */
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            font-size: 0.9rem;
+            color: var(--taupe);
+        }
+
+        .breadcrumb a {
+            color: var(--terracota);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* === HERO DO CURSO === */
+        .course-hero {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .course-hero-content h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.8rem;
+            margin: 0 0 1rem 0;
+            color: var(--carvao);
+            line-height: 1.2;
+        }
+
+        .course-hero-content h1 em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--taupe);
+        }
+
+        .meta-item i {
+            color: var(--terracota);
+            font-size: 1.2rem;
+        }
+
+        .course-description {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--taupe);
+            margin: 1.5rem 0;
+        }
+
+        .course-hero-image {
+            position: relative;
+            border-radius: 2rem;
+            overflow: hidden;
+            height: 450px;
+        }
+
+        .course-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%) sepia(15%) hue-rotate(345deg) contrast(1.1) brightness(0.9);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--gesso);
+            color: var(--terracota);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid var(--edge);
+        }
+
+        /* === CONTAINER PRINCIPAL === */
+        .course-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .course-content {
+            background-color: var(--museu);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            border: 1px solid var(--edge);
+        }
+
+        /* === SEÇÕES DO CURSO === */
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            margin: 2rem 0 1.5rem 0;
+            color: var(--carvao);
+            border-bottom: 2px solid var(--terracota);
+            padding-bottom: 1rem;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .section-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--taupe);
+            margin-bottom: 1.5rem;
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+
+        .bullet-list li {
+            padding: 0.7rem 0 0.7rem 2rem;
+            position: relative;
+            color: var(--taupe);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .bullet-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--terracota);
+            font-weight: bold;
+        }
+
+        /* === SIDEBAR - TURMAS E PREÇOS === */
+        .sidebar {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .turma-card {
+            background-color: var(--museu);
+            border: 2px solid var(--edge);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .turma-card:hover {
+            border-color: var(--terracota);
+            box-shadow: 0 8px 24px rgba(168, 75, 43, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .turma-card.selected {
+            border-color: var(--terracota);
+            background-color: rgba(168, 75, 43, 0.05);
+        }
+
+        .turma-title {
+            font-weight: 700;
+            color: var(--carvao);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .turma-dates {
+            font-size: 0.8rem;
+            color: var(--taupe);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .turma-dates i {
+            color: var(--terracota);
+        }
+
+        .turma-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.8rem;
+            padding: 0.8rem 0;
+            border-top: 1px solid var(--edge);
+            border-bottom: 1px solid var(--edge);
+        }
+
+        .price-label {
+            font-size: 0.75rem;
+            color: var(--taupe);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .price-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--terracota);
+        }
+
+        .turma-status {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-top: 0.8rem;
+        }
+
+        .status-disponivel {
+            background-color: rgba(74, 124, 89, 0.15);
+            color: var(--success);
+        }
+
+        .status-quase-cheio {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #F57F17;
+        }
+
+        .status-cheio {
+            background-color: rgba(211, 47, 47, 0.15);
+            color: #D32F2F;
+        }
+
+        /* === CALENDÁRIO === */
+        .calendar-section {
+            margin-top: 2rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .calendar-btn {
+            background-color: var(--gesso);
+            border: 1px solid var(--edge);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            color: var(--carvao);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-btn:hover {
+            background-color: var(--terracota);
+            color: var(--museu);
+            border-color: var(--terracota);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            color: var(--taupe);
+            font-size: 0.8rem;
+            padding: 0.8rem 0;
+            text-transform: uppercase;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            background-color: var(--museu);
+            border: 1px solid var(--edge);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            border-color: var(--terracota);
+            background-color: rgba(168, 75, 43, 0.1);
+        }
+
+        .calendar-day.turma-start {
+            background-color: var(--terracota);
+            color: var(--museu);
+            font-weight: 700;
+            border-color: var(--terracota);
+        }
+
+        .calendar-day.turma-start:hover {
+            box-shadow: 0 4px 12px rgba(168, 75, 43, 0.3);
+        }
+
+        .calendar-day.disabled {
+            color: var(--edge);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* === BOTÃO DE INSCRIÇÃO === */
+        .enrollment-btn {
+            width: 100%;
+            background-color: var(--terracota);
+            color: var(--museu);
+            border: none;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .enrollment-btn:hover {
+            background-color: #8B3A1F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(168, 75, 43, 0.3);
+        }
+
+        .enrollment-btn:disabled {
+            background-color: var(--taupe);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* === MODAL DE INSCRIÇÃO === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--museu);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--carvao);
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--taupe);
+            background: none;
+            border: none;
+            padding: 0;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--terracota);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--carvao);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--edge);
+            border-radius: 0.5rem;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--terracota);
+            box-shadow: 0 0 0 3px rgba(168, 75, 43, 0.1);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 1024px) {
+            .course-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .course-hero {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+                text-align: center;
+            }
+
+            .course-hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .course-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .course-hero-image {
+                height: 300px;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header id="header">
+        <a href="paz-bem.html" class="logo">🌿 PAZ e BEM</a>
+        <nav>
+            <a href="paz-bem.html">Página Inicial</a>
+            <a href="academy.html">Meus Cursos</a>
+            <a href="#beneficios">Benefícios</a>
+            <a href="#planos">Planos</a>
+            <a href="#faq">FAQ</a>
+            <button class="btn-header" id="btnEntrar">Entrar</button>
+            <button class="btn-header">MATRICULAR AGORA</button>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a href="paz-bem.html">Início</a> / <a href="academy.html">Cursos</a> / <span>Discipulado</span>
+    </div>
+
+    <!-- HERO DO CURSO -->
+    <section class="course-hero">
+        <div class="course-hero-content">
+            <span class="badge">Nível Intermediário • 9 semanas</span>
+            <h1> <em>Discipulado</em></h1>
+            <p class="course-description">
+                Metodologia comprovada para discipular e desenvolver líderes espirituais.
+            </p>
+            <div class="course-meta">
+                <div class="meta-item">
+                    <i class="ph-light ph-book"></i>
+                    <span>45+ Aulas</span>
+                </div>
+                <div class="meta-item">
+                    <i class="ph-light ph-users"></i>
+                    <span>310+ Alunos</span>
+                </div>
+                <div class="meta-item">
+                    <i class="ph-light ph-certificate"></i>
+                    <span>Certificado</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-hero-image">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470" alt="Discipulado">
+        </div>
+    </section>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="course-container">
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="course-content">
+            <h2 class="section-title">O que você aprenderá</h2>
+            <p class="section-text">
+                Este curso foi desenvolvido para oferecer uma educação de qualidade, combinando rigidez acadêmica com aplicação prática. Você aprenderá conceitos fundamentais que transformarão sua compreensão e capacidade de ministério.
+            </p>
+
+            <h2 class="section-title">Estrutura do Curso</h2>
+            <p class="section-text">
+                O curso é dividido em 9 semanas com aproximadamente 5-7 horas de conteúdo por semana.
+            </p>
+
+            <h2 class="section-title">Metodologia</h2>
+            <ul class="bullet-list">
+                <li>Aulas em vídeo com conteúdo dinâmico</li>
+                <li>Leituras complementares de autores consagrados</li>
+                <li>Exercícios práticos para fixação</li>
+                <li>Discussões em grupo com instrutores</li>
+                <li>Projeto final integrando aprendizagem</li>
+                <li>Suporte contínuo via comunidade</li>
+            </ul>
+
+            <h2 class="section-title">Sobre o Instrutor</h2>
+            <p class="section-text">
+                <strong>Prof. Antonio Sergio Queiroz Alves</strong> é um educador experiente com mais de 20 anos de atuação em educação teológica, combinando rigor acadêmico com aplicação prática.
+            </p>
+
+            <h2 class="section-title">Certificado e Reconhecimento</h2>
+            <p class="section-text">
+                Ao concluir o curso com sucesso, você receberá um certificado digital emitido pela Escola Paz e Bem, reconhecido por instituições teológicas parceiras.
+            </p>
+        </div>
+
+        <!-- SIDEBAR - TURMAS E PREÇOS -->
+        <aside class="sidebar">
+            <h3 style="font-family: 'Instrument Serif', serif; font-size: 1.3rem; color: var(--carvao); margin-bottom: 1.5rem;">Escolha sua Turma</h3>
+
+            
+            <!-- TURMA 1 -->
+            <div class="turma-card selected" data-turma="turma-1" data-price="327" data-start="2026-02-15" data-end="2026-04-19">
+                <div class="turma-title">Turma Fevereiro - Intermediário</div>
+                <div class="turma-dates">
+                    <i class="ph-light ph-calendar"></i>
+                    <span>15 Fev - 19 Abr</span>
+                </div>
+                <div class="turma-price">
+                    <span class="price-label">Valor:</span>
+                    <span class="price-value">R$ 327</span>
+                </div>
+                <span class="turma-status status-disponivel">✓ Disponível</span>
+            </div>
+  
+
+            <!-- CALENDÁRIO -->
+            <div class="calendar-section">
+                <h4 style="font-weight: 600; color: var(--carvao); margin-bottom: 1rem; font-size: 0.9rem;">PRÓXIMAS DATAS</h4>
+                <div class="calendar-header">
+                    <span id="currentMonth" style="font-weight: 600; color: var(--carvao);">Março 2026</span>
+                    <div class="calendar-nav">
+                        <button class="calendar-btn" id="prevMonth">←</button>
+                        <button class="calendar-btn" id="nextMonth">→</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+
+            <!-- BOTÃO DE INSCRIÇÃO -->
+            <button class="enrollment-btn" id="enrollBtn">MATRICULAR AGORA</button>
+            <p style="text-align: center; font-size: 0.8rem; color: var(--taupe); margin-top: 1rem;">
+                Parcele em até 3x sem juros
+            </p>
+        </aside>
+    </div>
+
+    <!-- MODAL DE INSCRIÇÃO -->
+    <div class="modal" id="enrollmentModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="document.getElementById('enrollmentModal').classList.remove('active')">&times;</button>
+            <h2 class="modal-header">Inscrição - Discipulado</h2>
+
+            <div style="background-color: var(--gesso); padding: 1rem; border-radius: 0.8rem; margin-bottom: 1.5rem;">
+                <p style="margin: 0; font-size: 0.9rem; color: var(--taupe);">
+                    <strong id="modalTurmaInfo">Turma Fevereiro - Intermediário</strong><br>
+                    <span id="modalDatesInfo">15 Fev - 19 Abr</span><br>
+                    <span style="font-family: 'Instrument Serif', serif; font-size: 1.3rem; color: var(--terracota); font-weight: 700;" id="modalPriceInfo">R$ 327</span>
+                </p>
+            </div>
+
+            <form>
+                <div class="form-group">
+                    <label>Nome Completo *</label>
+                    <input type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail *</label>
+                    <input type="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefone (WhatsApp) *</label>
+                    <input type="tel" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Como você conheceu o curso? *</label>
+                    <select required>
+                        <option value="">Selecione...</option>
+                        <option value="google">Google</option>
+                        <option value="redes-sociais">Redes Sociais</option>
+                        <option value="amigo">Indicação de Amigo</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 400;">
+                        <input type="checkbox" required style="width: auto;">
+                        Concordo com os Termos de Uso e Política de Privacidade
+                    </label>
+                </div>
+
+                <button type="submit" style="width: 100%; background-color: var(--terracota); color: var(--museu); border: none; padding: 1rem; border-radius: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;">
+                    Confirmar Inscrição
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // === HEADER SCROLL ===
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // === SELEÇÃO DE TURMA ===
+        const turmaCards = document.querySelectorAll('.turma-card');
+        const enrollBtn = document.getElementById('enrollBtn');
+        const modal = document.getElementById('enrollmentModal');
+
+        let selectedTurma = {
+            title: 'Turma Fevereiro - Intermediário',
+            dates: '15 Fev - 19 Abr',
+            price: 'R$ 327'
+        };
+
+        turmaCards.forEach(card => {
+            card.addEventListener('click', () => {
+                turmaCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+
+                selectedTurma = {
+                    title: card.querySelector('.turma-title').textContent,
+                    dates: card.querySelector('.turma-dates span').textContent,
+                    price: card.querySelector('.price-value').textContent.trim()
+                };
+
+                const status = card.querySelector('.turma-status');
+                enrollBtn.disabled = status.textContent.includes('Completo');
+            });
+        });
+
+        // === ABRIR MODAL ===
+        enrollBtn.addEventListener('click', () => {
+            document.getElementById('modalTurmaInfo').textContent = selectedTurma.title;
+            document.getElementById('modalDatesInfo').textContent = selectedTurma.dates;
+            document.getElementById('modalPriceInfo').textContent = selectedTurma.price;
+            modal.classList.add('active');
+        });
+
+        // === FECHAR MODAL ===
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // === CALENDÁRIO ===
+        function generateCalendar(month, year) {
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            const dayHeaders = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+            dayHeaders.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendarGrid.appendChild(header);
+            });
+
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day disabled';
+                day.textContent = daysInPrevMonth - i;
+                calendarGrid.appendChild(day);
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = i;
+                calendarGrid.appendChild(day);
+            }
+
+            const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                              'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            document.getElementById('currentMonth').textContent = monthNames[month] + ' ' + year;
+        }
+
+        let currentMonth = 2;
+        let currentYear = 2026;
+
+        generateCalendar(currentMonth, currentYear);
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar(currentMonth, currentYear);
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentMonth, currentYear);
+        });
+
+        // === ANIMAÇÕES AO SCROLL ===
+        gsap.fromTo('.course-hero-content',
+            { y: 30, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                scrollTrigger: {
+                    trigger: '.course-hero-content',
+                    start: 'top center',
+                    end: 'center center'
+                }
+            }
+        );
+    </script>
+</body>
+</html>

@@ -10,22 +10,16 @@
 
 ## 📋 COMPONENTES CRIADOS
 
-### 🤠 Avatar Lampião
+###  Avatar 
 ```
 ┌─────────────────────────────┐
-│     🤠 LAMPIÃO AVATAR       │
+│    AVATAR       │
 ├─────────────────────────────┤
-│ ✓ SVG 256x256               │
-│ ✓ 4 tamanhos (sm/md/lg/xl)  │
-│ ✓ Cangaceiro nordestino     │
-│ ✓ Chapéu vaqueiro           │
-│ ✓ Bandoleira decorativa     │
-│ ✓ Aura mística roxo/azul    │
-│ ✓ Animação floating hover   │
+ │
 │                             │
 │ Arquivo:                    │
 │ src/components/avatars/     │
-│ LampiaoAvatar.tsx           │
+│ Avatar.tsx           │
 └─────────────────────────────┘
 ```
 
@@ -456,7 +450,8 @@ Se quiser expandir a identidade:
 ║            🎉 OBRIGADO POR ESCOLHER NOSSA                ║
 ║        SOLUÇÃO VISUAL PARA SEU PROJETO STITCH!            ║
 ║                                                            ║
-║    Lampião está guardando sua plataforma de cursos 🤠      ║
+║    Prof° Antonio Sergio Queiroz Alves (Bandeira)
+      está guardando sua plataforma de cursos 🤠      ║
 ║     A identidade nordestina nunca foi tão moderna!        ║
 ╚════════════════════════════════════════════════════════════╝
 ```

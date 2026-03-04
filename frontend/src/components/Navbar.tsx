@@ -1,108 +1,115 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import useAuth from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase/client';
+import Logo from './brand/Logo';
 
 const Navbar = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const router = useRouter();
+  const { user, isAuthenticated, loading } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      router.push('/');
+    } catch (error) {
+      console.error('Erro ao sair:', error);
+    }
+  };
+
   return (
-    <nav className="bg-gray-800 text-white p-4 sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <Link href="/" className="text-xl font-bold">
-            Escola PAZ e BEM
+    <nav className="navbar">
+      <div className="container mx-auto px-4 w-full">
+        <div className="flex justify-between items-center h-20">
+          <Link href="/" className="flex items-center hover:opacity-90 transition-opacity">
+            <Logo size={42} />
           </Link>
-          
+
           {/* Menu Desktop */}
-          <div className="hidden md:flex space-x-6">
-            <Link href="/" className="hover:text-blue-300 transition">Home</Link>
-            <Link href="/services" className="hover:text-blue-300 transition">Serviços</Link>
-            <Link href="/academy" className="hover:text-blue-300 transition">Academy</Link>
-            
+          <div className="hidden lg:flex items-center gap-6">
+            <div className="flex items-center gap-6">
+              <Link href="/" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">Página Inicial</Link>
+              <Link href="/academy" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">Meus Cursos</Link>
+              <a href="#beneficios" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">Benefícios</a>
+              <a href="#planos" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">Planos</a>
+              <a href="#faq" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">FAQ</a>
+            </div>
+
             {isAuthenticated ? (
-              <>
-                <Link href="/dashboard" className="hover:text-blue-300 transition">Painel</Link>
-                <Link href="/admin" className="hover:text-blue-300 transition">Admin</Link>
-              </>
+              <div className="flex items-center gap-4 pl-6 border-l border-white/10">
+                <Link href="/dashboard" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">Meu Perfil</Link>
+                {user?.email === 'akshayman224@gmail.com' && (
+                  <Link href="/admin" className="text-indigo-400 hover:text-indigo-300 font-bold transition-colors">Admin</Link>
+                )}
+                <button
+                  onClick={handleLogout}
+                  className="btn-outline btn-sm"
+                >
+                  Sair
+                </button>
+              </div>
             ) : (
-              <Link href="/auth/login" className="hover:text-blue-300 transition">Entrar</Link>
+              <div className="flex items-center gap-3 pl-6 border-l border-white/10">
+                <Link href="/auth/login" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">Entrar</Link>
+                <Link href="/auth/register">
+                  <button className="btn-primary btn-sm font-bold">MATRICULAR AGORA</button>
+                </Link>
+              </div>
             )}
           </div>
-        </div>
 
-        <div className="hidden md:flex items-center space-x-4">
-          {isAuthenticated ? (
-            <div className="flex items-center space-x-4">
-              <span className="text-sm">Olá, {user?.name}</span>
-              <button 
-                onClick={logout}
-                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md transition"
-              >
-                Sair
-              </button>
-            </div>
-          ) : (
-            <Link href="/auth/login">
-              <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition">
-                Entrar
-              </button>
-            </Link>
-          )}
+          {/* Botão Mobile */}
+          <div className="md:hidden">
+            <button onClick={toggleMenu} className="text-gold-400 p-2">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Menu Mobile */}
-        <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-white focus:outline-none">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-        </div>
-      </div>
+        {isMenuOpen && (
+          <div className="md:hidden pb-6 animate-fadeIn">
+            <div className="flex flex-col space-y-4 pt-4 border-t border-white/5">
+              <Link href="/" className="text-lg py-2 hover:text-gold-400" onClick={toggleMenu}>Home</Link>
+              <Link href="/academy" className="text-lg py-2 hover:text-gold-400" onClick={toggleMenu}>Academy</Link>
 
-      {/* Menu Mobile */}
-      {isMenuOpen && (
-        <div className="md:hidden mt-4">
-          <div className="flex flex-col space-y-3">
-            <Link href="/" className="block hover:text-blue-300 transition">Home</Link>
-            <Link href="/services" className="block hover:text-blue-300 transition">Serviços</Link>
-            <Link href="/academy" className="block hover:text-blue-300 transition">Academy</Link>
-            
-            {isAuthenticated ? (
-              <>
-                <Link href="/dashboard" className="block hover:text-blue-300 transition">Painel</Link>
-                <Link href="/admin" className="block hover:text-blue-300 transition">Admin</Link>
-                <div className="flex flex-col space-y-2 pt-2 border-t border-gray-700">
-                  <span className="text-sm">Olá, {user?.name}</span>
-                  <button 
-                    onClick={logout}
-                    className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md transition w-full text-left"
+              {isAuthenticated ? (
+                <>
+                  <Link href="/dashboard" className="text-lg py-2 hover:text-gold-400" onClick={toggleMenu}>Meus Cursos</Link>
+                  {user?.email === 'akshayman224@gmail.com' && (
+                    <Link href="/admin" className="text-indigo-400 font-bold py-2" onClick={toggleMenu}>Painel Admin</Link>
+                  )}
+                  <button
+                    onClick={() => { handleLogout(); toggleMenu(); }}
+                    className="btn-outline w-full mt-4"
                   >
-                    Sair
+                    Sair da Conta
                   </button>
+                </>
+              ) : (
+                <div className="flex flex-col gap-3 pt-4">
+                  <Link href="/auth/login" className="btn-secondary w-full text-center" onClick={toggleMenu}>Entrar</Link>
+                  <Link href="/auth" className="btn-primary w-full text-center" onClick={toggleMenu}>Criar Conta Gratuita</Link>
                 </div>
-              </>
-            ) : (
-              <Link href="/auth/login" className="block hover:text-blue-300 transition">
-                <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition w-full">
-                  Entrar
-                </button>
-              </Link>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </nav>
   );
 };

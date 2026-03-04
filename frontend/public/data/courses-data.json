@@ -1,0 +1,272 @@
+{
+  "courses": [
+    {
+      "id": "teologia-biblica",
+      "title": "Teologia Bíblica",
+      "slug": "curso-teologia-biblica.html",
+      "level": "Iniciante",
+      "duration": "8 semanas",
+      "instructor": "Prof. Antonio Sergio Queiroz Alves",
+      "description": "Construa uma base sólida de conhecimento teológico fundamentado na Bíblia.",
+      "image": "https://images.unsplash.com/photo-1507842217343-583f20270319?q=80&w=1470",
+      "icon": "ph-book",
+      "lessons": 40,
+      "students": 500,
+      "classes": [
+        {
+          "id": "turma-1",
+          "name": "Turma Março - Iniciante",
+          "startDate": "2026-03-15",
+          "endDate": "2026-05-10",
+          "price": 297,
+          "originalPrice": 297,
+          "discount": 0,
+          "status": "disponivel",
+          "capacity": 30,
+          "enrolled": 18,
+          "type": "padrão"
+        },
+        {
+          "id": "turma-2",
+          "name": "Turma Abril - Acelerada",
+          "startDate": "2026-04-12",
+          "endDate": "2026-06-07",
+          "price": 347,
+          "originalPrice": 347,
+          "discount": 0,
+          "status": "disponivel",
+          "capacity": 25,
+          "enrolled": 22,
+          "type": "acelerada"
+        },
+        {
+          "id": "turma-3",
+          "name": "Turma Maio - Early Bird",
+          "startDate": "2026-05-10",
+          "endDate": "2026-07-05",
+          "price": 267,
+          "originalPrice": 297,
+          "discount": 10,
+          "status": "disponivel",
+          "capacity": 30,
+          "enrolled": 12,
+          "type": "early-bird"
+        },
+        {
+          "id": "turma-4",
+          "name": "Turma Junho - Padrão",
+          "startDate": "2026-06-07",
+          "endDate": "2026-08-02",
+          "price": 297,
+          "originalPrice": 297,
+          "discount": 0,
+          "status": "quase-cheio",
+          "capacity": 30,
+          "enrolled": 25,
+          "type": "padrão"
+        },
+        {
+          "id": "turma-5",
+          "name": "Turma Julho - Express",
+          "startDate": "2026-07-05",
+          "endDate": "2026-08-30",
+          "price": 397,
+          "originalPrice": 397,
+          "discount": 0,
+          "status": "cheio",
+          "capacity": 20,
+          "enrolled": 20,
+          "type": "express"
+        }
+      ]
+    },
+    {
+      "id": "lideranca-crista",
+      "title": "Liderança Cristã",
+      "slug": "curso-lideranca-crista.html",
+      "level": "Intermediário",
+      "duration": "10 semanas",
+      "instructor": "Prof. Antonio Sergio Queiroz Alves",
+      "description": "Desenvolva habilidades essenciais para liderar com propósito e integridade.",
+      "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470",
+      "icon": "ph-crown",
+      "lessons": 50,
+      "students": 380,
+      "classes": [
+        {
+          "id": "turma-1",
+          "name": "Turma Março - Intermediário",
+          "startDate": "2026-03-22",
+          "endDate": "2026-05-31",
+          "price": 397,
+          "originalPrice": 397,
+          "discount": 0,
+          "status": "disponivel",
+          "capacity": 25,
+          "enrolled": 14,
+          "type": "padrão"
+        },
+        {
+          "id": "turma-2",
+          "name": "Turma Maio - Early Bird",
+          "startDate": "2026-05-17",
+          "endDate": "2026-07-26",
+          "price": 357,
+          "originalPrice": 397,
+          "discount": 10,
+          "status": "disponivel",
+          "capacity": 25,
+          "enrolled": 8,
+          "type": "early-bird"
+        }
+      ]
+    },
+    {
+      "id": "novo-testamento",
+      "title": "Novo Testamento",
+      "slug": "curso-novo-testamento.html",
+      "level": "Avançado",
+      "duration": "12 semanas",
+      "instructor": "Prof. Antonio Sergio Queiroz Alves",
+      "description": "Estudo profundo dos livros do Novo Testamento e seu contexto histórico.",
+      "image": "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1470",
+      "icon": "ph-book-open",
+      "lessons": 60,
+      "students": 250,
+      "classes": [
+        {
+          "id": "turma-1",
+          "name": "Turma Abril - Avançado",
+          "startDate": "2026-04-05",
+          "endDate": "2026-06-28",
+          "price": 497,
+          "originalPrice": 497,
+          "discount": 0,
+          "status": "quase-cheio",
+          "capacity": 20,
+          "enrolled": 18,
+          "type": "padrão"
+        }
+      ]
+    },
+    {
+      "id": "hermeneutica-biblica",
+      "title": "Hermenêutica Bíblica",
+      "slug": "curso-hermeneutica-biblica.html",
+      "level": "Iniciante",
+      "duration": "8 semanas",
+      "instructor": "Prof. Antonio Sergio Queiroz Alves",
+      "description": "Aprenda técnicas avançadas para interpretação correta das Escrituras.",
+      "image": "https://images.unsplash.com/photo-1507842217343-583f20270319?q=80&w=1470",
+      "icon": "ph-magnifying-glass",
+      "lessons": 35,
+      "students": 420,
+      "classes": [
+        {
+          "id": "turma-1",
+          "name": "Turma Março - Iniciante",
+          "startDate": "2026-03-08",
+          "endDate": "2026-05-03",
+          "price": 267,
+          "originalPrice": 267,
+          "discount": 0,
+          "status": "disponivel",
+          "capacity": 30,
+          "enrolled": 20,
+          "type": "padrão"
+        },
+        {
+          "id": "turma-2",
+          "name": "Turma Junho - Early Bird",
+          "startDate": "2026-06-14",
+          "endDate": "2026-08-09",
+          "price": 240,
+          "originalPrice": 267,
+          "discount": 10,
+          "status": "disponivel",
+          "capacity": 30,
+          "enrolled": 5,
+          "type": "early-bird"
+        }
+      ]
+    },
+    {
+      "id": "discipulado",
+      "title": "Discipulado",
+      "slug": "curso-discipulado.html",
+      "level": "Intermediário",
+      "duration": "9 semanas",
+      "instructor": "Prof. Antonio Sergio Queiroz Alves",
+      "description": "Metodologia comprovada para discipular e desenvolver líderes espirituais.",
+      "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1470",
+      "icon": "ph-handshake",
+      "lessons": 45,
+      "students": 310,
+      "classes": [
+        {
+          "id": "turma-1",
+          "name": "Turma Fevereiro - Intermediário",
+          "startDate": "2026-02-15",
+          "endDate": "2026-04-19",
+          "price": 327,
+          "originalPrice": 327,
+          "discount": 0,
+          "status": "disponivel",
+          "capacity": 25,
+          "enrolled": 16,
+          "type": "padrão"
+        }
+      ]
+    },
+    {
+      "id": "ministerio-pastoral",
+      "title": "Ministério Pastoral",
+      "slug": "curso-ministerio-pastoral.html",
+      "level": "Avançado",
+      "duration": "14 semanas",
+      "instructor": "Prof. Antonio Sergio Queiroz Alves",
+      "description": "Preparação completa para o ministério pastoral com foco em gestão eclesiástica.",
+      "image": "https://images.unsplash.com/photo-1507842217343-583f20270319?q=80&w=1470",
+      "icon": "ph-church",
+      "lessons": 70,
+      "students": 180,
+      "classes": [
+        {
+          "id": "turma-1",
+          "name": "Turma Janeiro - Avançado",
+          "startDate": "2026-01-12",
+          "endDate": "2026-04-26",
+          "price": 697,
+          "originalPrice": 697,
+          "discount": 0,
+          "status": "disponivel",
+          "capacity": 15,
+          "enrolled": 8,
+          "type": "padrão"
+        }
+      ]
+    }
+  ],
+  "pricing_tiers": [
+    {
+      "name": "Iniciante",
+      "basePrice": 297,
+      "discount": 0
+    },
+    {
+      "name": "Intermediário",
+      "basePrice": 397,
+      "discount": 0
+    },
+    {
+      "name": "Avançado",
+      "basePrice": 497,
+      "discount": 0
+    },
+    {
+      "name": "Early Bird",
+      "basePrice": null,
+      "discount": 10
+    }
+  ]
+}

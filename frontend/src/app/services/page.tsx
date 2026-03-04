@@ -25,7 +25,7 @@ const ServicesPage = () => {
     // Configuração das partículas
     const particles: Particle[] = [];
     const particleCount = 100;
-    
+
     class Particle {
       x: number;
       y: number;
@@ -33,10 +33,10 @@ const ServicesPage = () => {
       speedX: number;
       speedY: number;
       color: string;
-      
+
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * (canvas?.width || window.innerWidth);
+        this.y = Math.random() * (canvas?.height || window.innerHeight);
         this.size = Math.random() * 2 + 1;
         this.speedX = Math.random() * 1 - 0.5;
         this.speedY = Math.random() * 1 - 0.5;
@@ -46,9 +46,9 @@ const ServicesPage = () => {
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        
-        if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
-        if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+
+        if (this.x > (canvas?.width || window.innerWidth) || this.x < 0) this.speedX = -this.speedX;
+        if (this.y > (canvas?.height || window.innerHeight) || this.y < 0) this.speedY = -this.speedY;
       }
       
       draw() {
@@ -69,7 +69,7 @@ const ServicesPage = () => {
     const animate = () => {
       if (!ctx) return;
       ctx.fillStyle = 'rgba(10, 10, 20, 0.1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvas?.width || window.innerWidth, canvas?.height || window.innerHeight);
       
       for (let i = 0; i < particles.length; i++) {
         particles[i].update();

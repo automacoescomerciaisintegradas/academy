@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Metal Hero Section</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        syne: ['Syne', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        metal: {
+                            50: '#fcfcfd',
+                            100: '#f5f6f8',
+                            200: '#e8eaed',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            800: '#1f2937',
+                            900: '#111827',
+                        }
+                    },
+                    boxShadow: {
+                        'soft-light': '-10px -10px 20px rgba(255, 255, 255, 0.8), 10px 10px 20px rgba(166, 171, 189, 0.25)',
+                        'soft-inset': 'inset -5px -5px 10px rgba(255, 255, 255, 0.7), inset 5px 5px 10px rgba(166, 171, 189, 0.2)',
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --curve: cubic-bezier(0.25, 1, 0.5, 1);
+            --liquid-bg: #f2f3f7;
+        }
+
+        body {
+            background-color: var(--liquid-bg);
+            margin: 0;
+            overflow-x: hidden;
+            cursor: none;
+            /* Hide default cursor for custom one */
+        }
+
+        /* Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0.04;
+            mix-blend-mode: multiply;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background: #111;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: width 0.3s var(--curve), height 0.3s var(--curve);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-cursor.hovering {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            mix-blend-mode: exclusion;
+        }
+
+        /* Paper.js Canvas */
+        #liquidCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-right: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--shadow-glass), var(--shadow-soft-light);
+        }
+
+        /* The Hero Typography */
+        .text-gradient-metal {
+            background: linear-gradient(180deg, #111827 0%, #4b5563 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .reveal-mask {
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .reveal-text {
+            display: inline-block;
+            transform: translateY(110%) skewY(5deg);
+        }
+
+        /* --- THE LIQUID METAL BUTTON ("Only Paper" style) --- */
+        .btn-liquid-metal {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border-radius: 9999px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            color: #1f2937;
+            text-decoration: none;
+            overflow: hidden;
+            background: #f0f2f5;
+            box-shadow:
+                -8px -8px 16px rgba(255, 255, 255, 0.9),
+                8px 8px 16px rgba(180, 185, 200, 0.3);
+            transition: all 0.4s var(--curve);
+            z-index: 1;
+        }
+
+        .btn-liquid-metal::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            /* Border thickness */
+            border-radius: 9999px;
+            padding: 2px;
+            /* Border thickness */
+            /* Animated Conic Gradient for the border to simulate metallic refraction/light */
+            background: conic-gradient(from var(--angle),
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(0, 255, 255, 0.6) 15%,
+                    /* cyan fringing */
+                    #ffffff 25%,
+                    /* Specular highlight */
+                    rgba(255, 0, 0, 0.6) 35%,
+                    /* red fringing */
+                    rgba(255, 255, 255, 0.1) 50%,
+                    rgba(255, 255, 255, 0.1) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .btn-liquid-metal::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 9999px;
+            background: linear-gradient(145deg, #ffffff, #e6e8eb);
+            box-shadow: inset 2px 2px 4px rgba(255, 255, 255, 1), inset -2px -2px 4px rgba(180, 185, 200, 0.4);
+            z-index: -1;
+            transition: all 0.4s var(--curve);
+        }
+
+        .btn-liquid-metal:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow:
+                -12px -12px 24px rgba(255, 255, 255, 1),
+                12px 12px 24px rgba(166, 171, 189, 0.4);
+        }
+
+        .btn-liquid-metal:hover::after {
+            background: linear-gradient(145deg, #fcfcfd, #d1d5db);
+        }
+
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        @keyframes rotateAngle {
+            to {
+                --angle: 360deg;
+            }
+        }
+
+        .btn-liquid-metal::before {
+            animation: rotateAngle 3s linear infinite;
+        }
+
+        /* Filter for Unsplash Images */
+        .img-metal-filter {
+            filter: grayscale(80%) contrast(110%) brightness(105%);
+            transition: filter 0.5s var(--curve);
+        }
+
+        .img-container:hover .img-metal-filter {
+            filter: grayscale(20%) contrast(105%) brightness(100%);
+        }
+    </style>
+</head>
+
+<body class="antialiased text-metal-900 min-h-screen selection:bg-metal-200 selection:text-metal-900">
+
+    <!-- 1. Custom Dot Cursor (mix-blend-mode: difference) -->
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <!-- 2. Noise/Grain texture -->
+    <svg class="noise-overlay" xmlns="http://www.w3.org/2000/svg">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+    </svg>
+
+    <!-- 3. Paper.js Interactive Background Canvas -->
+    <canvas id="liquidCanvas"></canvas>
+
+    <!-- 4. Navbar (Floating Glassmorphism) -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-6xl z-40 glass-panel rounded-[2rem] px-8 py-4 flex justify-between items-center transition-all duration-700 gs-reveal">
+        <div class="font-syne font-bold text-xl tracking-tighter text-metal-900 cursor-hover">AURA.</div>
+        <div class="hidden md:flex gap-8 font-inter text-sm font-medium text-metal-400">
+            <a href="#" class="hover:text-metal-900 transition-colors cursor-hover">Studio</a>
+            <a href="#" class="hover:text-metal-900 transition-colors cursor-hover">Artifacts</a>
+            <a href="#" class="hover:text-metal-900 transition-colors cursor-hover">Journal</a>
+        </div>
+        <a href="#"
+            class="font-inter text-sm font-medium px-5 py-2 rounded-full border border-metal-300/50 hover:bg-white transition-colors cursor-hover shadow-soft-light">Initiate</a>
+    </nav>
+
+    <!-- 5. Main Hero Section -->
+    <main class="relative z-10 min-h-screen flex items-center pt-24 pb-12 px-6 md:px-12 lg:px-24">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+
+            <!-- Left Typography Column -->
+            <div class="lg:col-span-7 flex flex-col items-start parallax-layer" data-speed="0.02">
+
+                <div class="flex items-center gap-3 mb-6 gs-reveal">
+                    <div class="w-8 h-[1px] bg-metal-400"></div>
+                    <span class="font-inter uppercase tracking-[0.2em] text-xs font-semibold text-metal-400">Shaping the
+                        immaterial</span>
+                </div>
+
+                <h1
+                    class="font-syne text-[4rem] sm:text-[5.5rem] lg:text-[7rem] leading-[0.9] tracking-[-0.03em] font-bold mb-8">
+                    <span class="reveal-mask"><span class="reveal-text text-gradient-metal">Liquid</span></span><br />
+                    <span class="reveal-mask"><span class="reveal-text">Architecture.</span></span>
+                </h1>
+
+                <p
+                    class="font-inter text-lg sm:text-xl text-metal-400 max-w-md leading-relaxed font-light mb-12 gs-reveal">
+                    We sculpt digital experiences using algorithmic fluid dynamics and brutalist precision. Entering a
+                    new era of soft interfaces.
+                </p>
+
+                <!-- Premium Liquid Metal Button -->
+                <div class="gs-reveal">
+                    <a href="#" class="btn-liquid-metal cursor-hover group">
+                        <span class="relative z-10 flex items-center gap-3">
+                            Explore Protocol
+                            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Visual/Imagery Column -->
+            <div class="lg:col-span-5 relative w-full h-[500px] lg:h-[700px] flex items-center justify-center pointer-events-none parallax-layer"
+                data-speed="-0.03">
+
+                <!-- Main floating image card -->
+                <div
+                    class="img-container absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] aspect-[3/4] glass-card rounded-[2.5rem] overflow-hidden p-3 gs-img-reveal pointer-events-auto cursor-hover z-20 shadow-2xl">
+                    <div class="w-full h-full rounded-[2rem] overflow-hidden relative">
+                        <!-- High quality 3D abstract fluid image from Unsplash -->
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1500&auto=format&fit=crop"
+                            alt="Abstract 3D Liquid"
+                            class="w-full h-full object-cover img-metal-filter transform hover:scale-105 transition-transform duration-1000 ease-out">
+                    </div>
+                </div>
+
+                <!-- Secondary floating accent card (asymmetrical) -->
+                <div
+                    class="absolute bottom-10 -left-10 w-48 h-48 glass-card rounded-full flex items-center justify-center z-30 gs-img-reveal gs-delay pointer-events-auto shadow-soft-light cursor-hover">
+                    <div class="text-center">
+                        <span class="block font-syne text-3xl font-bold text-metal-900">01</span>
+                        <span
+                            class="block font-inter text-xs tracking-widest text-metal-400 uppercase mt-1">Version</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Libs: GSAP & Paper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.17/paper-full.min.js"></script>
+
+    <script>
+        // --- 1. Custom Cursor Logic ---
+        const cursor = document.getElementById('customCursor');
+        const hovers = document.querySelectorAll('.cursor-hover');
+
+        document.addEventListener('mousemove', (e) => {
+            // Smoothly move cursor
+            gsap.to(cursor, {
+                x: e.clientX,
+                y: e.clientY,
+                duration: 0.1,
+                ease: "power2.out"
+            });
+        });
+
+        hovers.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+
+        // --- 2. 3D Mouse Parallax Effect ---
+        const parallaxLayers = document.querySelectorAll('.parallax-layer');
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX);
+            const y = (window.innerHeight / 2 - e.pageY);
+
+            parallaxLayers.forEach(layer => {
+                const speed = layer.getAttribute('data-speed');
+                gsap.to(layer, {
+                    x: x * speed,
+                    y: y * speed,
+                    duration: 1.5,
+                    ease: "power3.out"
+                });
+            });
+        });
+
+        // --- 3. GSAP Entrance Animations ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const tl = gsap.timeline();
+
+            // Reveal Text (skewY unmask)
+            tl.to('.reveal-text', {
+                y: '0%',
+                skewY: 0,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: "power4.out",
+                delay: 0.2
+            });
+
+            // Reveal other UI elements (fade up)
+            tl.fromTo('.gs-reveal',
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" },
+                "-=0.8"
+            );
+
+            // Pop in Images
+            tl.fromTo('.gs-img-reveal',
+                { scale: 0.9, opacity: 0, y: 40 },
+                { scale: 1, opacity: 1, y: 0, duration: 1.5, stagger: 0.2, ease: "elastic.out(1, 0.7)" },
+                "-=1"
+            );
+        });
+
+        // --- 4. Paper.js Liquid Blob Background ---
+        paper.install(window);
+        window.onload = function () {
+            paper.setup('liquidCanvas');
+
+            const center = view.center;
+            const radius = Math.min(view.size.width, view.size.height) * 0.4; // 40% of screen
+
+            // Create a blob path
+            const path = new Path.Circle({
+                center: center,
+                radius: radius,
+            });
+
+            // Style it to look like a soft shadow / liquid pool of platinum
+            path.fillColor = {
+                gradient: {
+                    stops: [['rgba(230, 232, 235, 0.8)', 0], ['rgba(242, 243, 247, 0)', 1]],
+                    radial: true
+                },
+                origin: path.position,
+                destination: path.bounds.rightCenter
+            };
+
+            // Reduce segments for fluid curves
+            path.flatten(radius * 0.5);
+            path.smooth({ type: 'continuous' });
+
+            const numSegments = path.segments.length;
+            const defaultMaintanencePoints = [];
+
+            // Store original positions
+            for (let i = 0; i < numSegments; i++) {
+                defaultMaintanencePoints.push(path.segments[i].point.clone());
+            }
+
+            let mousePos = center.clone();
+
+            view.onMouseMove = function (event) {
+                mousePos = event.point;
+            }
+
+            view.onFrame = function (event) {
+                // Keep the blob loosely centered
+                const deltaCenter = center.subtract(path.position);
+                path.position = path.position.add(deltaCenter.multiply(0.02));
+
+                // Animate points
+                for (let i = 0; i < numSegments; i++) {
+                    const segment = path.segments[i];
+                    const defaultPoint = defaultMaintanencePoints[i];
+
+                    // Sine wave breathing
+                    const sineWave = Math.sin(event.time * 2 + i * 1.5) * 15;
+                    const breathPoint = defaultPoint.add(new Point(0, sineWave).rotate(i * (360 / numSegments)));
+
+                    // Magnetic repel from mouse
+                    const distToMouse = mousePos.getDistance(segment.point);
+                    let pushVector = new Point(0, 0);
+
+                    if (distToMouse < 300) {
+                        const force = (300 - distToMouse) * 0.15;
+                        pushVector = segment.point.subtract(mousePos).normalize(force);
+                    }
+
+                    // Calculate target node position
+                    const targetPoint = path.position.add(breathPoint.subtract(center)).add(pushVector);
+
+                    // Lerp current point to target smoothly
+                    const delta = targetPoint.subtract(segment.point);
+                    segment.point = segment.point.add(delta.multiply(0.08));
+                }
+                path.smooth({ type: 'continuous' });
+
+                // Update gradient origin to follow slightly
+                if (path.fillColor && path.fillColor.gradient) {
+                    path.fillColor.origin = path.position.add(mousePos.subtract(path.position).multiply(0.1));
+                }
+            }
+
+            // Handle Resize
+            view.onResize = function (event) {
+                const newCenter = view.center;
+                path.position = newCenter;
+                // Update origin points on resize if needed
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { User, onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase/config';
+import { User } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase/client';
 
 interface AuthState {
   user: User | null;
@@ -16,31 +16,39 @@ const useAuth = () => {
   });
 
   useEffect(() => {
-    // AIDEV-NOTE: Escuta mudanças na sessão ativa (Autenticação Modular v9)
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
+    // Busca a sessão inicial caso já exista
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setAuthState({
+        user: session?.user || null,
+        loading: false,
+        isAuthenticated: !!session?.user,
+      });
+    };
+
+    getSession();
+
+    // AIDEV-NOTE: Escuta mudanças na sessão ativa via Supabase
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
         setAuthState({
-          user: firebaseUser,
+          user: session?.user || null,
           loading: false,
-          isAuthenticated: true,
-        });
-      } else {
-        setAuthState({
-          user: null,
-          loading: false,
-          isAuthenticated: false,
+          isAuthenticated: !!session?.user,
         });
       }
-    });
+    );
 
-    return () => unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const logout = async () => {
     try {
-      await signOut(auth);
+      await supabase.auth.signOut();
     } catch (error) {
-      console.error('Erro ao efetuar logout no Firebase:', error);
+      console.error('Erro ao efetuar logout no Supabase:', error);
     }
   };
 

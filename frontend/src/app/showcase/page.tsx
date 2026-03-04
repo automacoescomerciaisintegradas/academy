@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import LampiaoAvatar from '@/components/avatars/LampiaoAvatar';
+// import LampiaoAvatar from '@/components/avatars/LampiaoAvatar';
 import PremiumButton from '@/components/ui/PremiumButton';
 import PremiumCard from '@/components/ui/PremiumCard';
 import PremiumCarousel from '@/components/carousel/PremiumCarousel';
@@ -90,32 +90,27 @@ export default function ComponentShowcase() {
           </p>
         </div>
 
-        {/* Avatar Section */}
+        {/* Branding Section */}
         <section className="space-y-6">
-          <h2 className="text-3xl font-bold glow-title">Avatar Lampião</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <h2 className="text-3xl font-bold glow-title">Identidade Visual</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <PremiumCard>
-              <PremiumCard.Body className="flex flex-col items-center justify-center">
-                <LampiaoAvatar size="sm" className="mb-4" />
-                <span className="text-sm text-gray-400">Small</span>
+              <PremiumCard.Body className="flex flex-col items-center justify-center p-12">
+                <div className="text-6xl mb-6">👨‍🏫</div>
+                <h3 className="text-xl font-bold text-white mb-2">Liderança do Prof. Bandeira</h3>
+                <p className="text-sm text-gray-400 text-center">
+                  Antonio Sergio Queiroz Alves (Bandeira)
+                </p>
               </PremiumCard.Body>
             </PremiumCard>
+
             <PremiumCard>
-              <PremiumCard.Body className="flex flex-col items-center justify-center">
-                <LampiaoAvatar size="md" className="mb-4" />
-                <span className="text-sm text-gray-400">Medium</span>
-              </PremiumCard.Body>
-            </PremiumCard>
-            <PremiumCard>
-              <PremiumCard.Body className="flex flex-col items-center justify-center">
-                <LampiaoAvatar size="lg" className="mb-4" />
-                <span className="text-sm text-gray-400">Large</span>
-              </PremiumCard.Body>
-            </PremiumCard>
-            <PremiumCard>
-              <PremiumCard.Body className="flex flex-col items-center justify-center">
-                <LampiaoAvatar size="xl" className="mb-4" />
-                <span className="text-sm text-gray-400">Extra Large</span>
+              <PremiumCard.Body className="flex flex-col items-center justify-center p-12">
+                <div className="text-6xl mb-6">📖</div>
+                <h3 className="text-xl font-bold text-white mb-2">Fundamento Bíblico</h3>
+                <p className="text-sm text-gray-400 text-center">
+                  Excelência Teológica e Compromisso Ministerial
+                </p>
               </PremiumCard.Body>
             </PremiumCard>
           </div>
@@ -156,7 +151,7 @@ export default function ComponentShowcase() {
               <div>
                 <h4 className="text-sm font-semibold text-gray-300 mb-3">Estados</h4>
                 <div className="flex flex-wrap gap-4">
-                  <PremiumButton disable>Disabled</PremiumButton>
+                  <PremiumButton disabled>Disabled</PremiumButton>
                   <PremiumButton isLoading>Loading...</PremiumButton>
                   <PremiumButton onClick={handleSimulateAction}>
                     Simular Ação (com notif)

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perguntas Difíceis e Temas Polêmicos | Paz e Vida</title>
+
+    <!-- Google Fonts: Instrument Serif + Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Custom CSS -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gesso: #EAE6DF;
+            --museu: #F4F1EB;
+            --carvao: #1C1B1A;
+            --taupe: #827C75;
+            --terracota: #A84B2B;
+            --edge: rgba(28, 27, 26, 0.12);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gesso);
+            color: var(--carvao);
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* === GLOBAL EFFECTS === */
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 40;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.12;
+            mix-blend-mode: multiply;
+            background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            background-image:
+                linear-gradient(90deg, var(--edge) 1px, transparent 1px),
+                linear-gradient(0deg, var(--edge) 1px, transparent 1px);
+            background-size: 20vw 20vh;
+            mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+
+        .typography-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18vw;
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            color: var(--carvao);
+            opacity: 0.02;
+            z-index: -1;
+            white-space: nowrap;
+            pointer-events: none;
+            letter-spacing: -0.02em;
+        }
+
+        /* === HEADER === */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: rgba(234, 230, 223, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--edge);
+        }
+
+        nav {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--carvao);
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: var(--taupe);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--terracota);
+        }
+
+        /* === HERO === */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background-color: var(--museu);
+            border-radius: 50px;
+            border: 1px solid var(--edge);
+            font-size: 0.85rem;
+            color: var(--taupe);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge i {
+            color: var(--terracota);
+        }
+
+        .hero-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--carvao);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--taupe);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* === SECTIONS === */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--carvao);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.05rem;
+            color: var(--taupe);
+            max-width: 600px;
+            margin: 0 auto 4rem auto;
+            line-height: 1.7;
+        }
+
+        /* === FAQ CARDS === */
+        .faq-grid {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-card {
+            background-color: var(--museu);
+            border-radius: 1.5rem;
+            border: 1px solid var(--edge);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-card:hover {
+            border-color: var(--terracota);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .faq-question {
+            padding: 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            user-select: none;
+        }
+
+        .faq-question h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            color: var(--carvao);
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .faq-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 50%;
+            background-color: var(--gesso);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--terracota);
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-card.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .faq-answer-content {
+            padding: 0 2rem 2rem 2rem;
+            color: var(--taupe);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .faq-answer-content strong {
+            color: var(--carvao);
+        }
+
+        .faq-answer-content em {
+            color: var(--terracota);
+            font-style: italic;
+        }
+
+        .scripture-reference {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--gesso);
+            border-left: 3px solid var(--terracota);
+            border-radius: 0 0.5rem 0.5rem 0;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--taupe);
+        }
+
+        /* === TOPICS GRID === */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .topic-card {
+            background-color: var(--museu);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid var(--edge);
+            transition: all 0.3s ease;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--terracota);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        .topic-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .topic-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            color: var(--carvao);
+            margin-bottom: 1rem;
+        }
+
+        .topic-description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--taupe);
+            margin-bottom: 1.5rem;
+        }
+
+        .topic-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .topic-tag {
+            padding: 0.35rem 0.75rem;
+            background-color: var(--gesso);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: var(--taupe);
+            border: 1px solid var(--edge);
+        }
+
+        /* === CTA SECTION === */
+        .cta-section {
+            background-color: var(--carvao);
+            padding: 5rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .cta-section h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--museu);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.05rem;
+            color: var(--taupe);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            line-height: 1.7;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.25rem 3rem;
+            background-color: var(--terracota);
+            color: var(--museu);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #c45a3a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(168, 75, 43, 0.3);
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: var(--museu);
+            padding: 4rem 2rem 2rem;
+            margin-top: 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-text {
+            color: var(--taupe);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--taupe);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--edge);
+            color: var(--taupe);
+            font-size: 0.85rem;
+        }
+
+        /* === RESPONSIVO === */
+        @media (max-width: 768px) {
+            .noise-overlay,
+            .bg-texture,
+            .grid-background,
+            .typography-bg {
+                display: none;
+            }
+
+            nav {
+                padding: 0 1.5rem;
+            }
+
+            .hero {
+                padding: 100px 1.5rem 2rem;
+            }
+
+            .section {
+                padding: 3rem 1.5rem;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-question {
+                padding: 1.5rem;
+            }
+
+            .faq-answer-content {
+                padding: 0 1.5rem 1.5rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Overlays de Fundo -->
+    <div class="bg-texture"></div>
+    <div class="grid-background"></div>
+    <div class="typography-bg">DÚVIDAS</div>
+
+    <!-- Ruído -->
+    <svg class="noise-overlay" xmlns="http://www.w3.org/2000/svg">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+    </svg>
+
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <div class="logo">PAZ E VIDA</div>
+            <a href="paz-bem.html" class="back-link">
+                <i class="ph-light ph-arrow-left"></i>
+                Voltar
+            </a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-badge">
+                <i class="ph-fill ph-question"></i>
+                <span>Estudo Bíblico Profundo</span>
+            </div>
+            <h1 class="hero-title">
+                Perguntas Difíceis da <em>Bíblia</em>
+            </h1>
+            <p class="hero-description">
+                Temas polêmicos e questões desafiadoras das Escrituras, explicados com fundamento teológico, respeito e clareza bíblica.
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="section">
+        <h2 class="section-title">Perguntas <em>Frequentes</em></h2>
+        <p class="section-subtitle">
+            Questões complexas que muitos cristãos enfrentam, respondidas com base nas Escrituras e na teologia cristã histórica.
+        </p>
+
+        <div class="faq-grid">
+            <!-- Pergunta 1 -->
+            <div class="faq-card fade-up">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Por que existe sofrimento se Deus é bom e todo-poderoso?</h3>
+                    <div class="faq-icon">
+                        <i class="ph-bold ph-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Esta é uma das questões mais profundas da fé cristã. A Bíblia nos ensina que o sofrimento entrou no mundo através do pecado humano (Gênesis 3), não sendo vontade original de Deus.</p>
+                        <p>Deus permite o sofrimento por várias razões: <strong>1)</strong> Preservar o livre-arbítrio humano; <strong>2)</strong> Desenvolver nosso caráter (Romanos 5:3-5); <strong>3)</strong> Nos aproximar dEle; <strong>4)</strong> Demonstrar Sua glória através do consolo e redenção.</p>
+                        <p>A resposta definitiva está na cruz: Deus não está distante do nosso sofrimento. Em Cristo, Ele <em>sofreu conosco</em> e venceu o sofrimento através da ressurreição.</p>
+                        <div class="scripture-reference">
+                            "E sabemos que todas as coisas cooperam para o bem daqueles que amam a Deus" (Romanos 8:28)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pergunta 2 -->
+            <div class="faq-card fade-up">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Como conciliar um Deus de amor com o inferno?</h3>
+                    <div class="faq-icon">
+                        <i class="ph-bold ph-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>O inferno é uma doutrina difícil, mas necessária para entendermos a justiça e o amor de Deus. A Bíblia ensina que Deus é <strong>santo e justo</strong>, e o pecado tem consequências eternas.</p>
+                        <p>O inferno não foi criado para humanos, mas "para o diabo e seus anjos" (Mateus 25:41). Deus "não quer que ninguém pereça, mas que todos cheguem ao arrependimento" (2 Pedro 3:9).</p>
+                        <p>O inferno representa a <em>confirmação eterna da escolha humana</em> de viver sem Deus. O amor verdadeiro exige liberdade, e Deus respeita nossa decisão mesmo quando escolhemos rejeitá-Lo.</p>
+                        <div class="scripture-reference">
+                            "Hoje te dei a escolha entre a vida e a morte... Escolhe a vida" (Deuteronômio 30:19)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pergunta 3 -->
+            <div class="faq-card fade-up">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Por que Deus ordenou guerras no Antigo Testamento?</h3>
+                    <div class="faq-icon">
+                        <i class="ph-bold ph-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>As guerras do Antigo Testamento devem ser entendidas em seu contexto histórico e teológico específico:</p>
+                        <p><strong>1. Juízo divino:</strong> Deus usou Israel como instrumento de juízo contra nações cananéias cuja maldade havia atingido o limite (Gênesis 15:16).</p>
+                        <p><strong>2. Proteção da linhagem messiânica:</strong> Era necessário preservar o povo através do qual viria o Messias.</p>
+                        <p><strong>3. Contexto único:</strong> Estas ordens foram específicas para aquele período e não se aplicam hoje. Jesus estabeleceu um reino "não deste mundo" (João 18:36).</p>
+                        <p>A revelação plena de Deus está em <em>Cristo</em>, que nos ensina a amar os inimigos (Mateus 5:44).</p>
+                        <div class="scripture-reference">
+                            "Jesus, porém, disse: Ama os teus inimigos e orai pelos que vos perseguem" (Mateus 5:44)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pergunta 4 -->
+            <div class="faq-card fade-up">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>A Bíblia contradiz a ciência?</h3>
+                    <div class="faq-icon">
+                        <i class="ph-bold ph-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Não há contradição real entre a verdadeira ciência e a Bíblia corretamente interpretada. Ambas revelam a verdade de Deus, uma através da <strong>natureza</strong> e outra através das <strong>Escrituras</strong>.</p>
+                        <p><strong>Pontos importantes:</strong></p>
+                        <p>• A Bíblia usa linguagem fenomenológica (descreve as coisas como aparecem), não técnica-científica</p>
+                        <p>• Muitos pais da igreja interpretavam Gênesis de forma não-literalista</p>
+                        <p>• A ciência moderna nasceu em grande parte da cosmovisão cristã</p>
+                        <p>O conflito aparente geralmente surge de <em>má interpretação</em> de um lado ou de outro. Agostinho já alertava sobre interpretar a Bíblia de forma a contradizer conhecimentos estabelecidos.</p>
+                        <div class="scripture-reference">
+                            "Os céus proclamam a glória de Deus" (Salmos 19:1)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pergunta 5 -->
+            <div class="faq-card fade-up">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Salvação: uma vez salvo, sempre salvo?</h3>
+                    <div class="faq-icon">
+                        <i class="ph-bold ph-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>Esta é uma questão onde cristãos sinceros discordam. Duas posições principais:</p>
+                        <p><strong>Segurança Eterna (Calvinismo):</strong> Aqueles que verdadeiramente nasceram de novo perseverarão até o fim. A salvação é obra de Deus, não nossa (Filipenses 1:6; João 10:28-29).</p>
+                        <p><strong>Perseverança dos Santos (Arminianismo):</strong> A salvação pode ser perdida através da apostasia deliberada e contínua. Passagens de advertência são reais (Hebreus 6:4-6).</p>
+                        <p><em>Ambos concordam:</em> A fé genuína produz frutos. Quem vive em pecado contínuo sem arrependimento demonstra que nunca conheceu verdadeiramente a Cristo (1 João 2:19).</p>
+                        <div class="scripture-reference">
+                            "Completa a vossa salvação com temor e tremor" (Filipenses 2:12)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pergunta 6 -->
+            <div class="faq-card fade-up">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <h3>Como entender a predestinação?</h3>
+                    <div class="faq-icon">
+                        <i class="ph-bold ph-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>A predestinação é um mistério que revela tanto a <strong>soberania de Deus</strong> quanto a <strong>responsabilidade humana</strong>.</p>
+                        <p><strong>O que a Bíblia ensina:</strong></p>
+                        <p>• Deus elegeu um povo para Si antes da fundação do mundo (Efésios 1:4-5)</p>
+                        <p>• Deus deseja que todos sejam salvos (1 Timóteo 2:4)</p>
+                        <p>• Devemos evangelizar todos, pois não sabemos quem são os eleitos</p>
+                        <p>• A responsabilidade de crer é de cada pessoa</p>
+                        <p>Este é um <em>mistério</em> que devemos aceitar com humildade. Como disse Spurgeon: "Se eu visse uma placa escrito 'Somente eleitos entrarão aqui', eu entraria, pois sou um eleito em Cristo."</p>
+                        <div class="scripture-reference">
+                            "Muitos são chamados, mas poucos escolhidos" (Mateus 22:14)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEMAS POLÊMICOS -->
+    <section class="section" style="background-color: var(--museu); border-radius: 2rem; margin: 4rem auto;">
+        <h2 class="section-title">Temas <em>Polêmicos</em></h2>
+        <p class="section-subtitle">
+            Assuntos que exigem estudo cuidadoso, oração e diálogo respeitoso dentro da comunidade cristã.
+        </p>
+
+        <div class="topics-grid">
+            <!-- Tema 1 -->
+            <div class="topic-card fade-up">
+                <div class="topic-icon">⚖️</div>
+                <h3 class="topic-title">Homossexualidade e Cristianismo</h3>
+                <p class="topic-description">
+                    Um dos temas mais sensíveis da igreja contemporânea. A Bíblia mantém uma posição clara sobre sexualidade, mas também chama todos ao arrependimento e graça em Cristo.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Levítico 18:22</span>
+                    <span class="topic-tag">Romanos 1:26-27</span>
+                    <span class="topic-tag">1 Coríntios 6:9-11</span>
+                </div>
+            </div>
+
+            <!-- Tema 2 -->
+            <div class="topic-card fade-up">
+                <div class="topic-icon">👩‍⚕️</div>
+                <h3 class="topic-title">Aborto</h3>
+                <p class="topic-description">
+                    A santidade da vida desde a concepção é um princípio bíblico. A questão envolve ética, medicina e teologia, exigindo também compaixão pelas mulheres em situações difíceis.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Salmos 139:13-16</span>
+                    <span class="topic-tag">Jeremias 1:5</span>
+                    <span class="topic-tag">Êxodo 20:13</span>
+                </div>
+            </div>
+
+            <!-- Tema 3 -->
+            <div class="topic-card fade-up">
+                <div class="topic-icon">💰</div>
+                <h3 class="topic-title">Teologia da Prosperidade</h3>
+                <p class="topic-description">
+                    Ensina que Deus quer todos ricos e saudáveis. Esta visão contradiz o ensino de Jesus sobre sofrimento, simplicidade e o perigo das riquezas.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Mateus 6:19-21</span>
+                    <span class="topic-tag">2 Coríntios 12:7-10</span>
+                    <span class="topic-tag">1 Timóteo 6:6-10</span>
+                </div>
+            </div>
+
+            <!-- Tema 4 -->
+            <div class="topic-card fade-up">
+                <div class="topic-icon">🚬</div>
+                <h3 class="topic-title">Uso de Álcool e Drogas</h3>
+                <p class="topic-description">
+                    A Bíblia não proíbe o uso moderado de álcool, mas condena veementemente a embriaguez. O princípio é: tudo é lícito, mas nem tudo convém (1 Coríntios 6:12).
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Efésios 5:18</span>
+                    <span class="topic-tag">1 Coríntios 6:19-20</span>
+                    <span class="topic-tag">Gálatas 5:19-21</span>
+                </div>
+            </div>
+
+            <!-- Tema 5 -->
+            <div class="topic-card fade-up">
+                <div class="topic-icon">📿</div>
+                <h3 class="topic-title">Uso de Imagens</h3>
+                <p class="topic-description">
+                    O segundo mandamento proíbe idolatria. Católicos e ortodoxos usam imagens como auxílio visual; protestantes geralmente as evitam. O coração é o que importa.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Êxodo 20:4-5</span>
+                    <span class="topic-tag">1 João 5:21</span>
+                    <span class="topic-tag">Colossenses 3:5</span>
+                </div>
+            </div>
+
+            <!-- Tema 6 -->
+            <div class="topic-card fade-up">
+                <div class="topic-icon">👨‍👩‍👧</div>
+                <h3 class="topic-title">Divórcio e Novo Casamento</h3>
+                <p class="topic-description">
+                    Jesus ensinou que o casamento é vitalício, mas permitiu exceção por imoralidade sexual. Paulo adiciona o caso de abandono por cônjuge descrente. A graça de Deus cobre todas as situações.
+                </p>
+                <div class="topic-tags">
+                    <span class="topic-tag">Mateus 19:3-9</span>
+                    <span class="topic-tag">1 Coríntios 7:10-16</span>
+                    <span class="topic-tag">Malaquias 2:16</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+        <h2>Quer se <em>Aprofundar</em>?</h2>
+        <p>
+            Nossos cursos de teologia abordam estas e muitas outras questões com profundidade bíblica e equilíbrio teológico.
+        </p>
+        <a href="paz-bem.html#planos" class="cta-button">
+            <i class="ph-bold ph-book-open"></i>
+            Conhecer Cursos
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">
+                Esta página tem propósito educacional e pastoral. Se você tem dúvidas sobre sua fé ou salvação, 
+                procure um pastor ou líder espiritual de confiança para conversar.
+            </p>
+            <div class="footer-links">
+                <a href="paz-bem.html">Página Inicial</a>
+                <a href="academy.html">Cursos</a>
+                <a href="sala-teologica.html">Sala Teológica</a>
+                <a href="mailto:contato@pazeevida.com">Contato</a>
+            </div>
+            <div class="footer-bottom">
+                © 2026 Paz e Vida. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Toggle FAQ
+        function toggleFaq(element) {
+            const card = element.parentElement;
+            const answer = card.querySelector('.faq-answer');
+            const isActive = card.classList.contains('active');
+
+            // Fecha todos
+            document.querySelectorAll('.faq-card').forEach(c => {
+                c.classList.remove('active');
+                c.querySelector('.faq-answer').style.maxHeight = null;
+            });
+
+            // Abre o clicado se estava fechado
+            if (!isActive) {
+                card.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+        }
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            tl.fromTo('.hero-badge',
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, delay: 0.3 }
+            )
+            .fromTo('.hero-title',
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+                '-=0.5'
+            )
+            .fromTo('.hero-description',
+                { y: 30, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8 },
+                '-=0.6'
+            );
+        });
+
+        // Fade-up on scroll
+        document.querySelectorAll('.fade-up').forEach((el, index) => {
+            gsap.fromTo(el,
+                { y: 60, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    delay: index * 0.1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none'
+                    }
+                }
+            );
+        });
+    </script>
+
+</body>
+
+</html>

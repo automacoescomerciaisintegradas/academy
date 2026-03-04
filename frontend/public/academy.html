@@ -674,6 +674,22 @@
             opacity: 0;
             transform: scale(0.95);
         }
+        /* Formulário de inscrição — inputs claros */
+        #formInscricao input::placeholder,
+        #formInscricao select::placeholder {
+            color: #827C75;
+            opacity: 1;
+        }
+        #formInscricao input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 50px #F4F1EB inset;
+            -webkit-text-fill-color: #1C1B1A;
+        }
+        #formInscricao input:focus,
+        #formInscricao select:focus {
+            border-color: #A84B2B !important;
+            box-shadow: 0 0 0 3px rgba(168, 75, 43, 0.15);
+        }
+
     </style>
 </head>
 
@@ -776,7 +792,7 @@
                             </span>
                             <span class="course-level">Iniciante</span>
                         </div>
-                        <a href="#" class="course-cta">
+                        <a href="curso-teologia-biblica.html" class="course-cta">
                             Ver Detalhes →
                         </a>
                     </div>
@@ -981,40 +997,187 @@
             <p class="cta-description">
                 Junte-se a centenas de alunos que já transformaram suas vidas através do ensino de excelência da Escola Paz e Bem.
             </p>
-            <button class="btn btn-primary" style="font-size: 1rem; padding: 1.2rem 2.5rem;">
-                Inscrever-se Agora
-            </button>
+
+            <!-- FORMULÁRIO DE INSCRIÇÃO -->
+            <form id="formInscricao" onsubmit="enviarInscricao(event)" style="max-width:520px;margin:2.5rem auto 0;display:flex;flex-direction:column;gap:1rem;text-align:left;">
+
+                <input type="text" id="insc-nome" placeholder="Seu nome completo" required style="padding:0.9rem 1.2rem;border:1.5px solid rgba(255,255,255,0.3);border-radius:0.6rem;font-family:'Manrope',sans-serif;font-size:0.95rem;background:#F4F1EB;color:#1C1B1A;outline:none;">
+
+                <input type="email" id="insc-email" placeholder="Seu melhor e-mail" required style="padding:0.9rem 1.2rem;border:1.5px solid rgba(255,255,255,0.3);border-radius:0.6rem;font-family:'Manrope',sans-serif;font-size:0.95rem;background:#F4F1EB;color:#1C1B1A;outline:none;">
+
+                <input type="tel" id="insc-whatsapp" placeholder="WhatsApp com DDD" required style="padding:0.9rem 1.2rem;border:1.5px solid rgba(255,255,255,0.3);border-radius:0.6rem;font-family:'Manrope',sans-serif;font-size:0.95rem;background:#F4F1EB;color:#1C1B1A;outline:none;">
+
+                <select id="insc-curso" style="padding:0.9rem 1.2rem;border:1.5px solid rgba(255,255,255,0.3);border-radius:0.6rem;font-family:'Manrope',sans-serif;font-size:0.95rem;background:#F4F1EB;color:#1C1B1A;outline:none;cursor:pointer;">
+                    <option value="">Qual curso te interessa?</option>
+                    <option value="Teologia Bíblica">Teologia Bíblica</option>
+                    <option value="Liderança Cristã">Liderança Cristã</option>
+                    <option value="Novo Testamento">Novo Testamento</option>
+                    <option value="Hermenêutica Bíblica">Hermenêutica Bíblica</option>
+                    <option value="Discipulado">Discipulado</option>
+                    <option value="Ministério Pastoral">Ministério Pastoral</option>
+                    <option value="Perguntas Difíceis da Bíblia">Perguntas Difíceis da Bíblia</option>
+                    <option value="Bacharel em Teologia">Bacharel em Teologia</option>
+                </select>
+
+                <select id="insc-como" style="padding:0.9rem 1.2rem;border:1.5px solid rgba(255,255,255,0.3);border-radius:0.6rem;font-family:'Manrope',sans-serif;font-size:0.95rem;background:#F4F1EB;color:#1C1B1A;outline:none;cursor:pointer;">
+                    <option value="">Como nos conheceu?</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="Indicação">Indicação de amigo</option>
+                    <option value="Igreja">Igreja / Pastor</option>
+                    <option value="Google">Google</option>
+                    <option value="WhatsApp">Grupo de WhatsApp</option>
+                    <option value="Outro">Outro</option>
+                </select>
+
+                <button type="submit" id="btnInscricao" class="btn btn-primary" style="font-size:1rem;padding:1.1rem 2.5rem;border:none;cursor:pointer;margin-top:0.5rem;">
+                    QUERO ME INSCREVER
+                </button>
+
+                <p style="text-align:center;font-size:0.8rem;color:#827C75;margin:0;">
+                    🔒 Seus dados estão seguros. Sem spam.
+                </p>
+            </form>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer id="contato">
-        <footer-content>
-            <footer-section>
-                <footer-title>Paz e Bem</footer-title>
-                <p style="font-size: 0.9rem; color: rgba(244, 241, 235, 0.7); margin: 0;">
-                    Escola de Formação Bíblica desde 2017
+    <footer id="footer">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+
+            <!-- Header do Footer -->
+            <div style="padding-bottom: 3rem; border-bottom: 1px solid var(--edge); margin-bottom: 3rem;">
+                <h3 style="font-family: 'Instrument Serif', serif; font-size: 1.5rem; margin: 0 0 0.5rem 0; color: var(--carvao);">
+                    Academia Paz e Bem
+                </h3>
+                <p style="color: var(--taupe); font-size: 0.95rem; line-height: 1.6; max-width: 600px; margin: 0;">
+                    Formando obreiros, líderes e discípulos fundamentados na Palavra, preparados para o serviço no Reino de Deus.
                 </p>
-            </footer-section>
-            <footer-section>
-                <footer-title>Navegação</footer-title>
-                <a href="paz-bem.html" class="footer-link">Home</a>
-                <a href="#cursos" class="footer-link">Cursos</a>
-                <a href="#diferencial" class="footer-link">Diferencial</a>
-            </footer-section>
-            <footer-section>
-                <footer-title>Recursos</footer-title>
-                <a href="#" class="footer-link">Blog</a>
-                <a href="#" class="footer-link">Comunidade</a>
-                <a href="#" class="footer-link">Suporte</a>
-            </footer-section>
-            <footer-section>
-                <footer-title>Legal</footer-title>
-                <a href="#" class="footer-link">Privacidade</a>
-                <a href="#" class="footer-link">Termos</a>
-                <a href="#" class="footer-link">Contato</a>
-            </footer-section>
-        </footer-content>
+            </div>
+
+            <!-- Grid Principal do Footer -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem;">
+
+                <!-- Links Rápidos -->
+                <div>
+                    <h4 style="font-weight: 600; color: var(--carvao); margin-bottom: 1.5rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Links Rápidos
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="paz-bem.html" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            🏠 Início
+                        </a></li>
+                        <li><a href="#cursos" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            📚 Cursos
+                        </a></li>
+                        <li><a href="#diferencial" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            ✨ Benefícios
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            💬 Depoimentos
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            💎 Planos
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            ❓ FAQ
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Nossos Cursos -->
+                <div>
+                    <h4 style="font-weight: 600; color: var(--carvao); margin-bottom: 1.5rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Nossos Cursos
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.8rem;">
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            📖 Teologia Bíblica
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            👑 Liderança Cristã
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            📕 Novo Testamento
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            🔍 Hermenêutica Bíblica
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            🤝 Discipulado
+                        </a></li>
+                        <li><a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 0.5rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                            ⛪ Ministério Pastoral
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Fale Conosco -->
+                <div>
+                    <h4 style="font-weight: 600; color: var(--carvao); margin-bottom: 1.5rem; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Fale Conosco
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+                        <div style="border-left: 2px solid var(--terracota); padding-left: 1rem;">
+                            <div style="font-weight: 600; color: var(--carvao); font-size: 0.85rem; margin-bottom: 0.3rem;">📧 Email</div>
+                            <a href="mailto:contato@escolapazebem.com" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; font-size: 0.9rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                                contato@escolapazebem.com
+                            </a>
+                        </div>
+                        <div style="border-left: 2px solid var(--terracota); padding-left: 1rem;">
+                            <div style="font-weight: 600; color: var(--carvao); font-size: 0.85rem; margin-bottom: 0.3rem;">📱 WhatsApp</div>
+                            <a href="https://wa.me/551199999999" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease; font-size: 0.9rem;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                                (11) 99999-9999
+                            </a>
+                        </div>
+                        <div style="border-left: 2px solid var(--terracota); padding-left: 1rem;">
+                            <div style="font-weight: 600; color: var(--carvao); font-size: 0.85rem; margin-bottom: 0.3rem;">⏰ Horário de Atendimento</div>
+                            <div style="color: var(--taupe); font-size: 0.9rem;">Seg - Sex: 8h às 18h</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Estatísticas -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; padding: 2rem; background-color: var(--gesso); border-radius: 1.5rem; margin-bottom: 3rem; border: 1px solid var(--edge);">
+                <div style="text-align: center;">
+                    <div style="font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-weight: 600; color: var(--terracota); margin-bottom: 0.3rem;">2.500+</div>
+                    <div style="font-size: 0.85rem; color: var(--taupe);">Alunos Formados</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-weight: 600; color: var(--terracota); margin-bottom: 0.3rem;">20+</div>
+                    <div style="font-size: 0.85rem; color: var(--taupe);">Anos de Experiência</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-weight: 600; color: var(--terracota); margin-bottom: 0.3rem;">50+</div>
+                    <div style="font-size: 0.85rem; color: var(--taupe);">Cursos Disponíveis</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-weight: 600; color: var(--terracota); margin-bottom: 0.3rem;">100%</div>
+                    <div style="font-size: 0.85rem; color: var(--taupe);">Online</div>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div style="border-top: 1px solid var(--edge); padding-top: 2rem; text-align: center;">
+                <p style="color: var(--taupe); font-size: 0.85rem; margin-bottom: 1rem;">
+                    © 2026 Academia PAZ e BEM. Todos os direitos reservados. | CNPJ: 00.000.000/0001-00
+                </p>
+                <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; font-size: 0.85rem;">
+                    <a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                        Política de Privacidade
+                    </a>
+                    <a href="#" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                        Termos de Uso
+                    </a>
+                    <a href="mailto:contato@escolapazebem.com" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">
+                        Contato
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </footer>
 
     <!-- SCRIPTS -->
@@ -1105,6 +1268,58 @@
                 );
             });
         });
+    </script>
+
+    <!-- INSCRIÇÃO API -->
+    <script>
+        async function enviarInscricao(e) {
+            e.preventDefault();
+
+            const btn  = document.getElementById('btnInscricao');
+            const nome = document.getElementById('insc-nome').value.trim();
+            const email = document.getElementById('insc-email').value.trim();
+            const whatsapp = document.getElementById('insc-whatsapp').value.trim();
+            const curso = document.getElementById('insc-curso').value;
+            const como_conheceu = document.getElementById('insc-como').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Enviando…';
+
+            try {
+                const apiUrl = window.location.port === '3000'
+                    ? '/api/inscricoes'
+                    : 'http://localhost:3000/api/inscricoes';
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, email, whatsapp, curso, como_conheceu })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById('formInscricao').reset();
+                    showToastAcademy('✓ Inscrição recebida! Entraremos em contato em breve.', '#4A7C59');
+                } else if (res.status === 409) {
+                    showToastAcademy('⚠ Este email já possui uma inscrição ativa.', '#F57F17');
+                } else {
+                    showToastAcademy('✗ ' + (data.error || 'Erro ao enviar. Tente novamente.'), '#D32F2F');
+                }
+            } catch (err) {
+                showToastAcademy('✗ Sem conexão com o servidor. Tente novamente.', '#D32F2F');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'QUERO ME INSCREVER';
+            }
+        }
+
+        function showToastAcademy(msg, bg) {
+            const t = document.createElement('div');
+            t.textContent = msg;
+            t.style.cssText = 'position:fixed;bottom:2rem;right:2rem;background:' + bg + ';color:#fff;padding:1rem 1.5rem;border-radius:0.8rem;font-weight:600;font-size:0.9rem;font-family:Manrope,sans-serif;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);max-width:360px;opacity:1;transition:opacity 0.4s ease;';
+            document.body.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 5000);
+        }
     </script>
 
 </body>

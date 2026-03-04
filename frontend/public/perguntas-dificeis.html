@@ -1,0 +1,2418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perguntas Difíceis da Bíblia | Escola Paz e Bem — Temas Polêmicos da Fé</title>
+
+    <!-- Google Fonts: Instrument Serif + Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons CDN -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web">
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gesso: #EAE6DF;
+            --museu: #F4F1EB;
+            --carvao: #1C1B1A;
+            --taupe: #827C75;
+            --terracota: #A84B2B;
+            --edge: rgba(28, 27, 26, 0.12);
+            --success: #4A7C59;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--gesso);
+            color: var(--carvao);
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* === NOISE OVERLAY === */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* === HEADER === */
+        header {
+            background-color: var(--museu);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--edge);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(244, 241, 235, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--carvao);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--taupe);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--terracota);
+        }
+
+        .btn-header {
+            background-color: var(--terracota);
+            color: var(--museu);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-header:hover {
+            background-color: #8B3A1F;
+            transform: translateY(-2px);
+        }
+
+        .btn-header.outline {
+            background-color: transparent;
+            color: var(--carvao);
+            border: 1px solid var(--edge);
+        }
+
+        .btn-header.outline:hover {
+            background-color: var(--gesso);
+            transform: translateY(-2px);
+        }
+
+        /* === BREADCRUMB === */
+        .breadcrumb {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            font-size: 0.9rem;
+            color: var(--taupe);
+        }
+
+        .breadcrumb a {
+            color: var(--terracota);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* === HERO EDITORIAL === */
+        .hero-editorial {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(168, 75, 43, 0.1);
+            color: var(--terracota);
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(168, 75, 43, 0.2);
+        }
+
+        .hero-tag i {
+            font-size: 1rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .hero-left h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3.8rem;
+            line-height: 1.1;
+            color: var(--carvao);
+            margin: 0 0 1.5rem;
+        }
+
+        .hero-left h1 em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .hero-left .lead {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--taupe);
+            max-width: 520px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--edge);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .stat-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            color: var(--carvao);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--taupe);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* === HERO IMAGE CARD === */
+        .hero-card {
+            background-color: var(--museu);
+            border: 1px solid var(--edge);
+            border-radius: 2rem;
+            overflow: hidden;
+            position: sticky;
+            top: 100px;
+        }
+
+        .hero-card-image {
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%) sepia(20%) hue-rotate(345deg) contrast(1.05) brightness(0.88);
+            transition: transform 0.6s ease;
+        }
+
+        .hero-card-image:hover img {
+            transform: scale(1.04);
+        }
+
+        .hero-card-body {
+            padding: 1.8rem;
+        }
+
+        .hero-card-body h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.4rem;
+            color: var(--carvao);
+            margin: 0 0 0.8rem;
+        }
+
+        .hero-card-body p {
+            font-size: 0.9rem;
+            color: var(--taupe);
+            line-height: 1.7;
+            margin: 0 0 1.5rem;
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.82rem;
+            color: var(--taupe);
+        }
+
+        .meta-chip i {
+            color: var(--terracota);
+            font-size: 1rem;
+        }
+
+        .price-block {
+            background-color: var(--gesso);
+            border-radius: 1rem;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-main {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            color: var(--terracota);
+        }
+
+        .price-detail {
+            font-size: 0.78rem;
+            color: var(--taupe);
+            text-align: right;
+        }
+
+        .enroll-btn {
+            width: 100%;
+            background-color: var(--terracota);
+            color: var(--museu);
+            border: none;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            font-family: 'Manrope', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .enroll-btn:hover {
+            background-color: #8B3A1F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(168, 75, 43, 0.3);
+        }
+
+        .enroll-note {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--taupe);
+            margin-top: 0.8rem;
+        }
+
+        /* === DIVISOR EDITORIAL === */
+        .divider {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background-color: var(--edge);
+        }
+
+        .divider-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--taupe);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            white-space: nowrap;
+        }
+
+        /* === GRID DE QUESTÕES === */
+        .questions-section {
+            max-width: 1400px;
+            margin: 0 auto 5rem;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.4rem;
+            color: var(--carvao);
+            margin: 0;
+            max-width: 500px;
+            line-height: 1.2;
+        }
+
+        .section-header h2 em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .section-header p {
+            font-size: 0.9rem;
+            color: var(--taupe);
+            max-width: 300px;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .question-card {
+            background-color: var(--museu);
+            border: 1px solid var(--edge);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.35s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px;
+            height: 100%;
+            background-color: var(--terracota);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.35s ease;
+        }
+
+        .question-card:hover {
+            border-color: rgba(168, 75, 43, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(28, 27, 26, 0.08);
+        }
+
+        .question-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .question-category {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--terracota);
+            margin-bottom: 0.8rem;
+        }
+
+        .question-card h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            color: var(--carvao);
+            margin: 0 0 0.8rem;
+            line-height: 1.35;
+        }
+
+        .question-card p {
+            font-size: 0.88rem;
+            color: var(--taupe);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .question-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--edge);
+        }
+
+        .question-module {
+            font-size: 0.75rem;
+            color: var(--taupe);
+        }
+
+        .question-arrow {
+            color: var(--terracota);
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .question-card:hover .question-arrow {
+            transform: translateX(4px);
+        }
+
+        .question-card.featured {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .question-card.featured h3 {
+            font-size: 1.6rem;
+        }
+
+        .question-card.featured .question-image {
+            height: 200px;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .question-card.featured .question-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(75%) sepia(15%) hue-rotate(345deg) contrast(1.1) brightness(0.85);
+        }
+
+        /* === MÓDULOS ACCORDION === */
+        .modules-section {
+            max-width: 1400px;
+            margin: 0 auto 5rem;
+            padding: 0 2rem;
+        }
+
+        .modules-section .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.4rem;
+            color: var(--carvao);
+            margin: 0 0 2.5rem;
+        }
+
+        .modules-section .section-title em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .modules-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid var(--edge);
+        }
+
+        .accordion-trigger {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Manrope', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-trigger:hover .accordion-number {
+            color: var(--terracota);
+        }
+
+        .accordion-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+        }
+
+        .accordion-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            color: var(--edge);
+            line-height: 1;
+            transition: color 0.3s ease;
+            min-width: 2.5rem;
+        }
+
+        .accordion-info h4 {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--carvao);
+            margin: 0 0 0.3rem;
+        }
+
+        .accordion-info span {
+            font-size: 0.8rem;
+            color: var(--taupe);
+        }
+
+        .accordion-icon {
+            color: var(--taupe);
+            font-size: 1.3rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(45deg);
+            color: var(--terracota);
+        }
+
+        .accordion-item.open .accordion-number {
+            color: var(--terracota);
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .accordion-item.open .accordion-body {
+            max-height: 500px;
+        }
+
+        .accordion-content {
+            padding: 0 0 1.5rem 3.7rem;
+        }
+
+        .topic-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .topic-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            font-size: 0.88rem;
+            color: var(--taupe);
+            line-height: 1.5;
+            padding: 0.4rem 0;
+        }
+
+        .topic-list li i {
+            color: var(--terracota);
+            font-size: 0.9rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+
+        /* === PAINEL EDITORIAL (right side of modules) === */
+        .modules-aside {
+            background-color: var(--museu);
+            border: 1px solid var(--edge);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .aside-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--terracota);
+            margin-bottom: 1rem;
+        }
+
+        .aside-quote {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--carvao);
+            line-height: 1.45;
+            margin: 0 0 1.5rem;
+        }
+
+        .aside-author {
+            font-size: 0.85rem;
+            color: var(--taupe);
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--edge);
+        }
+
+        .aside-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .aside-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.88rem;
+            color: var(--taupe);
+        }
+
+        .aside-list li i {
+            color: var(--terracota);
+            font-size: 1.1rem;
+            width: 1.5rem;
+            text-align: center;
+        }
+
+        /* === SECTION POLÊMICA DARK === */
+        .dark-section {
+            background-color: var(--carvao);
+            padding: 5rem 0;
+            margin: 5rem 0;
+        }
+
+        .dark-section-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .dark-section .overline {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--terracota);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .dark-section h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 3rem;
+            color: var(--gesso);
+            margin: 0 0 1.5rem;
+            max-width: 700px;
+            line-height: 1.2;
+        }
+
+        .dark-section h2 em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .dark-section .intro-text {
+            font-size: 1rem;
+            color: rgba(234, 230, 223, 0.6);
+            line-height: 1.8;
+            max-width: 560px;
+            margin-bottom: 3.5rem;
+        }
+
+        .controversies-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .controversy-card {
+            background-color: rgba(244, 241, 235, 0.05);
+            border: 1px solid rgba(234, 230, 223, 0.1);
+            border-radius: 1.2rem;
+            padding: 1.8rem;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .controversy-card:hover {
+            background-color: rgba(244, 241, 235, 0.09);
+            border-color: rgba(168, 75, 43, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .controversy-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .controversy-card h4 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            color: var(--gesso);
+            margin: 0 0 0.7rem;
+            line-height: 1.3;
+        }
+
+        .controversy-card p {
+            font-size: 0.84rem;
+            color: rgba(234, 230, 223, 0.55);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* === METODOLOGIA === */
+        .method-section {
+            max-width: 1400px;
+            margin: 0 auto 5rem;
+            padding: 0 2rem;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .method-image {
+            border-radius: 2rem;
+            overflow: hidden;
+            height: 500px;
+        }
+
+        .method-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%) sepia(18%) hue-rotate(345deg) contrast(1.08) brightness(0.87);
+        }
+
+        .method-content .eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--terracota);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .method-content h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.4rem;
+            color: var(--carvao);
+            margin: 0 0 1.5rem;
+            line-height: 1.2;
+        }
+
+        .method-content h2 em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .method-content p {
+            font-size: 0.95rem;
+            color: var(--taupe);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .method-pillars {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .pillar-item {
+            background-color: var(--museu);
+            border: 1px solid var(--edge);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .pillar-item:hover {
+            border-color: rgba(168, 75, 43, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .pillar-icon {
+            color: var(--terracota);
+            font-size: 1.5rem;
+            margin-bottom: 0.7rem;
+            display: block;
+        }
+
+        .pillar-item h4 {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--carvao);
+            margin: 0 0 0.4rem;
+        }
+
+        .pillar-item p {
+            font-size: 0.8rem;
+            color: var(--taupe);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* === INSTRUCTOR === */
+        .instructor-section {
+            max-width: 1400px;
+            margin: 0 auto 5rem;
+            padding: 0 2rem;
+        }
+
+        .instructor-card {
+            background-color: var(--museu);
+            border: 1px solid var(--edge);
+            border-radius: 2rem;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .instructor-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--edge);
+        }
+
+        .instructor-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%) sepia(18%) hue-rotate(345deg) contrast(1.1) brightness(0.88);
+        }
+
+        .instructor-info .title-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--terracota);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .instructor-info h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            color: var(--carvao);
+            margin: 0 0 0.3rem;
+        }
+
+        .instructor-info .role {
+            font-size: 0.9rem;
+            color: var(--taupe);
+            margin-bottom: 1.2rem;
+        }
+
+        .instructor-info p {
+            font-size: 0.92rem;
+            color: var(--taupe);
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        .instructor-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+        }
+
+        .instructor-tag {
+            background-color: var(--gesso);
+            color: var(--carvao);
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1px solid var(--edge);
+        }
+
+        /* === TURMAS / INSCRIÇÃO === */
+        .enrollment-section {
+            max-width: 1400px;
+            margin: 0 auto 5rem;
+            padding: 0 2rem;
+        }
+
+        .enrollment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .turma-card {
+            background-color: var(--museu);
+            border: 2px solid var(--edge);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .turma-card:hover {
+            border-color: var(--terracota);
+            box-shadow: 0 8px 24px rgba(168, 75, 43, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .turma-card.selected {
+            border-color: var(--terracota);
+            background-color: rgba(168, 75, 43, 0.04);
+        }
+
+        .turma-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+
+        .badge-early {
+            background-color: rgba(74, 124, 89, 0.12);
+            color: var(--success);
+        }
+
+        .badge-normal {
+            background-color: rgba(130, 124, 117, 0.12);
+            color: var(--taupe);
+        }
+
+        .badge-cheio {
+            background-color: rgba(211, 47, 47, 0.1);
+            color: #D32F2F;
+        }
+
+        .turma-card h4 {
+            font-weight: 700;
+            color: var(--carvao);
+            margin: 0 0 0.5rem;
+        }
+
+        .turma-dates {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--taupe);
+            margin-bottom: 1.5rem;
+        }
+
+        .turma-dates i {
+            color: var(--terracota);
+        }
+
+        .turma-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 1rem 0;
+            border-top: 1px solid var(--edge);
+            border-bottom: 1px solid var(--edge);
+            margin-bottom: 1rem;
+        }
+
+        .turma-price-label {
+            font-size: 0.75rem;
+            color: var(--taupe);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .turma-price-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2rem;
+            color: var(--terracota);
+        }
+
+        .turma-spots {
+            font-size: 0.8rem;
+            color: var(--taupe);
+        }
+
+        .turma-spots span {
+            color: var(--carvao);
+            font-weight: 600;
+        }
+
+        .enrollment-cta {
+            background-color: var(--gesso);
+            border: 1px solid var(--edge);
+            border-radius: 2rem;
+            padding: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 2rem;
+        }
+
+        .enrollment-cta h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.8rem;
+            color: var(--carvao);
+            margin: 0 0 0.5rem;
+        }
+
+        .enrollment-cta p {
+            font-size: 0.9rem;
+            color: var(--taupe);
+            margin: 0;
+        }
+
+        .enrollment-cta-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .btn-enroll-large {
+            background-color: var(--terracota);
+            color: var(--museu);
+            border: none;
+            padding: 1.1rem 2.5rem;
+            border-radius: 0.8rem;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Manrope', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-enroll-large:hover {
+            background-color: #8B3A1F;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(168, 75, 43, 0.3);
+        }
+
+        /* === FAQ === */
+        .faq-section {
+            max-width: 1400px;
+            margin: 0 auto 5rem;
+            padding: 0 2rem;
+        }
+
+        .faq-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .faq-intro h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 2.4rem;
+            color: var(--carvao);
+            margin: 0 0 1rem;
+            line-height: 1.2;
+        }
+
+        .faq-intro h2 em {
+            font-style: italic;
+            color: var(--terracota);
+        }
+
+        .faq-intro p {
+            font-size: 0.95rem;
+            color: var(--taupe);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .faq-contact {
+            background-color: var(--museu);
+            border: 1px solid var(--edge);
+            border-radius: 1.2rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .faq-contact i {
+            font-size: 1.8rem;
+            color: var(--terracota);
+        }
+
+        .faq-contact-text p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--taupe);
+            line-height: 1.5;
+        }
+
+        .faq-contact-text strong {
+            color: var(--carvao);
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--edge);
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--carvao);
+            transition: color 0.3s ease;
+            gap: 1rem;
+        }
+
+        .faq-question:hover {
+            color: var(--terracota);
+        }
+
+        .faq-question i {
+            font-size: 1.2rem;
+            color: var(--taupe);
+            transition: transform 0.3s ease, color 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .faq-question i {
+            transform: rotate(45deg);
+            color: var(--terracota);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer-inner {
+            padding: 0 1.5rem 1.5rem 0;
+            font-size: 0.88rem;
+            color: var(--taupe);
+            line-height: 1.8;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: var(--carvao);
+            color: var(--gesso);
+            padding: 3rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+        }
+
+        .footer-text {
+            font-size: 0.82rem;
+            color: rgba(234, 230, 223, 0.5);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            color: rgba(234, 230, 223, 0.5);
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--terracota);
+        }
+
+        /* === MODAL === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(28, 27, 26, 0.7);
+            backdrop-filter: blur(6px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--museu);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            color: var(--carvao);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--taupe);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--terracota);
+        }
+
+        .modal-summary {
+            background-color: var(--gesso);
+            border-radius: 0.8rem;
+            padding: 1.2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .modal-summary p {
+            margin: 0;
+            font-size: 0.88rem;
+            color: var(--taupe);
+            line-height: 1.6;
+        }
+
+        .modal-summary strong {
+            color: var(--carvao);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--carvao);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--edge);
+            border-radius: 0.5rem;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.9rem;
+            background-color: var(--museu);
+            color: var(--carvao);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--terracota);
+            box-shadow: 0 0 0 3px rgba(168, 75, 43, 0.1);
+        }
+
+        .form-submit {
+            width: 100%;
+            background-color: var(--terracota);
+            color: var(--museu);
+            border: none;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            font-family: 'Manrope', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background-color: #8B3A1F;
+        }
+
+        /* === ANIMATE === */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 1200px) {
+            .questions-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .question-card.featured {
+                grid-column: span 1;
+                grid-template-columns: 1fr;
+            }
+
+            .question-card.featured .question-image {
+                display: none;
+            }
+
+            .controversies-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr 360px;
+                gap: 2.5rem;
+            }
+
+            .hero-left h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-card {
+                position: static;
+                max-width: 480px;
+            }
+
+            .modules-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .modules-aside {
+                position: static;
+            }
+
+            .method-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .method-image {
+                height: 350px;
+            }
+
+            .instructor-card {
+                grid-template-columns: 1fr;
+            }
+
+            .instructor-avatar {
+                width: 140px;
+                height: 140px;
+            }
+
+            .enrollment-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.8rem;
+            }
+
+            .hero-left h1 {
+                font-size: 2.4rem;
+            }
+
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controversies-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .method-pillars {
+                grid-template-columns: 1fr;
+            }
+
+            .enrollment-cta {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .enrollment-cta-actions {
+                align-items: center;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .controversies-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dark-section h2 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header id="header">
+        <a href="paz-bem.html" class="logo">🌿 PAZ e BEM</a>
+        <nav>
+            <a href="paz-bem.html">Início</a>
+            <a href="academy.html">Cursos</a>
+            <a href="#modulos">Módulos</a>
+            <a href="#turmas">Turmas</a>
+            <a href="#faq">FAQ</a>
+            <button class="btn-header outline" id="btnEntrar">Entrar</button>
+            <button class="btn-header" onclick="document.getElementById('modalInscricao').classList.add('active')">Inscrever-se</button>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a href="paz-bem.html">Início</a> /
+        <a href="academy.html">Cursos</a> /
+        <span>Perguntas Difíceis da Bíblia</span>
+    </div>
+
+    <!-- HERO EDITORIAL -->
+    <section class="hero-editorial">
+        <span class="hero-tag">
+            <i class="ph-bold ph-flame"></i>
+            Temas Polêmicos · Nível Intermediário
+        </span>
+
+        <div class="hero-grid">
+            <div class="hero-left">
+                <h1>Perguntas Difíceis<br>da <em>Bíblia</em> e<br>Temas Polêmicos</h1>
+                <p class="lead">
+                    Nem toda questão tem uma resposta simples. Este curso enfrenta com honestidade intelectual as passagens mais perturbadoras, as contradições aparentes e os temas que a maioria dos estudos prefere evitar.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">52</span>
+                        <span class="stat-label">Questões abordadas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Semanas de estudo</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">380+</span>
+                        <span class="stat-label">Alunos formados</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">4.9</span>
+                        <span class="stat-label">Avaliação média</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="hero-card-image">
+                    <img src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?q=80&w=1470" alt="Estudo Bíblico profundo">
+                </div>
+                <div class="hero-card-body">
+                    <h3>Uma fé que não teme as perguntas</h3>
+                    <p>12 semanas de mergulho nos textos mais difíceis das Escrituras, com rigor acadêmico e profundidade pastoral.</p>
+                    <div class="meta-row">
+                        <div class="meta-chip">
+                            <i class="ph-light ph-calendar"></i>
+                            <span>Início: Abr / 2026</span>
+                        </div>
+                        <div class="meta-chip">
+                            <i class="ph-light ph-certificate"></i>
+                            <span>Certificado incluso</span>
+                        </div>
+                    </div>
+                    <div class="price-block">
+                        <div>
+                            <div class="price-main">R$ 390</div>
+                        </div>
+                        <div class="price-detail">
+                            ou 3× de<br><strong>R$ 137,00</strong>
+                        </div>
+                    </div>
+                    <button class="enroll-btn" onclick="document.getElementById('modalInscricao').classList.add('active')">GARANTIR MINHA VAGA</button>
+                    <p class="enroll-note">Vagas limitadas por turma · Reembolso em 7 dias</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIVISOR -->
+    <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-label">As grandes questões</span>
+        <div class="divider-line"></div>
+    </div>
+
+    <!-- GRID DE QUESTÕES -->
+    <section class="questions-section" id="questoes">
+        <div class="section-header">
+            <h2>O que você vai<br><em>enfrentar</em> neste curso</h2>
+            <p>Questões reais, sem respostas fáceis. Cada tema é tratado com rigor textual e sensibilidade pastoral.</p>
+        </div>
+
+        <div class="questions-grid">
+
+            <!-- FEATURED CARD -->
+            <div class="question-card featured fade-up">
+                <div>
+                    <div class="question-category">Questão Central</div>
+                    <h3>Deus ordenou genocídio no Antigo Testamento?</h3>
+                    <p>As passagens sobre a conquista de Canaã e o extermínio de povos inteiros chocam leitores modernos. Mas o que o texto realmente diz — e o que o contexto histórico e literário revela sobre a natureza desses relatos?</p>
+                    <div class="question-card-footer">
+                        <span class="question-module">Módulo 1 · Violência Sagrada</span>
+                        <i class="ph-light ph-arrow-right question-arrow"></i>
+                    </div>
+                </div>
+                <div class="question-image">
+                    <img src="https://images.unsplash.com/photo-1473163928189-364b2c4e1135?q=80&w=1470" alt="Canaã">
+                </div>
+            </div>
+
+            <div class="question-card fade-up">
+                <div class="question-category">Ética Bíblica</div>
+                <h3>A Bíblia aprova a escravidão?</h3>
+                <p>Levítico, Efésios, Filêmon — o que o texto diz realmente, o que os donos de escravos americanos usavam para justificar o sistema, e o que a exegese cuidadosa revela.</p>
+                <div class="question-card-footer">
+                    <span class="question-module">Módulo 2 · Escravidão</span>
+                    <i class="ph-light ph-arrow-right question-arrow"></i>
+                </div>
+            </div>
+
+            <div class="question-card fade-up">
+                <div class="question-category">Salvação</div>
+                <h3>Os que nunca ouviram o Evangelho serão condenados?</h3>
+                <p>Uma das questões mais angustiantes da teologia cristã, envolvendo exclusivismo, inclusivismo e universalismo — examinados à luz das Escrituras e da tradição.</p>
+                <div class="question-card-footer">
+                    <span class="question-module">Módulo 3 · Salvação</span>
+                    <i class="ph-light ph-arrow-right question-arrow"></i>
+                </div>
+            </div>
+
+            <div class="question-card fade-up">
+                <div class="question-category">Gênero e Poder</div>
+                <h3>Mulheres devem calar nas igrejas?</h3>
+                <p>1 Coríntios 14 e 1 Timóteo 2 são talvez os textos mais debatidos do NT sobre liderança feminina. Uma análise honesta do contexto histórico, gramático e teológico.</p>
+                <div class="question-card-footer">
+                    <span class="question-module">Módulo 4 · Gênero</span>
+                    <i class="ph-light ph-arrow-right question-arrow"></i>
+                </div>
+            </div>
+
+            <div class="question-card fade-up">
+                <div class="question-category">Deus e Sofrimento</div>
+                <h3>Se Deus é bom, por que existe o sofrimento?</h3>
+                <p>O problema do mal (teodiceia) em diálogo com Jó, os Salmos de lamento, o NT e a Teologia do Processo — as respostas que existem e as que não existem.</p>
+                <div class="question-card-footer">
+                    <span class="question-module">Módulo 5 · Teodiceia</span>
+                    <i class="ph-light ph-arrow-right question-arrow"></i>
+                </div>
+            </div>
+
+            <div class="question-card fade-up">
+                <div class="question-category">Escatologia</div>
+                <h3>O inferno é eterno ou todos serão salvos?</h3>
+                <p>Punição consciente eterna, aniquilacionismo, universalismo cristão — leituras possíveis dentro do cânone protestante, com seus textos-chave e implicações.</p>
+                <div class="question-card-footer">
+                    <span class="question-module">Módulo 6 · Inferno</span>
+                    <i class="ph-light ph-arrow-right question-arrow"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DARK SECTION: TEMAS POLÊMICOS -->
+    <div class="dark-section">
+        <div class="dark-section-inner">
+            <span class="overline">Temas que a maioria evita</span>
+            <h2>Questões que exigem<br><em>coragem</em> intelectual</h2>
+            <p class="intro-text">
+                Temas que geram divisão de congregações, crises de fé e debates acalorados — abordados com rigor textual, humildade epistêmica e amor pastoral.
+            </p>
+
+            <div class="controversies-grid">
+                <div class="controversy-card">
+                    <span class="controversy-icon">⚖️</span>
+                    <h4>Homossexualidade e a Bíblia</h4>
+                    <p>Os 6 textos principais, seus contextos históricos e as leituras divergentes dentro da tradição cristã.</p>
+                </div>
+                <div class="controversy-card">
+                    <span class="controversy-icon">🧬</span>
+                    <h4>Criação e Evolução</h4>
+                    <p>Criacionismo jovem, terra antiga, evolução teísta — o que o Gênesis realmente afirma e o que é interpretação.</p>
+                </div>
+                <div class="controversy-card">
+                    <span class="controversy-icon">🩸</span>
+                    <h4>Violência Divina nos Profetas</h4>
+                    <p>Passagens sobre julgamento, ira e destruição — como lê-las sem dessensibilizar nem espiritualizar artificialmente.</p>
+                </div>
+                <div class="controversy-card">
+                    <span class="controversy-icon">💸</span>
+                    <h4>Prosperidade e Dízimo</h4>
+                    <p>Malaquias 3, os textos de bênção do AT e sua aplicação ao NT — a honestidade que falta na maioria dos púlpitos.</p>
+                </div>
+                <div class="controversy-card">
+                    <span class="controversy-icon">🔱</span>
+                    <h4>Poligamia dos Patriarcas</h4>
+                    <p>Abraão, Jacó, Davi, Salomão — como o AT trata o tema e o que o silêncio do texto implica.</p>
+                </div>
+                <div class="controversy-card">
+                    <span class="controversy-icon">👶</span>
+                    <h4>Aborto e a Bíblia</h4>
+                    <p>O que as Escrituras dizem explicitamente, o que inferem e o que é leitura anacrônica moderna — sem viés político.</p>
+                </div>
+                <div class="controversy-card">
+                    <span class="controversy-icon">🌍</span>
+                    <h4>Eleição, Livre-Arbítrio e Predestinação</h4>
+                    <p>O debate entre calvinistas e arminianos revisitado a partir dos próprios textos, sem caricaturas de nenhum lado.</p>
+                </div>
+                <div class="controversy-card">
+                    <span class="controversy-icon">📜</span>
+                    <h4>Contradições nos Evangelhos</h4>
+                    <p>As diferenças entre Mateus, Marcos, Lucas e João — harmonização, tensão criativa e o que a inspiração realmente significa.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIVISOR -->
+    <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-label">Programa do curso</span>
+        <div class="divider-line"></div>
+    </div>
+
+    <!-- MÓDULOS ACCORDION -->
+    <section class="modules-section" id="modulos">
+        <h2 class="section-title">Estrutura em <em>12 Módulos</em></h2>
+
+        <div class="modules-layout">
+            <!-- ACCORDION -->
+            <div class="accordion-list">
+
+                <div class="accordion-item open">
+                    <button class="accordion-trigger">
+                        <div class="accordion-left">
+                            <span class="accordion-number">01</span>
+                            <div class="accordion-info">
+                                <h4>Violência Divina no AT</h4>
+                                <span>4 aulas · ~6h de conteúdo</span>
+                            </div>
+                        </div>
+                        <i class="ph-bold ph-plus accordion-icon"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <ul class="topic-list">
+                                <li><i class="ph-light ph-circle-dashed"></i> A conquista de Canaã: genocídio ou hipérbole literária?</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> O dilúvio e a justiça de Deus na narrativa bíblica</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Ira divina: antropomorfismo ou realidade teológica?</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Como cristãos leram esses textos ao longo da história</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <div class="accordion-left">
+                            <span class="accordion-number">02</span>
+                            <div class="accordion-info">
+                                <h4>Escravidão e Ética Bíblica</h4>
+                                <span>3 aulas · ~5h de conteúdo</span>
+                            </div>
+                        </div>
+                        <i class="ph-bold ph-plus accordion-icon"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <ul class="topic-list">
+                                <li><i class="ph-light ph-circle-dashed"></i> Escravidão no mundo antigo vs. a escravidão moderna</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Levítico 25 e as regulações do AT</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Paulo, Filêmon e a lógica subversiva do NT</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> O problema do "silêncio" da Bíblia</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <div class="accordion-left">
+                            <span class="accordion-number">03</span>
+                            <div class="accordion-info">
+                                <h4>Salvação e os Não-Alcançados</h4>
+                                <span>3 aulas · ~4h de conteúdo</span>
+                            </div>
+                        </div>
+                        <i class="ph-bold ph-plus accordion-icon"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <ul class="topic-list">
+                                <li><i class="ph-light ph-circle-dashed"></i> Exclusivismo, inclusivismo e universalismo cristão</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> João 14:6 e Atos 4:12 em contexto</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Romanos 2 e os gentios que "fazem por natureza"</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Destino pós-morte e revelação suficiente</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <div class="accordion-left">
+                            <span class="accordion-number">04</span>
+                            <div class="accordion-info">
+                                <h4>Gênero, Liderança e Igreja</h4>
+                                <span>4 aulas · ~6h de conteúdo</span>
+                            </div>
+                        </div>
+                        <i class="ph-bold ph-plus accordion-icon"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <ul class="topic-list">
+                                <li><i class="ph-light ph-circle-dashed"></i> 1 Coríntios 14:34 no contexto de toda a carta</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> 1 Timóteo 2: cultura ou mandamento universal?</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Débora, Priscila, Júnia — o que o NT mostra de fato</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Gálatas 3:28 e seu alcance eclesiológico</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <div class="accordion-left">
+                            <span class="accordion-number">05</span>
+                            <div class="accordion-info">
+                                <h4>Teodiceia — Deus e o Sofrimento</h4>
+                                <span>4 aulas · ~7h de conteúdo</span>
+                            </div>
+                        </div>
+                        <i class="ph-bold ph-plus accordion-icon"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <ul class="topic-list">
+                                <li><i class="ph-light ph-circle-dashed"></i> O problema lógico e evidencial do mal</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Jó: respostas que Deus rejeita e a resposta que ele dá</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Livre-arbítrio e sofrimento natural</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> A Cruz como resposta de Deus ao mal</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-trigger">
+                        <div class="accordion-left">
+                            <span class="accordion-number">06–12</span>
+                            <div class="accordion-info">
+                                <h4>Módulos Avançados</h4>
+                                <span>Inferno · Homossexualidade · Evolução · Predestinação · Prosperidade · Aborto · Contradições</span>
+                            </div>
+                        </div>
+                        <i class="ph-bold ph-plus accordion-icon"></i>
+                    </button>
+                    <div class="accordion-body">
+                        <div class="accordion-content">
+                            <ul class="topic-list">
+                                <li><i class="ph-light ph-circle-dashed"></i> Inferno: punição eterna, aniquilação ou reconciliação?</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Homossexualidade: os 6 textos e seus contextos reais</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Gênesis 1–2 e o diálogo com a ciência moderna</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Calvino, Arminío e Paulo: quem está certo?</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Dízimo e prosperidade: o que o texto efetivamente diz</li>
+                                <li><i class="ph-light ph-circle-dashed"></i> Contradições sinóticas: problema ou riqueza?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- PAINEL ASIDE -->
+            <div class="modules-aside">
+                <div class="aside-eyebrow">Princípio do curso</div>
+                <p class="aside-quote">
+                    "A fé que não aguenta uma pergunta honesta não merece ser chamada de fé."
+                </p>
+                <p class="aside-author">— Princípio que norteia toda a metodologia do curso</p>
+
+                <ul class="aside-list">
+                    <li>
+                        <i class="ph-light ph-books"></i>
+                        <span>52+ textos bíblicos analisados em profundidade</span>
+                    </li>
+                    <li>
+                        <i class="ph-light ph-chats-circle"></i>
+                        <span>Debates mediados por especialistas ao vivo</span>
+                    </li>
+                    <li>
+                        <i class="ph-light ph-file-text"></i>
+                        <span>Apostila de 180 páginas com referências completas</span>
+                    </li>
+                    <li>
+                        <i class="ph-light ph-users-three"></i>
+                        <span>Comunidade privada de alunos para discussão</span>
+                    </li>
+                    <li>
+                        <i class="ph-light ph-clock"></i>
+                        <span>Acesso vitalício ao conteúdo gravado</span>
+                    </li>
+                    <li>
+                        <i class="ph-light ph-certificate"></i>
+                        <span>Certificado emitido ao concluir 70% do curso</span>
+                    </li>
+                </ul>
+
+                <button class="enroll-btn" onclick="document.getElementById('modalInscricao').classList.add('active')">VER TURMAS DISPONÍVEIS</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- METODOLOGIA -->
+    <section class="method-section">
+        <div class="method-grid">
+            <div class="method-image fade-up">
+                <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1473" alt="Metodologia de estudo">
+            </div>
+            <div class="method-content">
+                <span class="eyebrow">Nossa Metodologia</span>
+                <h2>Rigor <em>acadêmico,</em><br>profundidade pastoral</h2>
+                <p>
+                    Cada questão é abordada com os melhores recursos da exegese bíblica — análise do texto original, contexto histórico e literário, história da interpretação e implicações práticas para a fé e o ministério.
+                </p>
+                <p>
+                    Não vendemos certezas onde não há. Mas mostramos como pensar com clareza onde muitos só conseguem reagir com emoção ou dogmatismo.
+                </p>
+
+                <div class="method-pillars">
+                    <div class="pillar-item">
+                        <i class="ph-light ph-magnifying-glass pillar-icon"></i>
+                        <h4>Exegese Honesta</h4>
+                        <p>O texto primeiro — sem conclusão definida antes da análise</p>
+                    </div>
+                    <div class="pillar-item">
+                        <i class="ph-light ph-tree-structure pillar-icon"></i>
+                        <h4>Contexto Histórico</h4>
+                        <p>O que o texto significava para quem o escreveu e quem o leu pela primeira vez</p>
+                    </div>
+                    <div class="pillar-item">
+                        <i class="ph-light ph-scales pillar-icon"></i>
+                        <h4>Visões em Diálogo</h4>
+                        <p>Posições divergentes dentro da ortodoxia cristã apresentadas com justiça</p>
+                    </div>
+                    <div class="pillar-item">
+                        <i class="ph-light ph-heart pillar-icon"></i>
+                        <h4>Aplicação Pastoral</h4>
+                        <p>Como ministrar esses temas com cuidado a pessoas em crise de fé</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIVISOR -->
+    <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-label">Quem ensina</span>
+        <div class="divider-line"></div>
+    </div>
+
+    <!-- INSTRUCTOR -->
+    <section class="instructor-section">
+        <div class="instructor-card fade-up">
+            <div class="instructor-avatar">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=687" alt="Prof. Antonio Sergio">
+            </div>
+            <div class="instructor-info">
+                <span class="title-eyebrow">Instrutor Principal</span>
+                <h3>Prof. Antonio Sergio Queiroz Alves</h3>
+                <p class="role">Teólogo, Pastor e Educador — 22 anos de ministério e docência</p>
+                <p>
+                    Formado em Teologia pela Faculdade Teológica Batista do Paraná, com especialização em Hermenêutica Bíblica e Apologética. Professor há mais de duas décadas, o Prof. Antonio Sergio é conhecido por sua capacidade de tratar temas difíceis com honestidade intelectual e cuidado pastoral — sem reducionismos fáceis de nenhum lado.
+                </p>
+                <p>
+                    Já ministrou este conteúdo em mais de 40 igrejas, retiros e conferências em todo o Brasil, e o resultado sempre é o mesmo: pessoas que voltam para a Bíblia com perguntas melhores — e com uma fé mais robusta.
+                </p>
+                <div class="instructor-tags">
+                    <span class="instructor-tag">Hermenêutica</span>
+                    <span class="instructor-tag">Apologética</span>
+                    <span class="instructor-tag">Teologia Bíblica</span>
+                    <span class="instructor-tag">Pastoral</span>
+                    <span class="instructor-tag">Ética Cristã</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TURMAS & INSCRIÇÃO -->
+    <section class="enrollment-section" id="turmas">
+        <div class="section-header">
+            <h2>Escolha sua<br><em>Turma</em></h2>
+            <p>Vagas limitadas por turma para garantir qualidade nas discussões e acesso ao instrutor.</p>
+        </div>
+
+        <div class="enrollment-grid">
+            <div class="turma-card selected" data-price="390" data-turma="Turma Abril — Noturno" data-dates="06 Abr – 29 Jun 2026">
+                <span class="turma-badge badge-normal">Turma Regular</span>
+                <h4>Turma Abril — Noturno</h4>
+                <div class="turma-dates">
+                    <i class="ph-light ph-calendar"></i>
+                    <span>06 Abr – 29 Jun 2026 · Seg/Qua 19h</span>
+                </div>
+                <div class="turma-price-row">
+                    <span class="turma-price-label">Valor:</span>
+                    <span class="turma-price-value">R$ 390</span>
+                </div>
+                <p class="turma-spots">Vagas: <span>12 disponíveis</span> de 20</p>
+            </div>
+
+            <div class="turma-card" data-price="350" data-turma="Turma Junho — Early Bird" data-dates="01 Jun – 24 Ago 2026">
+                <span class="turma-badge badge-early">Early Bird — 10% off</span>
+                <h4>Turma Junho — Early Bird</h4>
+                <div class="turma-dates">
+                    <i class="ph-light ph-calendar"></i>
+                    <span>01 Jun – 24 Ago 2026 · Ter/Qui 20h</span>
+                </div>
+                <div class="turma-price-row">
+                    <span class="turma-price-label">Valor:</span>
+                    <span class="turma-price-value">R$ 350</span>
+                </div>
+                <p class="turma-spots">Vagas: <span>18 disponíveis</span> de 20</p>
+            </div>
+
+            <div class="turma-card" data-price="390" data-turma="Turma Setembro — Sabatina" data-dates="05 Set – 28 Nov 2026">
+                <span class="turma-badge badge-normal">Turma Regular</span>
+                <h4>Turma Setembro — Sabatina</h4>
+                <div class="turma-dates">
+                    <i class="ph-light ph-calendar"></i>
+                    <span>05 Set – 28 Nov 2026 · Sáb 9h–12h</span>
+                </div>
+                <div class="turma-price-row">
+                    <span class="turma-price-label">Valor:</span>
+                    <span class="turma-price-value">R$ 390</span>
+                </div>
+                <p class="turma-spots">Vagas: <span>20 disponíveis</span> de 20</p>
+            </div>
+        </div>
+
+        <div class="enrollment-cta">
+            <div>
+                <h3>Pronto para fazer perguntas<br>que importam?</h3>
+                <p>Reembolso garantido em 7 dias, sem burocracia.</p>
+            </div>
+            <div class="enrollment-cta-actions">
+                <button class="btn-enroll-large" onclick="document.getElementById('modalInscricao').classList.add('active')">GARANTIR MINHA VAGA</button>
+                <span style="font-size: 0.78rem; color: var(--taupe);">ou 3× de R$ 137 sem juros</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIVISOR -->
+    <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-label">Dúvidas frequentes</span>
+        <div class="divider-line"></div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <div class="faq-layout">
+            <div class="faq-intro">
+                <h2>Ainda tem<br><em>dúvidas?</em></h2>
+                <p>
+                    Respondemos as perguntas mais comuns sobre o curso, a metodologia e o processo de inscrição. Se ainda restar algo, fale diretamente conosco.
+                </p>
+                <div class="faq-contact">
+                    <i class="ph-light ph-whatsapp-logo"></i>
+                    <div class="faq-contact-text">
+                        <p><strong>Fale com a equipe Paz e Bem</strong></p>
+                        <p>Respondemos em até 1 hora em dias úteis via WhatsApp ou e-mail.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item open">
+                    <button class="faq-question">
+                        O curso toma partido em questões polêmicas?
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Em alguns casos, sim — quando há uma interpretação esmagadoramente suportada pelo texto e pelo consenso acadêmico. Em outros, apresentamos as posições em disputa com honestidade, sem forçar uma conclusão. O objetivo não é dizer o que pensar, mas como pensar com as ferramentas certas.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Preciso saber hebraico ou grego?
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Não. Usamos ferramentas acessíveis (concordâncias, léxicos comentados, análises gramaticais simplificadas) que permitem trabalhar com os textos originais sem fluência nas línguas. O curso é pensado para quem tem formação básica em Teologia ou Bíblia.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        O conteúdo é adequado para minha denominação?
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            O curso é inter-denominacional e trata de perspectivas dentro do protestantismo histórico — evangélicos de diferentes matizes, batistas, presbiterianos, metodistas e carismáticos têm estudado o material. Não defendemos uma linha denominacional específica.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        E se eu perder uma aula ao vivo?
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Todas as aulas são gravadas e disponibilizadas em até 24h no ambiente do aluno. Você tem acesso vitalício ao conteúdo gravado, incluindo turmas anteriores do mesmo módulo.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Existe reembolso?
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Sim. Oferecemos reembolso integral em até 7 dias corridos após a matrícula, sem questionamentos. Basta enviar um e-mail para nossa equipe.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        O certificado tem reconhecimento?
+                        <i class="ph-bold ph-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            O certificado é emitido pela Escola Paz e Bem e reconhecido por instituições teológicas parceiras. Não é um diploma acadêmico regulamentado pelo MEC, mas é valorizado em contextos de ministério, docência e formação continuada em igrejas e organizações cristãs.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">🌿 PAZ e BEM</div>
+            <div class="footer-text">© 2026 Escola Paz e Bem. Todos os direitos reservados.</div>
+            <div class="footer-links">
+                <a href="#">Privacidade</a>
+                <a href="#">Termos</a>
+                <a href="#">Contato</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE INSCRIÇÃO -->
+    <div class="modal" id="modalInscricao">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Inscrição no Curso</h2>
+                <button class="modal-close" onclick="document.getElementById('modalInscricao').classList.remove('active')">&times;</button>
+            </div>
+
+            <div class="modal-summary">
+                <p>
+                    <strong id="modalTurmaName">Turma Abril — Noturno</strong><br>
+                    <span id="modalTurmaDates">06 Abr – 29 Jun 2026</span><br>
+                    <span style="font-family: 'Instrument Serif', serif; font-size: 1.4rem; color: var(--terracota); font-weight: 700;" id="modalTurmaPrice">R$ 390</span>
+                </p>
+            </div>
+
+            <form onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label>Nome Completo *</label>
+                    <input type="text" placeholder="Seu nome completo" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail *</label>
+                    <input type="email" placeholder="seu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp *</label>
+                    <input type="tel" placeholder="(11) 99999-9999" required>
+                </div>
+                <div class="form-group">
+                    <label>Como conheceu o curso?</label>
+                    <select>
+                        <option value="">Selecione...</option>
+                        <option>Google</option>
+                        <option>Instagram / Redes Sociais</option>
+                        <option>Indicação de amigo</option>
+                        <option>Igreja ou ministério</option>
+                        <option>Outro</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-submit">CONFIRMAR INSCRIÇÃO</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // === HEADER SCROLL ===
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // === ACCORDION ===
+        document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const item = trigger.closest('.accordion-item');
+                const wasOpen = item.classList.contains('open');
+                document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+                if (!wasOpen) item.classList.add('open');
+            });
+        });
+
+        // === FAQ ACCORDION ===
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const wasOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                if (!wasOpen) item.classList.add('open');
+            });
+        });
+
+        // === SELEÇÃO DE TURMA ===
+        document.querySelectorAll('.turma-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.turma-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+
+                // Atualiza modal
+                document.getElementById('modalTurmaName').textContent = card.dataset.turma;
+                document.getElementById('modalTurmaDates').textContent = card.dataset.dates;
+                document.getElementById('modalTurmaPrice').textContent = 'R$ ' + card.dataset.price;
+            });
+        });
+
+        // === FECHAR MODAL AO CLICAR FORA ===
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('modalInscricao');
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        // === SUBMIT MOCK ===
+        function handleSubmit(e) {
+            e.preventDefault();
+            document.getElementById('modalInscricao').classList.remove('active');
+            // Feedback
+            const toast = document.createElement('div');
+            toast.textContent = '✓ Inscrição recebida! Entraremos em contato em breve.';
+            toast.style.cssText = `
+                position: fixed; bottom: 2rem; right: 2rem;
+                background: var(--success); color: white;
+                padding: 1rem 1.5rem; border-radius: 0.8rem;
+                font-weight: 600; font-size: 0.9rem;
+                z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        // === GSAP SCROLL ANIMATIONS ===
+        gsap.utils.toArray('.fade-up').forEach(el => {
+            gsap.fromTo(el,
+                { y: 40, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 0.8, ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 85%',
+                        end: 'bottom center',
+                    }
+                }
+            );
+        });
+
+        gsap.fromTo('.hero-left',
+            { x: -30, opacity: 0 },
+            { x: 0, opacity: 1, duration: 1, ease: 'power2.out', delay: 0.2 }
+        );
+
+        gsap.fromTo('.hero-card',
+            { x: 30, opacity: 0 },
+            { x: 0, opacity: 1, duration: 1, ease: 'power2.out', delay: 0.4 }
+        );
+
+        gsap.utils.toArray('.question-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { y: 30, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: i * 0.08,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 88%',
+                    }
+                }
+            );
+        });
+
+        gsap.utils.toArray('.controversy-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { y: 25, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 0.55, ease: 'power2.out', delay: i * 0.07,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 90%',
+                    }
+                }
+            );
+        });
+
+        gsap.utils.toArray('.pillar-item').forEach((item, i) => {
+            gsap.fromTo(item,
+                { y: 20, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 0.5, ease: 'power2.out', delay: i * 0.1,
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top 88%',
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+</html>

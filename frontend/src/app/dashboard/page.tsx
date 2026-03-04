@@ -3,22 +3,25 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
+import PremiumCard from '@/components/ui/PremiumCard';
+import PremiumButton from '@/components/ui/PremiumButton';
+import { supabase } from '@/lib/supabase/client';
 
-interface Note {
+interface Enrollment {
   id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
+  courseId: string;
+  courseTitle: string;
+  enrollmentDate: any;
+  status: 'active' | 'completed' | 'paused';
+  progressPercent: number;
+  created_at?: string;
 }
 
 const DashboardPage = () => {
   const router = useRouter();
   const { user, loading, isAuthenticated } = useAuth();
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [newNoteTitle, setNewNoteTitle] = useState('');
-  const [newNoteContent, setNewNoteContent] = useState('');
-  const [showForm, setShowForm] = useState(false);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [fetchingData, setFetchingData] = useState(true);
 
   // Verifica autenticação
   useEffect(() => {
@@ -27,184 +30,171 @@ const DashboardPage = () => {
     }
   }, [loading, isAuthenticated, router]);
 
-  // Simula carregamento de notas do usuário
+  // Busca matrículas reais do Firestore (Prompt 5)
   useEffect(() => {
-    if (isAuthenticated && user) {
-      // Em uma aplicação real, isso viria de uma API
-      const sampleNotes = [
-        {
-          id: '1',
-          title: 'Minhas Anotações Iniciais',
-          content: 'Esta é uma nota de exemplo criada para demonstrar a funcionalidade.',
-          createdAt: '2023-01-15T10:30:00Z',
-          updatedAt: '2023-01-15T10:30:00Z'
-        },
-        {
-          id: '2',
-          title: 'Aprendizados Importantes',
-          content: 'Outra nota de exemplo mostrando como o sistema organiza as anotações.',
-          createdAt: '2023-01-16T14:22:00Z',
-          updatedAt: '2023-01-16T14:22:00Z'
-        },
-        {
-          id: '3',
-          title: 'Próximos Passos',
-          content: 'Terceira nota de exemplo com mais informações sobre os próximos passos no curso.',
-          createdAt: '2023-01-17T09:15:00Z',
-          updatedAt: '2023-01-17T09:15:00Z'
+    const fetchEnrollments = async () => {
+      if (isAuthenticated && user?.id) {
+        try {
+          const { data: enrollmentData } = await supabase
+            .from('enrollments')
+            .select('*')
+            .eq('user_id', user.id);
+
+          if (enrollmentData) {
+            setEnrollments(enrollmentData as Enrollment[]);
+          }
+        } catch (error) {
+          console.error("Erro ao buscar matrículas:", error);
+        } finally {
+          setFetchingData(false);
         }
-      ];
-      setNotes(sampleNotes);
-    }
+      }
+    };
+
+    fetchEnrollments();
   }, [isAuthenticated, user]);
 
-  // Função para adicionar nova nota
-  const handleAddNote = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!newNoteTitle.trim()) {
-      alert('Por favor, adicione um título para a nota');
-      return;
-    }
-    
-    const newNote: Note = {
-      id: Date.now().toString(),
-      title: newNoteTitle,
-      content: newNoteContent,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    
-    setNotes([newNote, ...notes]);
-    setNewNoteTitle('');
-    setNewNoteContent('');
-    setShowForm(false);
-  };
-
-  // Função para excluir nota
-  const handleDeleteNote = (id: string) => {
-    if (confirm('Tem certeza que deseja excluir esta nota?')) {
-      setNotes(notes.filter(note => note.id !== id));
-    }
-  };
-
-  if (loading) {
+  if (loading || fetchingData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white">Carregando...</div>
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-4">
-      <div className="container mx-auto max-w-6xl">
-        <h1 className="text-3xl font-bold mb-6">Painel do Aluno - {user?.name}</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Coluna esquerda - Informações do usuário */}
-          <div className="lg:col-span-1 bg-gray-800 rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">Informações do Perfil</h2>
-            <div className="space-y-4">
-              <div>
-                <p className="text-gray-400">Nome</p>
-                <p>{user?.name}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">Email</p>
-                <p>{user?.email}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">Provedor de Login</p>
-                <p>{user?.provider === 'google' ? 'Google' : 'GitHub'}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">ID do Usuário</p>
-                <p>{user?.id}</p>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white p-4 md:p-8">
+      <div className="container mx-auto max-w-7xl">
+
+        {/* Header Seção */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+          <div>
+            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
+              Olá, {user?.user_metadata?.full_name || user?.user_metadata?.displayName || 'Estudante'}
+            </h1>
+            <p className="text-gray-400 mt-1">Bem-vindo de volta à sua jornada de conhecimento.</p>
           </div>
-          
-          {/* Coluna central - Lista de notas */}
-          <div className="lg:col-span-2">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold">Suas Anotações</h2>
-              <button
-                onClick={() => setShowForm(!showForm)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
-              >
-                {showForm ? 'Cancelar' : '+ Nova Nota'}
-              </button>
-            </div>
-            
-            {/* Formulário para nova nota */}
-            {showForm && (
-              <div className="bg-gray-800 rounded-lg p-6 mb-6">
-                <h3 className="text-xl font-semibold mb-4">Criar Nova Nota</h3>
-                <form onSubmit={handleAddNote}>
-                  <div className="mb-4">
-                    <input
-                      type="text"
-                      value={newNoteTitle}
-                      onChange={(e) => setNewNoteTitle(e.target.value)}
-                      placeholder="Título da nota"
-                      className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
+          <PremiumButton variant="primary" onClick={() => router.push('/academy')}>
+            Explorar Novos Cursos
+          </PremiumButton>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+          {/* Sidebar de Perfil */}
+          <div className="lg:col-span-1 space-y-6">
+            <PremiumCard className="border-indigo-500/20">
+              <PremiumCard.Body>
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-3xl font-bold mb-4 shadow-lg shadow-indigo-500/20">
+                    {user?.user_metadata?.full_name?.[0] || user?.email?.[0]?.toUpperCase()}
                   </div>
-                  <div className="mb-4">
-                    <textarea
-                      value={newNoteContent}
-                      onChange={(e) => setNewNoteContent(e.target.value)}
-                      placeholder="Conteúdo da nota"
-                      rows={4}
-                      className="w-full px-4 py-2 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    ></textarea>
+                  <h2 className="text-xl font-bold">{user?.user_metadata?.full_name || user?.user_metadata?.displayName || 'Usuário'}</h2>
+                  <p className="text-gray-400 text-sm mb-4">{user?.email}</p>
+                  <div className="w-full pt-4 border-t border-white/5 space-y-3 text-left">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Cursos Ativos</span>
+                      <span className="font-semibold">{enrollments.filter(e => e.status === 'active').length}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Cursos Concluídos</span>
+                      <span className="font-semibold">{enrollments.filter(e => e.status === 'completed').length}</span>
+                    </div>
                   </div>
-                  <button
-                    type="submit"
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition"
-                  >
-                    Salvar Nota
-                  </button>
-                </form>
+                </div>
+              </PremiumCard.Body>
+            </PremiumCard>
+
+            <PremiumCard className="bg-blue-900/10 border-blue-500/20">
+              <PremiumCard.Header title="Meu Progresso Geral" />
+              <PremiumCard.Body>
+                <div className="w-full bg-gray-700 h-2 rounded-full overflow-hidden mb-2">
+                  <div className="bg-blue-500 h-full w-[45%]" />
+                </div>
+                <p className="text-xs text-center text-gray-400">Você concluiu 45% do seu plano atual</p>
+              </PremiumCard.Body>
+            </PremiumCard>
+          </div>
+
+          {/* Matrículas e Cursos */}
+          <div className="lg:col-span-3">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <span className="text-blue-500">●</span> Meus Cursos
+            </h2>
+
+            {enrollments.length === 0 ? (
+              <div className="bg-gray-800/50 border border-dashed border-gray-700 rounded-2xl p-12 text-center">
+                <div className="text-5xl mb-4">📚</div>
+                <h3 className="text-xl font-bold mb-2">Nenhum curso encontrado</h3>
+                <p className="text-gray-400 mb-6">Você ainda não está matriculado em nenhum curso.</p>
+                <PremiumButton variant="secondary" onClick={() => router.push('/academy')}>
+                  Ver Catálogo de Cursos
+                </PremiumButton>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {enrollments.map((course) => (
+                  <PremiumCard key={course.id} className="hover:border-blue-500/40 transition-all group">
+                    <PremiumCard.Body>
+                      <div className="flex justify-between items-start mb-4">
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold ${course.status === 'active' ? 'bg-green-500/10 text-green-500' : 'bg-blue-500/10 text-blue-500'
+                          }`}>
+                          {course.status === 'active' ? 'EM ANDAMENTO' : 'CONCLUÍDO'}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          Desde: {new Date(course.enrollmentDate || course.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl font-bold mb-2 group-hover:text-blue-400 transition-colors">
+                        {course.courseTitle}
+                      </h3>
+
+                      <div className="mt-6 mb-4">
+                        <div className="flex justify-between text-sm mb-2">
+                          <span className="text-gray-400">Progresso</span>
+                          <span className="text-white font-bold">{course.progressPercent}%</span>
+                        </div>
+                        <div className="w-full bg-gray-900 h-2 rounded-full overflow-hidden">
+                          <div
+                            className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full transition-all duration-500"
+                            style={{ width: `${course.progressPercent}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <PremiumButton
+                        variant="secondary"
+                        className="w-full mt-2"
+                        onClick={() => router.push(`/academy/course/${course.courseId}`)}
+                      >
+                        Continuar Aprendendo
+                      </PremiumButton>
+                    </PremiumCard.Body>
+                  </PremiumCard>
+                ))}
               </div>
             )}
-            
-            {/* Lista de notas */}
-            <div className="space-y-4">
-              {notes.length === 0 ? (
-                <div className="bg-gray-800 rounded-lg p-6 text-center">
-                  <p className="text-gray-400">Você ainda não tem nenhuma anotação.</p>
-                  <button
-                    onClick={() => setShowForm(true)}
-                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition"
-                  >
-                    Criar sua primeira nota
-                  </button>
-                </div>
-              ) : (
-                notes.map((note) => (
-                  <div key={note.id} className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-xl font-semibold">{note.title}</h3>
-                      <button
-                        onClick={() => handleDeleteNote(note.id)}
-                        className="text-red-500 hover:text-red-400"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                        </svg>
-                      </button>
-                    </div>
-                    <p className="text-gray-300 mt-2 mb-4">{note.content}</p>
-                    <div className="flex justify-between text-sm text-gray-500">
-                      <span>Criado em: {new Date(note.createdAt).toLocaleDateString()}</span>
-                      <span>Atualizado em: {new Date(note.updatedAt).toLocaleDateString()}</span>
+
+            {/* Seção Extra: Certificados (Prompt 5) */}
+            <div className="mt-12">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span className="text-yellow-500">●</span> Meus Certificados
+              </h2>
+              <PremiumCard className="bg-yellow-500/5 border-yellow-500/10">
+                <PremiumCard.Body className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-4xl text-yellow-500">🏆</div>
+                    <div>
+                      <h4 className="font-bold">Certificações em Breve</h4>
+                      <p className="text-sm text-gray-400">Conclua seus cursos para desbloquear certificados exclusivos.</p>
                     </div>
                   </div>
-                ))
-              )}
+                  <PremiumButton variant="outline" size="sm" disabled>
+                    Nenhum disponível
+                  </PremiumButton>
+                </PremiumCard.Body>
+              </PremiumCard>
             </div>
           </div>
         </div>

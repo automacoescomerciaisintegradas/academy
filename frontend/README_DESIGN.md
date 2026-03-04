@@ -19,19 +19,14 @@ body {
 ```
 **Arquivo:** `frontend/src/app/globals.css`
 
-### 2️⃣ **Avatar Lampião (SVG Vetorial)**
-- 🤠 Cangaceiro nordestino com chapéu de vaqueiro
-- 🤠 Bandoleira decorativa em tom terra
-- 🤠 Expressão séria e destemida
-- 🤠 Aura mística (gradiente roxo/azul)
-- 🤠 Animação sutil ao hover
+### 2️⃣ **Liderança Prof. Bandeira (Foco em Autoridade)**
+- 👨‍🏫 Destaque visual e textual da liderança ministerial.
+- 👨‍🏫 Enfoque em solidez bíblica e rigor acadêmico.
+- 👨‍🏫 Substituição de elementos folclóricos por iconografia ministerial.
+- 👨‍🏫 Identidade focada no Prof° Antonio Sergio Queiroz Alves (Bandeira).
 
-**Arquivo:** `frontend/src/components/avatars/LampiaoAvatar.tsx`  
-**Uso:**
-```tsx
-import LampiaoAvatar from '@/components/avatars/LampiaoAvatar';
-<LampiaoAvatar size="lg" /> // sm, md, lg, xl
-```
+**Arquivo:** `frontend/src/app/page.tsx`  
+**Uso:** Integrado diretamente na Hero Section e seções de autoridade.
 
 ### 3️⃣ **Carrossel Premium CSS**
 - 🎠 Scroll horizontal smooth
@@ -195,10 +190,10 @@ Para especificações visuais detalhadas, veja:
 ## 🎨 Preview Visual
 
 ### Hero Section
-- Avatar Lampião grande (size=xl)
-- Título com glow roxo
-- Botões premium (primary/secondary)
-- Carrossel de usuários online
+- Destaque solene para o Prof. Bandeira.
+- Título com glow dourado (Gold).
+- Botões premium (Gold Edition).
+- Carrossel de usuários online.
 
 ### Cards de Features
 - Emoji + título + descrição
@@ -222,7 +217,7 @@ Para especificações visuais detalhadas, veja:
 ## ✅ Checklist de Implementação
 
 - [x] Gradiente dark + grid de estrelas
-- [x] Avatar Lampião (SVG completo)
+- [x] Liderança Prof. Bandeira (Foco em Autoridade)
 - [x] Carrossel premium com scroll
 - [x] Notificações elite (4 tipos)
 - [x] NotificationManager + API global
@@ -253,8 +248,8 @@ Para especificações visuais detalhadas, veja:
 ## 🎯 Diferenciais
 
 ✨ **Identidade Única**
-- Avatar Lampião diferencia da concorrência
-- Estetética nordestina + moderna
+- Liderança do Prof. Bandeira traz autoridade imediata.
+- Estética acadêmica premium + solidez bíblica.
 
 🚀 **Performance**
 - CSS puro (sem libs animação)
@@ -329,4 +324,4 @@ Para dúvidas ou melhorias:
 **Projeto:** Stitch - Escola PAZ e BEM  
 **Stack:** Next.js 14 + TypeScript + Tailwind CSS  
 
-💜 **Identidade Visual Premium Implementada com Sucesso!**
+💜 **Identidade Visual Premium e Liderança de Excelência Implementadas!**

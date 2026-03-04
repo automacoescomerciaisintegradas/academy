@@ -3,16 +3,15 @@
 ## ✅ O que foi implementado
 
 ### 1. **Gradiente de Fundo + Grid de Estrelas**
-- ✨ Radial gradient dark (Moltbot style) aplicado globalmente
-- ✨ Grid de pontos/estrelas para efeito espacial
+- ✨ Radial gradient dark (Gold/Bronze style) aplicado globalmente.
+- ✨ Grid de pontos/estrelas para efeito espacial solene.
 - 📍 **Arquivo:** `src/app/globals.css`
 
-### 2. **Avatar Lampião (Componente SVG)**
-- 🤠 Avatar vectorial completo do Lampião cangaceiro
-- 🤠 Chapéu de vaqueiro, bandoleira decorativa, expressão séria
-- 🤠 Aura mística com gradiente roxo/azul
-- 🤠 Animação sutil (floating) ao passar mouse
-- 📍 **Arquivo:** `src/components/avatars/LampiaoAvatar.tsx`
+### 2. **Liderança Prof. Bandeira (Foco em Autoridade)**
+- 📖 Destaque textual e visual da liderança do Prof° Antonio Sergio Queiroz Alves (Bandeira).
+- 📖 Enfoque em excelência acadêmica e compromisso ministerial.
+- 📖 Substituição de elementos folclóricos por iconografia teológica e ministerial.
+- 📍 **Arquivo:** `src/app/page.tsx`
 
 ### 3. **Carrossel Premium CSS**
 - 🎠 Componente React TypeScript completo

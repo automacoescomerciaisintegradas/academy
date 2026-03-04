@@ -1,17 +1,99 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/admin/Sidebar';
+import useAuth from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase/client';
+import PremiumCard from '@/components/ui/PremiumCard';
 
 const AdminDashboard = () => {
   const router = useRouter();
+  const { user, isAuthenticated, loading } = useAuth();
   const [stats, setStats] = useState({
-    totalCourses: 12,
-    totalStudents: 1242,
-    activeUsers: 89,
-    pendingInvites: 5
+    totalCourses: 0,
+    totalStudents: 0,
+    totalRevenue: 0,
+    newOrders: 0
   });
+  const [recentSales, setRecentSales] = useState<any[]>([]);
+  const [isVerifying, setIsVerifying] = useState(true);
+
+  // AIDEV-SECURITY: Verificação de Role Admin (Prompt 6 + B)
+  // O mestre definiu akshayman224@gmail.com como admin master nas regras
+  const ADMIN_EMAIL = 'akshayman224@gmail.com';
+
+  useEffect(() => {
+    if (!loading) {
+      if (!isAuthenticated || user?.email !== ADMIN_EMAIL) {
+        router.push('/dashboard'); // Redireciona estudantes para seu próprio painel
+      } else {
+        setIsVerifying(false);
+      }
+    }
+  }, [loading, isAuthenticated, user, router]);
+
+  // Busca métricas dinâmicas (Prompt 6)
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      if (!isVerifying && user?.email === ADMIN_EMAIL) {
+        try {
+          // 1. Total Coourses
+          const { count: totalCourses } = await supabase.from('courses').select('*', { count: 'exact', head: true });
+
+          // 2. Total Students (Unique users with role student)
+          const { count: totalStudents } = await supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'student');
+
+          // 3. Orders & Revenue
+          const { data: ordersSnap } = await supabase.from('orders').select('*');
+          let revenue = 0;
+          let todayOrders = 0;
+          const today = new Date().setHours(0, 0, 0, 0);
+
+          const sales: any[] = [];
+          if (ordersSnap) {
+            ordersSnap.forEach((data: any) => {
+              if (data.paymentStatus === 'paid') {
+                revenue += data.amount || 0;
+              }
+              const createdAt = new Date(data.createdAt || data.created_at).getTime();
+              if (createdAt > today) {
+                todayOrders++;
+              }
+              sales.push({ id: data.id, ...data });
+            });
+          }
+
+          setStats({
+            totalCourses: totalCourses || 0,
+            totalStudents: totalStudents || 0,
+            totalRevenue: revenue,
+            newOrders: todayOrders
+          });
+
+          // Últimas 5 vendas
+          setRecentSales(sales.sort((a, b) => {
+            const timeB = new Date(b.createdAt || b.created_at).getTime();
+            const timeA = new Date(a.createdAt || a.created_at).getTime();
+            return timeB - timeA;
+          }).slice(0, 5));
+
+        } catch (error) {
+          console.error("Erro ao carregar dados administrativos:", error);
+        }
+      }
+    };
+
+    fetchAdminData();
+  }, [isVerifying, user]);
+
+  if (loading || isVerifying) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
 
   const quickActions = [
     {
@@ -25,8 +107,8 @@ const AdminDashboard = () => {
       onClick: () => router.push('/admin/gerenciar-cursos')
     },
     {
-      title: 'Gerenciar Usuários',
-      description: 'Convide ou gerencie acessos de usuários',
+      title: 'Diretório de Alunos',
+      description: 'Gerencie acessos e perfis',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -35,25 +117,14 @@ const AdminDashboard = () => {
       onClick: () => router.push('/admin/gerenciar-acessos')
     },
     {
-      title: 'Relatórios',
-      description: 'Visualize relatórios e métricas',
+      title: 'Blog CMS',
+      description: 'Publicar novidades e artigos',
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
         </svg>
       ),
-      onClick: () => {}
-    },
-    {
-      title: 'Configurações',
-      description: 'Gerencie configurações do sistema',
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      onClick: () => {}
+      onClick: () => { }
     }
   ];
 
@@ -61,142 +132,122 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
       <div className="flex">
         <Sidebar />
-        
-        <main className="flex-1 p-6">
-          <div className="md:hidden mb-6">
-            <h1 className="text-2xl font-bold">Administração</h1>
-            <p className="text-gray-400">Painel de controle</p>
+
+        <main className="flex-1 p-8">
+          <div className="mb-10">
+            <h1 className="text-4xl font-bold">Dashboard do Fundador</h1>
+            <p className="text-gray-400">Gerencie a Cleudocode Academy em tempo real.</p>
           </div>
-          
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold hidden md:block">Dashboard Administrativo</h1>
-            <p className="text-gray-400">Bem-vindo ao painel de administração da plataforma</p>
-          </div>
-          
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-blue-900/30 text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+          {/* Stats Cards (Prompt 6) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <PremiumCard className="border-blue-500/20">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-2xl font-bold">{stats.totalCourses}</h3>
-                  <p className="text-gray-400">Cursos</p>
+                <div>
+                  <h3 className="text-3xl font-bold">{stats.totalCourses}</h3>
+                  <p className="text-gray-500 text-sm">Cursos Ativos</p>
                 </div>
               </div>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-green-900/30 text-green-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </PremiumCard>
+
+            <PremiumCard className="border-green-500/20">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-green-500/10 text-green-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-2xl font-bold">{stats.totalStudents}</h3>
-                  <p className="text-gray-400">Estudantes</p>
+                <div>
+                  <h3 className="text-3xl font-bold">{stats.totalStudents}</h3>
+                  <p className="text-gray-500 text-sm">Total de Alunos</p>
                 </div>
               </div>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-purple-900/30 text-purple-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.636 18.364a9 9 0 010-12.728m12.728 0a9 9 0 010 12.728m-9.9-2.829a5 5 0 010-7.07m7.072 0a5 5 0 010 7.07M13 12a1 1 0 11-2 0 1 1 0 012 0z" />
+            </PremiumCard>
+
+            <PremiumCard className="border-yellow-500/20">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-yellow-500/10 text-yellow-400">
+                  <span className="text-2xl font-bold">R$</span>
+                </div>
+                <div>
+                  <h3 className="text-3xl font-bold">{(stats.totalRevenue).toLocaleString('pt-BR')}</h3>
+                  <p className="text-gray-500 text-sm">Receita Total</p>
+                </div>
+              </div>
+            </PremiumCard>
+
+            <PremiumCard className="border-purple-500/20">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
                 </div>
-                <div className="ml-4">
-                  <h3 className="text-2xl font-bold">{stats.activeUsers}</h3>
-                  <p className="text-gray-400">Ativos Hoje</p>
+                <div>
+                  <h3 className="text-3xl font-bold">{stats.newOrders}</h3>
+                  <p className="text-gray-500 text-sm">Pedidos Hoje</p>
                 </div>
               </div>
-            </div>
-            
-            <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <div className="flex items-center">
-                <div className="p-3 rounded-lg bg-yellow-900/30 text-yellow-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-2xl font-bold">{stats.pendingInvites}</h3>
-                  <p className="text-gray-400">Convites Pendentes</p>
-                </div>
-              </div>
-            </div>
+            </PremiumCard>
           </div>
-          
+
           {/* Quick Actions */}
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Ações Rápidas</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold mb-6">Controles Rápidos</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {quickActions.map((action, index) => (
-                <div 
+                <PremiumCard
                   key={index}
                   onClick={action.onClick}
-                  className="bg-gray-800 rounded-xl p-6 border border-gray-700 cursor-pointer hover:border-blue-500 transition-all hover:bg-gray-750"
+                  className="cursor-pointer hover:scale-[1.02] transition-transform"
                 >
-                  <div className="flex items-center mb-4">
-                    <div className="text-blue-400">
+                  <div className="flex items-center gap-4">
+                    <div className="text-purple-400 p-2 bg-purple-500/5 rounded-lg">
                       {action.icon}
                     </div>
+                    <div>
+                      <h3 className="font-bold">{action.title}</h3>
+                      <p className="text-gray-500 text-xs">{action.description}</p>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold mb-1">{action.title}</h3>
-                  <p className="text-gray-400 text-sm">{action.description}</p>
-                </div>
+                </PremiumCard>
               ))}
             </div>
           </div>
-          
-          {/* Recent Activity */}
-          <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
-            <h2 className="text-xl font-semibold mb-4">Atividade Recente</h2>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="mr-4">
-                  <div className="w-10 h-10 rounded-full bg-blue-900/30 flex items-center justify-center">
-                    <span className="text-blue-400">JS</span>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium">João Silva</h4>
-                  <p className="text-gray-400 text-sm">Matriculou-se no curso "Fundamentos Bíblicos"</p>
-                  <p className="text-gray-500 text-xs mt-1">Há 2 horas</p>
-                </div>
+
+          {/* Recent Sales (Prompt 6) */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold">Vendas Recentes</h2>
+            <PremiumCard>
+              <div className="space-y-5">
+                {recentSales.length === 0 ? (
+                  <p className="text-center text-gray-500 py-10">Nenhuma venda registrada ainda.</p>
+                ) : (
+                  recentSales.map((sale) => (
+                    <div key={sale.id} className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center font-bold text-indigo-400">
+                          {sale.courseTitle?.[0]}
+                        </div>
+                        <div>
+                          <h4 className="font-bold">{sale.courseTitle}</h4>
+                          <p className="text-gray-500 text-xs">ID: {sale.id.slice(0, 8)}...</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-green-400 font-bold">R$ {sale.amount}</p>
+                        <p className="text-gray-500 text-xs">Pago via {sale.paymentMethod || 'Sistema'}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
-              
-              <div className="flex items-start">
-                <div className="mr-4">
-                  <div className="w-10 h-10 rounded-full bg-green-900/30 flex items-center justify-center">
-                    <span className="text-green-400">MO</span>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium">Maria Oliveira</h4>
-                  <p className="text-gray-400 text-sm">Completou o módulo 3 do curso "Teologia Sistemática"</p>
-                  <p className="text-gray-500 text-xs mt-1">Há 4 horas</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <div className="mr-4">
-                  <div className="w-10 h-10 rounded-full bg-purple-900/30 flex items-center justify-center">
-                    <span className="text-purple-400">PS</span>
-                  </div>
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-medium">Pedro Santos</h4>
-                  <p className="text-gray-400 text-sm">Enviou uma dúvida sobre a lição "Natureza de Jesus"</p>
-                  <p className="text-gray-500 text-xs mt-1">Há 6 horas</p>
-                </div>
-              </div>
-            </div>
+            </PremiumCard>
           </div>
         </main>
       </div>

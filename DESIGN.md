@@ -116,159 +116,25 @@ body {
 </h1>
 ```
 
-
 ---
 
-## 2. Avatar Visual - Lampião (Identidade Nordestina)
+## 2. Liderança e Identidade Acadêmica
 
-### 2.1 Conceito Visual
+### 2.1 Liderança Ministerial
 
-O avatar principal representa **Lampião**, o lendário cangaceiro nordestino, simbolizando:
-- **Bravura e coragem**: Determinação na busca do conhecimento
-- **Autenticidade regional**: Enraizamento na cultura nordestina
-- **Liderança e autoridade**: Credibilidade educacional
-- **Tradição e história**: Continuidade do conhecimento ancestral
+A escola é liderada pelo **Prof° Antonio Sergio Queiroz Alves (Bandeira)**, trazendo:
+- **Solidez Bíblica**: Ensino fundamentado exclusivamente nas Escrituras.
+- **Maturidade Espiritual**: Formação focada no caráter do obreiro.
+- **Excelência Acadêmica**: Rigor teológico e pedagógico.
+- **Compromisso Ministerial**: Visão prática para o serviço no Reino.
 
-### 2.2 Características Visuais do Avatar
+### 2.2 Elementos Visuais de Autoridade
 
-**Elementos principais:**
-- Rosto bronzeado/queimado pelo sol nordestino
-- Cabelos pretos, cabelo comprido (características nordestinas)
-- **Chapéu de vaqueiro/cangaceiro** robusto em tons terra
-- **Bandoleira** decorativa em couro (padrão tradicional)
-- **Expressão séria e destemida**
-- Cores: Marrons naturais, terracotas, tons queimados, dourados
-- Estilo: SVG / Ilustração vetorial (alta qualidade) ou PNG 2K
-
-### 2.3 Implementação SVG - Avatar Lampião
-
-```svg
-<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" class="avatar-lampiao">
-  <!-- Definição de gradientes -->
-  <defs>
-    <linearGradient id="skinGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#b8860b;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b6914;stop-opacity:1" />
-    </linearGradient>
-    
-    <linearGradient id="hatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#5c4033;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3e2723;stop-opacity:1" />
-    </linearGradient>
-    
-    <radialGradient id="faceGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:#d4a574;stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:#a0826d;stop-opacity:1" />
-    </radialGradient>
-  </defs>
-
-  <!-- Presença mística - glow ao fundo -->
-  <circle cx="128" cy="128" r="120" fill="none" stroke="rgba(139,92,246,0.1)" stroke-width="8"/>
-  <circle cx="128" cy="128" r="100" fill="none" stroke="rgba(99,102,241,0.05)" stroke-width="4"/>
-
-  <!-- Cabeça/Rosto -->
-  <circle cx="128" cy="100" r="45" fill="url(#faceGlow)" stroke="#6b5344" stroke-width="2"/>
-
-  <!-- Cabelos (longos, cangaceiro) -->
-  <path d="M 100 85 Q 85 70 90 50 Q 95 40 128 35 Q 161 40 166 50 Q 171 70 156 85" 
-        fill="#2c1810" stroke="#1a0f08" stroke-width="1.5"/>
-
-  <!-- Chapéu de Vaqueiro (elemento central, luxuoso) -->
-  <g id="hat">
-    <!-- Base do chapéu -->
-    <ellipse cx="128" cy="55" rx="55" ry="15" fill="url(#hatGradient)" stroke="#3e2723" stroke-width="2"/>
-    <!-- Abas do chapéu -->
-    <path d="M 70 65 Q 65 50 75 45 Q 128 30 181 45 Q 191 50 186 65" 
-          fill="#8b6f47" stroke="#6b5344" stroke-width="2"/>
-    <!-- Detalhe de luxo (fita dourada) -->
-    <ellipse cx="128" cy="68" rx="52" ry="8" fill="none" stroke="#d4a574" stroke-width="2" opacity="0.7"/>
-  </g>
-
-  <!-- Bandoleira (couro decorativo) -->
-  <path d="M 110 110 Q 100 130 105 160" 
-        fill="none" stroke="#8b6f47" stroke-width="8" stroke-linecap="round" opacity="0.8"/>
-  <circle cx="107" cy="120" r="3" fill="#d4a574"/>
-  <circle cx="108" cy="140" r="3" fill="#d4a574"/>
-  <circle cx="110" cy="160" r="3" fill="#d4a574"/>
-
-  <!-- Olhos (intensos, destemidos) -->
-  <circle cx="120" cy="95" r="4" fill="#1a1a1a" stroke="#8b6f47" stroke-width="0.5"/>
-  <circle cx="136" cy="95" r="4" fill="#1a1a1a" stroke="#8b6f47" stroke-width="0.5"/>
-  <!-- Brilho nos olhos -->
-  <circle cx="121" cy="94" r="1.5" fill="#ffffff" opacity="0.8"/>
-  <circle cx="137" cy="94" r="1.5" fill="#ffffff" opacity="0.8"/>
-
-  <!-- Nariz -->
-  <path d="M 128 95 L 128 108" fill="none" stroke="#8b6f47" stroke-width="1.5" stroke-linecap="round"/>
-
-  <!-- Boca (séria, resoluta) -->
-  <path d="M 118 115 Q 128 118 138 115" 
-        fill="none" stroke="#6b5344" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-
-  <!-- Cicatriz (característica) -->
-  <path d="M 115 105 L 118 110" 
-        fill="none" stroke="#8b6f47" stroke-width="1.5" opacity="0.6" stroke-linecap="round"/>
-
-  <!-- Ombros/Tronco (sugestão) -->
-  <ellipse cx="128" cy="150" rx="40" ry="35" fill="#6b5344" opacity="0.3" stroke="#5c4033" stroke-width="1.5"/>
-
-  <!-- Aura mística (roxo/azul) -->
-  <circle cx="128" cy="128" r="125" fill="none" stroke="url(#mysticalGradient)" stroke-width="2" opacity="0.3"/>
-  
-  <!-- Definição do gradiente místico -->
-  <defs>
-    <linearGradient id="mysticalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.5" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.5" />
-    </linearGradient>
-  </defs>
-</svg>
-```
-
-### 2.4 Estilo CSS para Avatar
-
-```css
-.avatar-lampiao {
-  width: 200px;
-  height: 200px;
-  filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.2));
-  animation: avatarSubtle 4s ease-in-out infinite;
-  transition: all 0.3s ease;
-}
-
-.avatar-lampiao:hover {
-  filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.4));
-  transform: scale(1.05);
-}
-
-@keyframes avatarSubtle {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
-}
-```
-
-### 2.5 Uso em Componentes
-
-**Hero Banner com Avatar:**
-```tsx
-<div className="flex flex-col md:flex-row items-center justify-between gap-8">
-  <div className="flex-1">
-    <h1 className="text-6xl font-bold mb-4">
-      <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-        Bem-vindo à PAZ e BEM
-      </span>
-    </h1>
-    <p className="text-xl text-gray-300">Aprendizado autêntico, enraizado na cultura nordestina</p>
-  </div>
-  
-  <div className="flex-1 flex justify-center">
-    <div className="relative">
-      {/* SVG Avatar */}
-      <LampiaoAvatar />
-    </div>
-  </div>
-</div>
-```
+**Identidade Acadêmica Premium:**
+- Uso de iconografia solene (Livros, Bíblias, Simbolismo Teológico).
+- Paleta de cores focada em Dourado e Bronze sobre fundo Dark.
+- Tipografia serifada em títulos de destaque para evocar a tradição acadêmica.
+- Espaçamento generoso para facilitar a leitura de conteúdos densos.
 
 **Em cards de perfil:**
 ```tsx
