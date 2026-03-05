@@ -20,8 +20,8 @@ const AdminDashboard = () => {
   const [isVerifying, setIsVerifying] = useState(true);
 
   // AIDEV-SECURITY: Verificação de Role Admin (Prompt 6 + B)
-  // O mestre definiu akshayman224@gmail.com como admin master nas regras
-  const ADMIN_EMAIL = 'akshayman224@gmail.com';
+  // O mestre definiu automacoescomerciais@gmail.com como admin master nas regras
+  const ADMIN_EMAIL = 'automacoescomerciais@gmail.com';
 
   useEffect(() => {
     if (!loading) {

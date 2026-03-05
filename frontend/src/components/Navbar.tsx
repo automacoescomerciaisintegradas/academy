@@ -46,7 +46,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <div className="flex items-center gap-4 pl-6 border-l border-white/10">
                 <Link href="/dashboard" className="text-gray-300 hover:text-gold-400 font-medium transition-colors">Meu Perfil</Link>
-                {user?.email === 'akshayman224@gmail.com' && (
+                {user?.email === 'automacoescomerciais@gmail.com' && (
                   <Link href="/admin" className="text-indigo-400 hover:text-indigo-300 font-bold transition-colors">Admin</Link>
                 )}
                 <button
@@ -90,7 +90,7 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <>
                   <Link href="/dashboard" className="text-lg py-2 hover:text-gold-400" onClick={toggleMenu}>Meus Cursos</Link>
-                  {user?.email === 'akshayman224@gmail.com' && (
+                  {user?.email === 'automacoescomerciais@gmail.com' && (
                     <Link href="/admin" className="text-indigo-400 font-bold py-2" onClick={toggleMenu}>Painel Admin</Link>
                   )}
                   <button
