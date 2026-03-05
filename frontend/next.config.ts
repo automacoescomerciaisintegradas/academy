@@ -1,18 +1,11 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  turbopack: {
-    root: process.cwd(),
-  },
-  
+
   // Docker standalone build
   output: 'standalone',
-  experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../../'),
-  },
-  
+
   // Image optimization
   images: {
     remotePatterns: [
@@ -26,7 +19,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  
+
   // Security headers
   async headers() {
     return [
