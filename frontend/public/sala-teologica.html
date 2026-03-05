@@ -280,6 +280,39 @@
             font-size: 1.5rem;
         }
 
+        /* === LINHAS VERTICAIS ANIMADAS === */
+        .vertical-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 10%;
+        }
+
+        .vertical-lines .line {
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, var(--edge), transparent);
+            opacity: 0.3;
+            animation: lineFlow 3s ease-in-out infinite;
+        }
+
+        .vertical-lines .line:nth-child(1) { animation-delay: 0s; }
+        .vertical-lines .line:nth-child(2) { animation-delay: 0.5s; }
+        .vertical-lines .line:nth-child(3) { animation-delay: 1s; }
+        .vertical-lines .line:nth-child(4) { animation-delay: 1.5s; }
+        .vertical-lines .line:nth-child(5) { animation-delay: 2s; }
+
+        @keyframes lineFlow {
+            0%, 100% { opacity: 0.1; transform: scaleY(0.8); }
+            50% { opacity: 0.4; transform: scaleY(1.2); }
+        }
+
         /* === REDIRECT INFO === */
         .redirect-info {
             margin-top: 3rem;
@@ -332,12 +365,53 @@
             letter-spacing: 0.1em;
         }
 
+        /* === CURSOR CUSTOMIZADO (igual paz-bem.html) === */
+        @media (min-width: 769px) {
+            body {
+                cursor: none;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                position: fixed;
+                top: 0;
+                left: 0;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                z-index: 9999;
+                pointer-events: none;
+            }
+
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background-color: var(--terracota);
+            }
+
+            .cursor-outline {
+                width: 40px;
+                height: 40px;
+                border: 1px solid var(--terracota);
+                transition: width 0.2s, height 0.2s;
+            }
+
+            a:hover ~ .cursor-outline,
+            button:hover ~ .cursor-outline,
+            .card:hover ~ .cursor-outline {
+                width: 60px;
+                height: 60px;
+                border-color: var(--carvao);
+            }
+        }
+
         /* === RESPONSIVO === */
         @media (max-width: 768px) {
             .noise-overlay,
             .bg-texture,
             .grid-background,
-            .typography-bg {
+            .typography-bg,
+            .cursor-dot,
+            .cursor-outline {
                 display: none;
             }
 
@@ -378,6 +452,19 @@
         </filter>
         <rect width="100%" height="100%" filter="url(#noiseFilter)" />
     </svg>
+
+    <!-- Cursor Customizado -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Linhas Verticais Animadas -->
+    <div class="vertical-lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
 
     <!-- HEADER -->
     <header>
@@ -527,6 +614,27 @@
 
         // Atualiza o href do botão
         document.getElementById('whatsappBtn').href = WHATSAPP_URL;
+
+        // === CURSOR CUSTOMIZADO ===
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        if (cursorDot && cursorOutline && window.innerWidth > 768) {
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+
+                // Dot segue instantaneamente
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+
+                // Outline segue com delay suave
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 500, fill: 'forwards' });
+            });
+        }
     </script>
 
     <!-- FOOTER -->
