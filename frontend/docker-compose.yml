@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  academy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: academy-app
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - NEXT_PUBLIC_FIREBASE_API_KEY=${NEXT_PUBLIC_FIREBASE_API_KEY}
+      - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+      - NEXT_PUBLIC_FIREBASE_PROJECT_ID=${NEXT_PUBLIC_FIREBASE_PROJECT_ID}
+      - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}
+      - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}
+      - NEXT_PUBLIC_FIREBASE_APP_ID=${NEXT_PUBLIC_FIREBASE_APP_ID}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.academy.rule=Host(`${DOMAIN:-academy.automacoescomerciais.com.br}`)"
+      - "traefik.http.routers.academy.entrypoints=websecure"
+      - "traefik.http.routers.academy.tls.certresolver=letsencrypt"
+      - "traefik.http.services.academy.loadbalancer.server.port=3001"
+      - "traefik.docker.network=${TRAEFIK_NETWORK:-traefik-public}"
+    networks:
+      - ${TRAEFIK_NETWORK:-traefik-public}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  traefik-public:
+    external: true
+    name: ${TRAEFIK_NETWORK:-traefik-public}
