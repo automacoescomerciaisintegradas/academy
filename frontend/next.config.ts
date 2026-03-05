@@ -14,6 +14,31 @@ const nextConfig: NextConfig = {
         destination: '/paz-bem.html',
         permanent: false,
       },
+      {
+        source: '/academy',
+        destination: '/academy.html',
+        permanent: false,
+      },
+      {
+        source: '/cursos/:path*',
+        destination: '/curso-:path*.html',
+        permanent: false,
+      },
+      {
+        source: '/perguntas-biblia',
+        destination: '/perguntas-biblia.html',
+        permanent: false,
+      },
+      {
+        source: '/perguntas-dificeis',
+        destination: '/perguntas-dificeis.html',
+        permanent: false,
+      },
+      {
+        source: '/sala-teologica',
+        destination: '/sala-teologica.html',
+        permanent: false,
+      },
     ];
   },
 
