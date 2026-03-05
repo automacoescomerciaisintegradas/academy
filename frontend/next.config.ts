@@ -6,6 +6,17 @@ const nextConfig: NextConfig = {
   // Docker standalone build
   output: 'standalone',
 
+  // Redirects - serve static HTML files from public folder
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/paz-bem.html',
+        permanent: false,
+      },
+    ];
+  },
+
   // Image optimization
   images: {
     remotePatterns: [
