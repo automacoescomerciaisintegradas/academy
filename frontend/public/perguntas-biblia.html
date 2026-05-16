@@ -11,7 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Phosphor Icons CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
 
     <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -2971,13 +2973,23 @@
             campos.forEach(c => c.disabled = true);
 
             try {
-                const res  = await fetch('/api/inscricoes', {
+                const apiUrl = window.location.port === '3000'
+                    ? '/api/inscricoes'
+                    : 'http://localhost:3000/api/inscricoes';
+
+                const res  = await fetch(apiUrl, {
                     method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body:    JSON.stringify(payload),
                 });
 
-                const data = await res.json();
+                const raw = await res.text();
+                let data = {};
+                try {
+                    data = raw ? JSON.parse(raw) : {};
+                } catch {
+                    data = {};
+                }
 
                 if (res.ok) {
                     // Sucesso
@@ -2988,7 +3000,8 @@
                     // Já inscrito
                     showToast('⚠ Este email já possui uma inscrição ativa para este curso.', '#F57F17');
                 } else {
-                    showToast('✗ ' + (data.error || 'Erro ao enviar inscrição. Tente novamente.'), '#D32F2F');
+                    const msg = data.error || `Erro ao enviar inscrição (HTTP ${res.status}).`;
+                    showToast('✗ ' + msg, '#D32F2F');
                 }
             } catch (err) {
                 console.error('Erro ao enviar:', err);
@@ -3115,6 +3128,7 @@
     </script>
 </body>
 </html>
+
 
 
 

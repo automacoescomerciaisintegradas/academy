@@ -12,7 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Phosphor Icons CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/light/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
 
     <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -1295,7 +1297,13 @@
                     body: JSON.stringify({ nome, email, whatsapp, curso, como_conheceu })
                 });
 
-                const data = await res.json();
+                const raw = await res.text();
+                let data = {};
+                try {
+                    data = raw ? JSON.parse(raw) : {};
+                } catch {
+                    data = {};
+                }
 
                 if (res.ok) {
                     document.getElementById('formInscricao').reset();
@@ -1303,7 +1311,8 @@
                 } else if (res.status === 409) {
                     showToastAcademy('⚠ Este email já possui uma inscrição ativa.', '#F57F17');
                 } else {
-                    showToastAcademy('✗ ' + (data.error || 'Erro ao enviar. Tente novamente.'), '#D32F2F');
+                    const msg = data.error || `Erro ao enviar inscrição (HTTP ${res.status}).`;
+                    showToastAcademy('✗ ' + msg, '#D32F2F');
                 }
             } catch (err) {
                 showToastAcademy('✗ Sem conexão com o servidor. Tente novamente.', '#D32F2F');
@@ -1325,6 +1334,7 @@
 </body>
 
 </html>
+
 
 
 

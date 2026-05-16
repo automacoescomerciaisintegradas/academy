@@ -1,14 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!url || !anonKey) {
+    return { error: 'Supabase não configurado. Defina NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY no .env' };
+  }
+
+  return { client: createClient(url, anonKey) };
+}
 
 // POST — salva inscrição no banco
 export async function POST(request: NextRequest) {
   try {
+    const { client: supabase, error: supabaseError } = getSupabaseClient();
+    if (supabaseError || !supabase) {
+      return NextResponse.json({ error: supabaseError }, { status: 500 });
+    }
+
     const body = await request.json();
     const { nome, email, whatsapp, como_conheceu, turma, turma_datas, valor, curso } = body;
 
@@ -110,6 +121,11 @@ export async function POST(request: NextRequest) {
 // GET — listar inscrições (admin)
 export async function GET(request: NextRequest) {
   try {
+    const { client: supabase, error: supabaseError } = getSupabaseClient();
+    if (supabaseError || !supabase) {
+      return NextResponse.json({ error: supabaseError }, { status: 500 });
+    }
+
     const { searchParams } = request.nextUrl;
     const status = searchParams.get('status');
     const curso = searchParams.get('curso');
