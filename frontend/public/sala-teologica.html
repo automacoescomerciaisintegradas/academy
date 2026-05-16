@@ -516,7 +516,7 @@
             </div>
 
             <!-- Botão de Redirecionamento -->
-            <a href="#" class="cta-button" id="whatsappBtn" onclick="redirectToWhatsapp(event)">
+            <a href="https://api.whatsapp.com/send?phone=5541992062238" class="cta-button" id="whatsappBtn" onclick="redirectToWhatsapp(event)">
                 <i class="ph-bold ph-whatsapp-logo"></i>
                 Entrar na Sala Teológica
             </a>
@@ -524,15 +524,19 @@
             <!-- Info de Redirecionamento -->
             <div class="redirect-info fade-up">
                 <i class="ph-bold ph-arrows-clockwise"></i>
-                <span>Você será redirecionado para nosso grupo no WhatsApp</span>
+                <span>
+                    Você será redirecionado para nosso grupo no WhatsApp<br>
+                    E-mail: jornalista0013093@gmail.com<br>
+                    Telefone: (41) 92062-2238
+                </span>
             </div>
         </div>
     </section>
 
     <!-- SCRIPTS -->
     <script>
-        // URL do WhatsApp - SUBSTITUA PELO SEU LINK
-        const WHATSAPP_URL = 'https://chat.whatsapp.com/SEU_LINK_AQUI';
+        // URL oficial do WhatsApp da plataforma
+        const WHATSAPP_URL = 'https://api.whatsapp.com/send?phone=5541992062238';
 
         // Contagem regressiva
         let secondsLeft = 30;
@@ -646,7 +650,7 @@
                 <a href="paz-bem.html" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">Início</a>
                 <a href="academy.html" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">Cursos</a>
                 <a href="perguntas-biblia.html" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">Perguntas Difíceis</a>
-                <a href="mailto:contato@pazeevida.com" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">Contato</a>
+                <a href="mailto:jornalista0013093@gmail.com" style="color: var(--taupe); text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='var(--terracota)'" onmouseout="this.style.color='var(--taupe)'">Contato</a>
             </div>
             <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--edge); color: var(--taupe); font-size: 0.8rem;">© 2026 Escola Paz e Vida. Todos os direitos reservados.</div>
         </div>
@@ -655,3 +659,4 @@
 </body>
 
 </html>
+
